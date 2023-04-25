@@ -4,3 +4,10 @@ export enum RoutePath {
   SKILLS = '/skills',
   SOCIALS = '/socials',
 }
+
+export enum RouteName {
+  PERSONAL_INFO = 'Personal info',
+  PROJECTS = 'Projects',
+  SKILLS = 'Skills',
+  SOCIALS = 'Socials',
+}
