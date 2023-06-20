@@ -5,7 +5,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const Login: FC = (): ReactElement => {
   const [passwordVisibility, setPasswordVisibility] = useState<boolean>(false);
-  const handleClick = () => setPasswordVisibility(!passwordVisibility);
+  const handlePasswordVisibility = () => setPasswordVisibility(!passwordVisibility);
 
   return (
     <Stack w={'full'} h={'full'} alignItems={'center'} justifyContent={'center'} p={4}>
@@ -27,7 +27,10 @@ const Login: FC = (): ReactElement => {
                 <Input type={passwordVisibility ? 'text' : 'password'} placeholder={'Password'}/>
 
                 <InputRightElement>
-                  <IconButton icon={<Icon as={passwordVisibility ? VisibilityOffIcon : VisibilityIcon}/>} onClick={handleClick} aria-label={'Toggle password visibility'}/>
+                  <IconButton
+                    icon={<Icon as={passwordVisibility ? VisibilityOffIcon : VisibilityIcon}/>}
+                    onClick={handlePasswordVisibility}
+                    aria-label={'Toggle password visibility'}/>
                 </InputRightElement>
               </InputGroup>
             </FormControl>

@@ -5,7 +5,7 @@ import { router } from '@/shared/Router';
 
 const NavMenu: FC = (): ReactElement => {
   return (
-    <Stack w={'full'} direction={'row'} alignItems={'center'} mb={4}>
+    <Stack w={'full'} direction={'row'} alignItems={'center'} p={4} mb={4} boxShadow={'md'}>
       <Stack w={'full'} direction={'row'} alignItems={'center'} justifyContent={'center'} mr={4}>
         {
           router.map((rout) => {

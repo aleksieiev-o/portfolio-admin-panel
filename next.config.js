@@ -7,7 +7,7 @@ const nextConfig = {
         source: '/',
         destination: '/personal-info',
         permanent: true,
-        basePath:false
+        basePath: false,
       },
     ];
   },

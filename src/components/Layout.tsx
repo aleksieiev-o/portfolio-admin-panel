@@ -11,7 +11,7 @@ const Layout: FC<PropsWithChildren<IMeta>> = (props): ReactElement => {
     <Meta
       title={title}
       description={description || ''}>
-      <Stack w={'full'} h={'full'} overflow={'hidden'} p={4}>
+      <Stack w={'full'} h={'full'} overflow={'hidden'}>
         <NavMenu/>
 
         {children}
