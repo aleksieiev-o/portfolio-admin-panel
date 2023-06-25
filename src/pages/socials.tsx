@@ -1,14 +1,28 @@
 import { ReactElement } from 'react';
-import { NextPage } from 'next';
 import Layout from '@/components/layout/Layout';
 import Socials from '@/components/views/Socials/Socials';
+import { StaticProps, StaticPropsResponse } from '@/types/StaticProps.type';
+import { ISocial } from 'my-portfolio-types';
+import { NextPageWithAuth } from '@/types/Page.type';
+import { fetchSocialsList } from '@/services/fetchSocialsList.service';
 
-const SocialsPage: NextPage = (): ReactElement => {
+const SocialsPage: NextPageWithAuth<StaticProps<Array<ISocial>>> = (): ReactElement => {
   return (
     <Layout title={'Socials'} description={'Socials page'}>
       <Socials/>
     </Layout>
   );
 };
+
+export async function getStaticProps(): Promise<StaticPropsResponse<Array<ISocial>>> {
+  const payload: Array<ISocial> = await fetchSocialsList();
+
+  return {
+    props: { payload },
+    revalidate: 30,
+  };
+}
+
+SocialsPage.withAuth = true;
 
 export default SocialsPage;
