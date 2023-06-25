@@ -1,14 +1,16 @@
 import { ReactElement } from 'react';
-import { NextPage } from 'next';
-import Layout from '@/components/Layout';
+import Layout from '@/components/layout/Layout';
 import Projects from '@/components/views/Projects/Projects';
+import { NextPageWithAuth } from '@/types/Page.type';
 
-const ProjectsPage: NextPage = (): ReactElement => {
+const ProjectsPage: NextPageWithAuth = (): ReactElement => {
   return (
     <Layout title={'Projects'} description={'Projects page'}>
       <Projects/>
     </Layout>
   );
 };
+
+ProjectsPage.withAuth = true;
 
 export default ProjectsPage;

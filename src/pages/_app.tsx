@@ -3,13 +3,19 @@ import type { AppProps } from 'next/app';
 import '@/styles/globals.css';
 import { ChakraProvider } from '@chakra-ui/provider';
 import { theme } from '@/theme';
+import AuthContextProvider  from '@/providers/AuthContext.provider';
+import { TypeComponentAuthFields } from '@/types/Page.type';
 
-const App: FC<AppProps> = (props): ReactElement => {
+type TypeAppProps = AppProps & TypeComponentAuthFields;
+
+const App: FC<TypeAppProps> = (props): ReactElement => {
   const {Component, pageProps} = props;
 
   return (
     <ChakraProvider resetCSS={true} theme={theme} portalZIndex={1}>
-      <Component {...pageProps} />
+      <AuthContextProvider Component={Component}>
+        <Component {...pageProps} />
+      </AuthContextProvider>
     </ChakraProvider>
   );
 };

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { NextPage } from 'next';
-import Layout from '@/components/Layout';
+import Layout from '@/components/layout/Layout';
 import Socials from '@/components/views/Socials/Socials';
 
 const SocialsPage: NextPage = (): ReactElement => {

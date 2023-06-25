@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { NextPage } from 'next';
-import Layout from '@/components/Layout';
+import Layout from '@/components/layout/Layout';
 import Skills from '@/components/views/Skills/Skills';
 
 const SkillsPage: NextPage = (): ReactElement => {

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { NextPage } from 'next';
-import Layout from '@/components/Layout';
+import Layout from '@/components/layout/Layout';
 import PersonalInfo from '@/components/views/PersonalInfo/PersonalInfo';
 
 const PersonalInfoPage: NextPage = (): ReactElement => {
