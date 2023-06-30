@@ -46,7 +46,7 @@ const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (pro
 
       await setLoading(false);
     });
-  }, []);
+  });
 
   const authContext: IAuthContextState = {
     currentUser,

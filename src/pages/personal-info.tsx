@@ -3,13 +3,13 @@ import Layout from '@/components/layout/Layout';
 import PersonalInfo from '@/components/views/PersonalInfo/PersonalInfo';
 import { StaticProps, StaticPropsResponse } from '@/types/StaticProps.type';
 import { IPersonalInfo } from 'my-portfolio-types';
-import { fetchPersonalInfo } from '@/services/fetchPersonalInfo.service';
+import { fetchPersonalInfo } from '@/services/personalInfo.service';
 import { NextPageWithAuth } from '@/types/Page.type';
 
-const PersonalInfoPage: NextPageWithAuth<StaticProps<IPersonalInfo>> = (): ReactElement => {
+const PersonalInfoPage: NextPageWithAuth<StaticProps<IPersonalInfo>> = ({payload}): ReactElement => {
   return (
     <Layout title={'Personal info'} description={'Personal info page'}>
-      <PersonalInfo/>
+      <PersonalInfo payload={payload}/>
     </Layout>
   );
 };
@@ -19,7 +19,7 @@ export async function getStaticProps(): Promise<StaticPropsResponse<IPersonalInf
 
   return {
     props: { payload },
-    revalidate: 30,
+    revalidate: 10,
   };
 }
 

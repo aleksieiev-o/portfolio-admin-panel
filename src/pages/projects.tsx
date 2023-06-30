@@ -21,7 +21,7 @@ export async function getStaticProps(): Promise<StaticPropsResponse<Array<IProje
 
   return {
     props: { payload },
-    revalidate: 30,
+    revalidate: 10,
   };
 }
 

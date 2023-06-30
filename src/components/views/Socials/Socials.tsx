@@ -33,7 +33,7 @@ const Socials: FC = (): ReactElement => {
 
           <CardFooter p={4}>
             <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-              <Button variant={'solid'} colorScheme={'orange'}>Edit</Button>
+              <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
 
               <Button variant={'solid'} colorScheme={'red'}>Remove</Button>
             </Stack>

@@ -19,10 +19,10 @@ const Projects: FC = (): ReactElement => {
             <Stack direction={'column'} w={'full'} spacing={4} overflow={'hidden'}>
               <Stack direction={'row'} spacing={4}>
                 <Tooltip label={'Project visibility'} aria-label={'project visibility'}>
-                  <Icon color={true ? 'green.500' : 'red.500'} as={true ? VisibilityIcon : VisibilityOffIcon}/>
+                  <Icon color={true ? 'teal.500' : 'red.500'} as={true ? VisibilityIcon : VisibilityOffIcon}/>
                 </Tooltip>
 
-                <Heading size={'md'}>Project name</Heading>
+                <Heading size={'md'} color={'orange.400'}>Project name</Heading>
               </Stack>
 
               <Stack direction={'row'} w={'auto'} alignItems={'center'} spacing={2}>
@@ -71,7 +71,7 @@ const Projects: FC = (): ReactElement => {
 
           <CardFooter p={4}>
             <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-              <Button variant={'solid'} colorScheme={'orange'}>Edit</Button>
+              <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
 
               <Button variant={'solid'} colorScheme={'red'}>Remove</Button>
             </Stack>

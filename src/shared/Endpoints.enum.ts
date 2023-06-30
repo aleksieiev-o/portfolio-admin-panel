@@ -5,8 +5,8 @@ export enum EndpointsList {
 }
 
 export enum Endpoints {
-  INFO = 'info',
+  PERSONAL_INFO = 'personal-info',
   BIO = 'bio',
-  MAIN_IMAGE = 'mainImage',
-  AVATAR_IMAGE = 'avatarImage',
+  MAIN_IMAGE = 'main-image',
+  AVATAR_IMAGE = 'avatar-image',
 }
