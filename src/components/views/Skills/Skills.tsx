@@ -17,7 +17,7 @@ const Skills: FC = (): ReactElement => {
             <Stack direction={'column'} w={'full'} spacing={4} overflow={'hidden'}>
               <Stack direction={'row'} spacing={4}>
                 <Tooltip label={'Skill visibility'} aria-label={'skill visibility'}>
-                  <Icon color={true ? 'green.500' : 'red.500'} as={true ? VisibilityIcon : VisibilityOffIcon}/>
+                  <Icon color={true ? 'teal.500' : 'red.500'} as={true ? VisibilityIcon : VisibilityOffIcon}/>
                 </Tooltip>
 
                 <Heading size={'md'}>Skill name</Heading>

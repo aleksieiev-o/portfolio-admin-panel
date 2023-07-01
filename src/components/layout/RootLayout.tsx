@@ -12,7 +12,7 @@ const RootLayout: FC<PropsWithChildren<IMeta>> = (props): ReactElement => {
 
   return (
     <Meta title={title} description={description || ''}>
-      <Stack w={'full'} h={'full'} overflow={'hidden'} p={4}>
+      <Stack w={'full'} h={'full'} overflow={'hidden'}>
         {
           loading ? <Loader/> : <>{children}</>
         }
