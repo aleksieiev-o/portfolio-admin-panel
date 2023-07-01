@@ -3,6 +3,9 @@ export enum ProtectedRoutePath {
   PROJECTS = '/projects',
   SKILLS = '/skills',
   SOCIALS = '/socials',
+  CREATE_PROJECT = '/create-project',
+  CREATE_SKILL = '/create-skill',
+  CREATE_SOCIAL = '/create-social',
 }
 
 export enum PublicRoutePath {

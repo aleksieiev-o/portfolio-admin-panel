@@ -5,15 +5,23 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { StaticProps } from '@/shared/types/StaticProps.type';
 import { ISkill } from 'my-portfolio-types';
+import { useRouter } from 'next/router';
+import { ProtectedRoutePath } from '@/router/Routes.enum';
 
 const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
+  const router = useRouter();
+
+  const prepareCreateSkill = async () => {
+    await router.push(ProtectedRoutePath.CREATE_SKILL);
+  };
+
   return (
     <BaseContentContainer>
       {
-        payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} spacing={4} boxShadow={'md'}>
-          <Button colorScheme={'teal'}>Create skill</Button>
+        payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
+          <Button colorScheme={'teal'} onClick={() => prepareCreateSkill()}>Create skill</Button>
 
-          <Button colorScheme={'red'}>Remove all</Button>
+          <Button colorScheme={'red'}>Remove all skills</Button>
         </Stack>
       }
 
@@ -65,7 +73,7 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
           <Stack direction={'column'} alignItems={'center'} justifyContent={'center'} w={'full'} spacing={4}>
             <Text>Skills list is empty</Text>
 
-            <Button colorScheme={'teal'}>Create skill</Button>
+            <Button colorScheme={'teal'} onClick={() => prepareCreateSkill()}>Create skill</Button>
           </Stack>
       }
     </BaseContentContainer>

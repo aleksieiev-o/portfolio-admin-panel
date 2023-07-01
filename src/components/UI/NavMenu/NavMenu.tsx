@@ -5,7 +5,7 @@ import { useSignOut } from 'react-firebase-hooks/auth';
 import { firebaseAuth } from '@/firebase';
 import { router } from '@/router/Router';
 import { useRouter } from 'next/router';
-import { ProtectedRoutePath, PublicRoutePath } from '@/router/Routes.enum';
+import { PublicRoutePath } from '@/router/Routes.enum';
 
 const NavMenu: FC = (): ReactElement => {
   const [signOut, loading] = useSignOut(firebaseAuth);
