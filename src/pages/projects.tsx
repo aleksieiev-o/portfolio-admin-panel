@@ -3,15 +3,13 @@ import Layout from '@/components/layout/Layout';
 import Projects from '@/components/views/Projects/Projects';
 import { NextPageWithAuth } from '@/shared/types/Page.type';
 import { IProject } from 'my-portfolio-types';
-import { fetchAllProjects } from '@/services/fetchProjects.service';
+import { fetchAllProjects } from '@/services/projects.service';
 import { StaticProps, StaticPropsResponse } from '@/shared/types/StaticProps.type';
 
-const ProjectsPage: NextPageWithAuth<StaticProps<Array<IProject>>> = (props): ReactElement => {
-  const {payload} = props;
-
+const ProjectsPage: NextPageWithAuth<StaticProps<Array<IProject>>> = ({payload}): ReactElement => {
   return (
     <Layout title={'Projects'} description={'Projects page'}>
-      <Projects/>
+      <Projects payload={payload}/>
     </Layout>
   );
 };

@@ -32,6 +32,6 @@ export const removeSkill = async (id: string): Promise<void> => {
   return await remove(child(ref(firebaseDataBase), `${EndpointsList.SKILLS}/${id}`));
 };
 
-export const removeAllSkills = async (parentId: string): Promise<void> => {
+export const removeAllSkills = async (): Promise<void> => {
   return await set(ref(firebaseDataBase, EndpointsList.SKILLS), null);
 };

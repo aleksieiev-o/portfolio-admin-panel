@@ -31,6 +31,6 @@ export const removeSocial = async (id: string): Promise<void> => {
   return await remove(child(ref(firebaseDataBase), `${EndpointsList.SOCIALS}/${id}`));
 };
 
-export const removeAllSocials = async (parentId: string): Promise<void> => {
+export const removeAllSocials = async (): Promise<void> => {
   return await set(ref(firebaseDataBase, EndpointsList.SOCIALS), null);
 };
