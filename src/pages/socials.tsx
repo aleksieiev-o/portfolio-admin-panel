@@ -4,12 +4,12 @@ import Socials from '@/components/views/Socials/Socials';
 import { StaticProps, StaticPropsResponse } from '@/shared/types/StaticProps.type';
 import { ISocial } from 'my-portfolio-types';
 import { NextPageWithAuth } from '@/shared/types/Page.type';
-import { fetchSocialsList } from '@/services/fetchSocialsList.service';
+import { fetchSocialsList } from '@/services/socialsList.service';
 
-const SocialsPage: NextPageWithAuth<StaticProps<Array<ISocial>>> = (): ReactElement => {
+const SocialsPage: NextPageWithAuth<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
   return (
     <Layout title={'Socials'} description={'Socials page'}>
-      <Socials/>
+      <Socials payload={payload}/>
     </Layout>
   );
 };

@@ -1,32 +1,30 @@
 import React, { FC, ReactElement, useState } from 'react';
+import { Button, FormControl, FormLabel, Input, Stack, Switch } from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/BaseContentContainer';
-import { Button, FormControl, Input, Stack, Switch, FormLabel } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { createSkill } from '@/services/skills.service';
+import { createSocial } from '@/services/socialsList.service';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 
-const CreateSkill: FC = (): ReactElement => {
+const CreateSocials: FC = (): ReactElement => {
   const router = useRouter();
   const [title, setTitle] = useState<string>('');
   const [visibility, setVisibility] = useState<boolean>(true);
-  const [experience, setExperience] = useState<string>('');
-  const [color, setColor] = useState<string>('#777777');
+  const [url, setUrl] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleCreateSkill = async (e) => {
+  const handleCreateSocial = async (e) => {
     e.preventDefault();
 
-    if (title.length && experience.length) {
+    if (title.length && url.length) {
       setLoading(true);
 
-      await createSkill({
+      await createSocial({
         title,
         visibility,
-        experience: `${experience}%`,
-        color,
+        url,
       });
 
-      await router.push(ProtectedRoutePath.SKILLS);
+      await router.push(ProtectedRoutePath.SOCIALS);
     }
   };
 
@@ -36,14 +34,14 @@ const CreateSkill: FC = (): ReactElement => {
 
   return (
     <BaseContentContainer>
-      <form id={'create-skill'} style={{ width: '100%' }} onSubmit={(e) => handleCreateSkill(e)}>
+      <form id={'create-social'} style={{ width: '100%' }} onSubmit={(e) => handleCreateSocial(e)}>
         <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
           <Stack mb={6}>
             <Button onClick={() => goBack()}>Back</Button>
           </Stack>
 
           <FormControl>
-            <FormLabel>Skill title:</FormLabel>
+            <FormLabel>Social title:</FormLabel>
 
             <Input
               onChange={(e) => setTitle(e.target.value)}
@@ -53,32 +51,22 @@ const CreateSkill: FC = (): ReactElement => {
           </FormControl>
 
           <FormControl>
-            <FormLabel>Skill experience:</FormLabel>
+            <FormLabel>Social URL:</FormLabel>
 
             <Input
-              onChange={(e) => setExperience(e.target.value)}
-              value={experience}
+              onChange={(e) => setUrl(e.target.value)}
+              value={url}
               isDisabled={loading}
-              type={'number'}/>
+              type={'text'}/>
           </FormControl>
 
           <FormControl>
-            <FormLabel>Skill color:</FormLabel>
-
-            <Input
-              onChange={(e) => setColor(e.target.value)}
-              value={color}
-              type={'color'}
-              isDisabled={loading}/>
-          </FormControl>
-
-          <FormControl>
-            <FormLabel htmlFor={'skill-visibility'}>Skill visibility:</FormLabel>
+            <FormLabel htmlFor={'social-visibility'}>Social visibility:</FormLabel>
 
             <Switch
               onChange={() => setVisibility(!visibility)}
               isChecked={visibility}
-              id={'skill-visibility'}
+              id={'social-visibility'}
               isDisabled={loading}
               colorScheme={'teal'}/>
           </FormControl>
@@ -90,4 +78,4 @@ const CreateSkill: FC = (): ReactElement => {
   );
 };
 
-export default CreateSkill;
+export default CreateSocials;
