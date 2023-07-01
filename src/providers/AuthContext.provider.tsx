@@ -3,7 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '@/firebase';
 import { User as FirebaseUser } from '@firebase/auth';
 import { IUser } from '@/components/views/Login/login.types';
-import { TypeComponentAuthFields } from '@/types/Page.type';
+import { TypeComponentAuthFields } from '@/shared/types/Page.type';
 import { useRouter } from 'next/router';
 import { PublicRoutePath } from '@/router/Routes.enum';
 

@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react';
 import BaseContentContainer from '@/components/UI/BaseContentContainer';
 import { Button, Heading, Stack, Text } from '@chakra-ui/react';
 import EditableField from '@/components/views/Projects/EditableField';
-import { StaticProps } from '@/types/StaticProps.type';
+import { StaticProps } from '@/shared/types/StaticProps.type';
 import { IPersonalInfo } from 'my-portfolio-types';
 
 const PersonalInfo: FC<StaticProps<IPersonalInfo>> = ({payload}): ReactElement => {

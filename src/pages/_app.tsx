@@ -4,7 +4,7 @@ import '@/styles/globals.css';
 import { ChakraProvider } from '@chakra-ui/provider';
 import { theme } from '@/theme';
 import AuthContextProvider  from '@/providers/AuthContext.provider';
-import { TypeComponentAuthFields } from '@/types/Page.type';
+import { TypeComponentAuthFields } from '@/shared/types/Page.type';
 
 type TypeAppProps = AppProps & TypeComponentAuthFields;
 

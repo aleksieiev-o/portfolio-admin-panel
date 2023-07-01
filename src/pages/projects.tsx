@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
 import Layout from '@/components/layout/Layout';
 import Projects from '@/components/views/Projects/Projects';
-import { NextPageWithAuth } from '@/types/Page.type';
+import { NextPageWithAuth } from '@/shared/types/Page.type';
 import { IProject } from 'my-portfolio-types';
 import { fetchAllProjects } from '@/services/fetchProjects.service';
-import { StaticProps, StaticPropsResponse } from '@/types/StaticProps.type';
+import { StaticProps, StaticPropsResponse } from '@/shared/types/StaticProps.type';
 
 const ProjectsPage: NextPageWithAuth<StaticProps<Array<IProject>>> = (props): ReactElement => {
   const {payload} = props;

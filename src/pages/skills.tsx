@@ -1,15 +1,15 @@
 import { ReactElement } from 'react';
 import Layout from '@/components/layout/Layout';
 import Skills from '@/components/views/Skills/Skills';
-import { StaticProps, StaticPropsResponse } from '@/types/StaticProps.type';
+import { StaticProps, StaticPropsResponse } from '@/shared/types/StaticProps.type';
 import { ISkill } from 'my-portfolio-types';
-import { NextPageWithAuth } from '@/types/Page.type';
-import { fetchAllSkills } from '@/services/fetchSkills.service';
+import { NextPageWithAuth } from '@/shared/types/Page.type';
+import { fetchAllSkills } from '@/services/skills.service';
 
-const SkillsPage: NextPageWithAuth<StaticProps<Array<ISkill>>> = (): ReactElement => {
+const SkillsPage: NextPageWithAuth<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
   return (
     <Layout title={'Skills'} description={'Skills page'}>
-      <Skills/>
+      <Skills payload={payload}/>
     </Layout>
   );
 };
