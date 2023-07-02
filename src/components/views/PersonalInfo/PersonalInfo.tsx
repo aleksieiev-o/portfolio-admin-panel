@@ -1,12 +1,31 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
-import { Button, Heading, Stack, Text } from '@chakra-ui/react';
+import { Button, Heading, Input, Stack, Text } from '@chakra-ui/react';
 import EditableField from '@/components/views/PersonalInfo/EditableField';
 import { StaticProps } from '@/shared/types/StaticProps.type';
 import { IPersonalInfo } from 'my-portfolio-types';
+import { updateFile } from '@/services/data.service';
 
 const PersonalInfo: FC<StaticProps<IPersonalInfo>> = ({payload}): ReactElement => {
   const {firstName, lastName, birthDate, country, town, aboutMe} = payload;
+  const [bioFile, setBioFile] = useState<File>();
+  const [mainImageFile, setMainImageFile] = useState<File>();
+  const [bioLoading, setBioLoading] = useState<boolean>(false);
+  const [mainImageLoading, setMainImageLoading] = useState<boolean>(false);
+
+  const handleUploadFile = async (path: 'bio' | 'main-image') => {
+    if (path === 'bio' && bioFile) {
+      setBioLoading(true);
+      await updateFile(bioFile, path);
+      await setBioFile(undefined);
+      await setBioLoading(false);
+    } else if (path === 'main-image' && mainImageFile) {
+      setMainImageLoading(true);
+      await updateFile(mainImageFile, path);
+      await setMainImageFile(undefined);
+      await setMainImageLoading(false);
+    }
+  };
 
   return (
     <BaseContentContainer>
@@ -60,13 +79,31 @@ const PersonalInfo: FC<StaticProps<IPersonalInfo>> = ({payload}): ReactElement =
         <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} overflow={'hidden'} spacing={2}>
           <Heading size={'lg'} color={'orange.400'}>Main image</Heading>
 
-          <Button colorScheme={'teal'}>Upload image</Button>
+          <Input
+              onChange={(e) => setMainImageFile(e.target?.files[0])}
+              multiple={false}
+              accept={'.jpg, .jpeg, .png'}
+              isDisabled={mainImageLoading}
+              type={'file'}
+              pl={1}
+              border={'none'}/>
+
+          <Button onClick={() => handleUploadFile('main-image')} colorScheme={'teal'} isLoading={mainImageLoading}>Upload image</Button>
         </Stack>
 
         <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} overflow={'hidden'} spacing={2}>
           <Heading size={'lg'} color={'orange.400'}>Main BIO</Heading>
 
-          <Button colorScheme={'teal'}>Upload BIO</Button>
+          <Input
+              onChange={(e) => setBioFile(e.target?.files[0])}
+              multiple={false}
+              accept={'.pdf'}
+              isDisabled={bioLoading}
+              type={'file'}
+              pl={1}
+              border={'none'}/>
+
+          <Button onClick={() => handleUploadFile('bio')} colorScheme={'teal'} isLoading={bioLoading}>Upload BIO</Button>
         </Stack>
       </Stack>
     </BaseContentContainer>
