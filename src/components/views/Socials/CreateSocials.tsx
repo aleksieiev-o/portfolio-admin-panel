@@ -1,6 +1,6 @@
 import React, { FC, ReactElement, useState } from 'react';
 import { Button, FormControl, FormLabel, Input, Stack, Switch } from '@chakra-ui/react';
-import BaseContentContainer from '@/components/UI/BaseContentContainer';
+import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { useRouter } from 'next/router';
 import { createSocial } from '@/services/socialsList.service';
 import { ProtectedRoutePath } from '@/router/Routes.enum';

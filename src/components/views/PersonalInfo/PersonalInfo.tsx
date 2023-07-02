@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react';
-import BaseContentContainer from '@/components/UI/BaseContentContainer';
+import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { Button, Heading, Stack, Text } from '@chakra-ui/react';
 import EditableField from '@/components/views/PersonalInfo/EditableField';
 import { StaticProps } from '@/shared/types/StaticProps.type';

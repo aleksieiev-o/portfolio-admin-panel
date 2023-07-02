@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { createProject } from '@/services/projects.service';
 import { Badge, Button, FormControl, FormLabel, Input, Stack, Switch, Textarea } from '@chakra-ui/react';
-import BaseContentContainer from '@/components/UI/BaseContentContainer';
+import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 
 const CreateProject: FC = (): ReactElement => {
   const router = useRouter();
@@ -15,6 +15,7 @@ const CreateProject: FC = (): ReactElement => {
   const [repository, setRepository] = useState<string>('');
   const [demo, setDemo] = useState<string>('');
   const [releaseDate, setReleaseDate] = useState<string>('');
+  const [file, setFile] = useState<File>();
   const [visibility, setVisibility] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -28,7 +29,13 @@ const CreateProject: FC = (): ReactElement => {
   const handleCreateProject = async (e) => {
     e.preventDefault();
 
-    if (title.length) {
+    if (title.length &&
+      description.length &&
+      mainTechnology.length &&
+      repository.length &&
+      demo.length &&
+      releaseDate.length &&
+      file) {
       setLoading(true);
 
       await createProject({
@@ -40,8 +47,7 @@ const CreateProject: FC = (): ReactElement => {
         technologies,
         repository,
         demo,
-        fileSrc: '',
-        fileName: '',
+        file,
       });
 
       await router.push(ProtectedRoutePath.PROJECTS);
@@ -136,14 +142,29 @@ const CreateProject: FC = (): ReactElement => {
               </Stack>
             </FormControl>
 
-            <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} w={'full'} spacing={4}>
-              {
-                technologies.map((item) => (
-                  <Badge key={item} p={2} colorScheme={'telegram'}>{item}</Badge>
-                ))
-              }
-            </Stack>
+            {
+              technologies.length && <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} w={'full'} spacing={4}>
+                {
+                  technologies.map((item) => (
+                    <Badge key={item} p={2} colorScheme={'telegram'}>{item}</Badge>
+                  ))
+                }
+              </Stack>
+            }
           </Stack>
+
+          <FormControl>
+            <FormLabel>Project preview:</FormLabel>
+
+            <Input
+              onChange={(e) => setFile(e.target?.files[0])}
+              multiple={false}
+              accept={'.jpg, .jpeg, .png'}
+              isDisabled={loading}
+              type={'file'}
+              pl={1}
+              border={'none'}/>
+          </FormControl>
 
           <FormControl>
             <FormLabel htmlFor={'project-visibility'}>Project visibility:</FormLabel>

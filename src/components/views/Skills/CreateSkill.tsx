@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useState } from 'react';
-import BaseContentContainer from '@/components/UI/BaseContentContainer';
+import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { Button, FormControl, Input, Stack, Switch, FormLabel } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { createSkill } from '@/services/skills.service';

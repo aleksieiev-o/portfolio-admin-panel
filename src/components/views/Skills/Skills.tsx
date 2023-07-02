@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react';
-import BaseContentContainer from '@/components/UI/BaseContentContainer';
+import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { Button, Card, CardBody, CardFooter, Heading, Icon, Stack, Text, Tooltip } from '@chakra-ui/react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
