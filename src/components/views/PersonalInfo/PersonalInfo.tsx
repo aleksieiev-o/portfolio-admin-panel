@@ -1,13 +1,14 @@
 import React, { FC, ReactElement, useState } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
-import { Button, Heading, Input, Stack, Text } from '@chakra-ui/react';
+import { Button, Heading, Image, Input, Stack, Text } from '@chakra-ui/react';
 import EditableField from '@/components/views/PersonalInfo/EditableField';
 import { StaticProps } from '@/shared/types/StaticProps.type';
-import { IPersonalInfo } from 'my-portfolio-types';
-import { updateFile } from '@/services/data.service';
+import { updateFile } from '@/services/files.service';
+import { IAllPersonalInfo } from '@/shared/types/AllPersonalInfo.interface';
 
-const PersonalInfo: FC<StaticProps<IPersonalInfo>> = ({payload}): ReactElement => {
-  const {firstName, lastName, birthDate, country, town, aboutMe} = payload;
+const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElement => {
+  const {personalInfo, mainImage, bio} = payload;
+  const {firstName, lastName, birthDate, country, town, aboutMe} = personalInfo;
   const [bioFile, setBioFile] = useState<File>();
   const [mainImageFile, setMainImageFile] = useState<File>();
   const [bioLoading, setBioLoading] = useState<boolean>(false);
@@ -76,10 +77,11 @@ const PersonalInfo: FC<StaticProps<IPersonalInfo>> = ({payload}): ReactElement =
             textInputPlaceholder={'Enter your information'}/>
         </Stack>
 
-        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} overflow={'hidden'} spacing={2}>
-          <Heading size={'lg'} color={'orange.400'}>Main image</Heading>
+        <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} overflow={'hidden'} spacing={2}>
+          <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} flex={1} overflow={'hidden'} spacing={2}>
+            <Heading size={'lg'} color={'orange.400'}>Main image</Heading>
 
-          <Input
+            <Input
               onChange={(e) => setMainImageFile(e.target?.files[0])}
               multiple={false}
               accept={'.jpg, .jpeg, .png'}
@@ -88,13 +90,28 @@ const PersonalInfo: FC<StaticProps<IPersonalInfo>> = ({payload}): ReactElement =
               pl={1}
               border={'none'}/>
 
-          <Button onClick={() => handleUploadFile('main-image')} colorScheme={'teal'} isLoading={mainImageLoading}>Upload image</Button>
+            <Button onClick={() => handleUploadFile('main-image')} colorScheme={'teal'} isLoading={mainImageLoading}>Upload image</Button>
+          </Stack>
+
+          <Stack alignItems={'center'} justifyContent={'center'} flex={1}>
+            {
+              mainImage.fileName ?
+                <Image
+                  src={mainImage.fileSrc}
+                  alt={mainImage.fileName}
+                  objectFit={'contain'}
+                  maxW={320}/>
+                :
+                <Text>File main image is not enabled</Text>
+            }
+          </Stack>
         </Stack>
 
-        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} overflow={'hidden'} spacing={2}>
-          <Heading size={'lg'} color={'orange.400'}>Main BIO</Heading>
+        <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} overflow={'hidden'} spacing={2}>
+          <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} flex={1} overflow={'hidden'} spacing={2}>
+            <Heading size={'lg'} color={'orange.400'}>Main BIO</Heading>
 
-          <Input
+            <Input
               onChange={(e) => setBioFile(e.target?.files[0])}
               multiple={false}
               accept={'.pdf'}
@@ -103,7 +120,21 @@ const PersonalInfo: FC<StaticProps<IPersonalInfo>> = ({payload}): ReactElement =
               pl={1}
               border={'none'}/>
 
-          <Button onClick={() => handleUploadFile('bio')} colorScheme={'teal'} isLoading={bioLoading}>Upload BIO</Button>
+            <Button onClick={() => handleUploadFile('bio')} colorScheme={'teal'} isLoading={bioLoading}>Upload BIO</Button>
+          </Stack>
+
+          <Stack alignItems={'center'} justifyContent={'center'} flex={1}>
+            {
+              bio.fileName ?
+                <Image
+                  src={bio.fileSrc}
+                  alt={bio.fileName}
+                  objectFit={'contain'}
+                  maxW={320}/>
+                :
+                <Text>File BIO is not enabled</Text>
+            }
+          </Stack>
         </Stack>
       </Stack>
     </BaseContentContainer>
