@@ -1,6 +1,6 @@
 import { ISocial } from 'my-portfolio-types';
 import { EndpointsList } from '@/shared/Endpoints.enum';
-import { fetchDataList } from '@/services/fetchDataList.service';
+import { fetchDataList } from '@/services/dataList.service';
 import { child, push, ref, remove, set, update } from '@firebase/database';
 import { firebaseDataBase } from '@/firebase';
 import { TypeCreateSocialDto } from '@/shared/dto/createSocial.dto';

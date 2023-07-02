@@ -1,5 +1,5 @@
 import { IPersonalInfo } from 'my-portfolio-types';
-import { fetchData } from '@/services/fetchData.service';
+import { fetchData } from '@/services/data.service';
 import { Endpoints } from '@/shared/Endpoints.enum';
 import { child, update, ref } from '@firebase/database';
 import { firebaseDataBase } from '@/firebase';

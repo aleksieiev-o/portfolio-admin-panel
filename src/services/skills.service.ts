@@ -1,4 +1,4 @@
-import { fetchDataList } from '@/services/fetchDataList.service';
+import { fetchDataList } from '@/services/dataList.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import { ISkill } from 'my-portfolio-types';
 import { child, ref, update, remove, push, set } from '@firebase/database';
