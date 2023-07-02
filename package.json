@@ -33,7 +33,7 @@
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
     "firebase": "^9.22.2",
-    "my-portfolio-types": "^0.0.2",
+    "my-portfolio-types": "^0.0.3",
     "next": "13.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",

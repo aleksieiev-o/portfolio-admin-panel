@@ -36,7 +36,7 @@ const CreateProject: FC = (): ReactElement => {
         visibility,
         description,
         mainTechnology,
-        releaseDate: new Date(releaseDate),
+        releaseDate,
         technologies,
         repository,
         demo,

@@ -15,16 +15,16 @@ export const createProject = async (payload: TypeCreateProjectDto): Promise<void
 
   const project: IProject = {
     id: projectRef.key!,
-    title,
-    visibility,
-    description,
-    mainTechnology,
-    releaseDate,
-    technologies,
-    demo,
-    repository,
-    fileSrc,
-    fileName,
+    title: title || '-',
+    visibility: visibility || false,
+    description: description || '-',
+    mainTechnology: mainTechnology || '-',
+    releaseDate: new Date(releaseDate).toLocaleDateString('en-US') || releaseDate,
+    technologies: technologies.length ? technologies : ['-'],
+    demo: demo || '-',
+    repository: repository || '-',
+    fileSrc: fileSrc || '',
+    fileName: fileName || '-',
   };
 
   return await set(projectRef, project);

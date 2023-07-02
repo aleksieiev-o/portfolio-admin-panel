@@ -47,27 +47,6 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
                       <Heading size={'md'} color={'orange.400'}>{projectCard.title}</Heading>
                     </Stack>
 
-                    <Stack direction={'row'} w={'auto'} alignItems={'center'} spacing={2}>
-                      <Text as={'b'} whiteSpace={'nowrap'}>Main technology:</Text>
-
-                      <Badge p={2} colorScheme={'green'}>{projectCard.mainTechnology}</Badge>
-                    </Stack>
-
-                    <Stack direction={'row'} w={'full'} alignItems={'center'} justifyContent={'start'} spacing={2} overflowX={'auto'}>
-                      <Text as={'b'} whiteSpace={'nowrap'}>Technologies:</Text>
-
-                      <Stack direction={'row'} w={'full'} alignItems={'center'} justifyContent={'start'} spacing={4} overflowX={'auto'}>
-                        {
-                          projectCard.technologies.length ?
-                            projectCard.technologies.map((technology) => (
-                              <Badge key={technology} p={2} colorScheme={'telegram'}>{technology}</Badge>
-                            ))
-                            :
-                            <Text>Technologies list is empty</Text>
-                        }
-                      </Stack>
-                    </Stack>
-
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
                       <Text as={'b'} whiteSpace={'nowrap'}>Project description:</Text>
 
@@ -98,6 +77,27 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
                       <Text as={'b'} whiteSpace={'nowrap'}>Release date:</Text>
 
                       <Text>{`${projectCard.releaseDate}`}</Text>
+                    </Stack>
+
+                    <Stack direction={'row'} w={'auto'} alignItems={'center'} spacing={2}>
+                      <Text as={'b'} whiteSpace={'nowrap'}>Main technology:</Text>
+
+                      <Badge p={2} colorScheme={'green'}>{projectCard.mainTechnology}</Badge>
+                    </Stack>
+
+                    <Stack direction={'row'} w={'full'} alignItems={'center'} justifyContent={'start'} spacing={2} overflowX={'auto'}>
+                      <Text as={'b'} whiteSpace={'nowrap'}>Technologies:</Text>
+
+                      <Stack direction={'row'} w={'full'} alignItems={'center'} justifyContent={'start'} spacing={4} overflowX={'auto'}>
+                        {
+                          projectCard.technologies.length ?
+                            projectCard.technologies.map((technology) => (
+                              <Badge key={technology} p={2} colorScheme={'telegram'}>{technology}</Badge>
+                            ))
+                            :
+                            <Text>Technologies list is empty</Text>
+                        }
+                      </Stack>
                     </Stack>
                   </Stack>
                 </CardBody>
