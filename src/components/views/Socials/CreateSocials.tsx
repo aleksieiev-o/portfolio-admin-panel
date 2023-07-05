@@ -1,14 +1,14 @@
-import React, { FC, ReactElement, useContext, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import { Button, FormControl, FormLabel, Input, Stack, Switch } from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { useRouter } from 'next/router';
 import { createSocial } from '@/services/socialsList.service';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
-import { LoadingContext } from '@/providers/LoadingContext.provider';
+import { useLoading } from '@/hooks/useLoading';
 
 const CreateSocials: FC = (): ReactElement => {
   const router = useRouter();
-  const {globalLoading, setGlobalLoading} = useContext(LoadingContext);
+  const {isLoading, setIsLoading} = useLoading();
   const [title, setTitle] = useState<string>('');
   const [visibility, setVisibility] = useState<boolean>(true);
   const [url, setUrl] = useState<string>('');
@@ -17,7 +17,7 @@ const CreateSocials: FC = (): ReactElement => {
     e.preventDefault();
 
     if (title.length && url.length) {
-      setGlobalLoading(true);
+      setIsLoading(true);
 
       await createSocial({
         title,
@@ -47,7 +47,7 @@ const CreateSocials: FC = (): ReactElement => {
             <Input
               onChange={(e) => setTitle(e.target.value)}
               value={title}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               type={'text'}/>
           </FormControl>
 
@@ -57,7 +57,7 @@ const CreateSocials: FC = (): ReactElement => {
             <Input
               onChange={(e) => setUrl(e.target.value)}
               value={url}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               type={'text'}/>
           </FormControl>
 
@@ -68,11 +68,11 @@ const CreateSocials: FC = (): ReactElement => {
               onChange={() => setVisibility(!visibility)}
               isChecked={visibility}
               id={'social-visibility'}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               colorScheme={'teal'}/>
           </FormControl>
 
-          <Button type={'submit'} isLoading={globalLoading} colorScheme={'teal'} mt={6}>Create</Button>
+          <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6}>Create</Button>
         </Stack>
       </form>
     </BaseContentContainer>

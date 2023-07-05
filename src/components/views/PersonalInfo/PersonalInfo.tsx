@@ -5,14 +5,15 @@ import EditableField from '@/components/views/PersonalInfo/EditableField';
 import { StaticProps } from '@/shared/types/StaticProps.type';
 import { updateFile } from '@/services/files.service';
 import { IAllPersonalInfo } from '@/shared/types/AllPersonalInfo.interface';
+import { useLoading } from '@/hooks/useLoading';
 
 const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElement => {
   const {personalInfo, mainImage, bio} = payload;
   const {firstName, lastName, birthDate, country, town, aboutMe} = personalInfo;
   const [bioFile, setBioFile] = useState<File>();
   const [mainImageFile, setMainImageFile] = useState<File>();
-  const [bioLoading, setBioLoading] = useState<boolean>(false);
-  const [mainImageLoading, setMainImageLoading] = useState<boolean>(false);
+  const {isLoading: bioLoading, setIsLoading: setBioLoading} = useLoading();
+  const {isLoading: mainImageLoading, setIsLoading: setMainImageLoading} = useLoading();
 
   const handleUploadFile = async (path: 'bio' | 'main-image') => {
     if (path === 'bio' && bioFile) {

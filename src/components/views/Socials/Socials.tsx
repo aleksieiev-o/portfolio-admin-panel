@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useContext } from 'react';
+import React, { FC, ReactElement } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { Button, Card, CardBody, CardFooter, Heading, Icon, Link, Stack, Text, Tooltip } from '@chakra-ui/react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -9,11 +9,11 @@ import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
 import { removeAllSocials } from '@/services/socialsList.service';
-import { LoadingContext } from '@/providers/LoadingContext.provider';
+import { useLoading } from '@/hooks/useLoading';
 
 const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
   const router = useRouter();
-  const {globalLoading, setGlobalLoading} = useContext(LoadingContext);
+  const {isLoading, setIsLoading} = useLoading();
 
   const prepareCreateSocialCard = async () => {
     await router.push(ProtectedRoutePath.CREATE_SOCIAL);
@@ -22,9 +22,9 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
   const removeAll = async () => {
     // TODO add confirmation modal
     // TODO fix revalidate after remove all
-    setGlobalLoading(true);
+    setIsLoading(true);
     await removeAllSocials();
-    await setGlobalLoading(false);
+    await setIsLoading(false);
   };
 
   return (
@@ -34,7 +34,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
           payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
             <Button colorScheme={'teal'} onClick={() => prepareCreateSocialCard()}>Create social card</Button>
 
-            <Button onClick={() => removeAll()} isLoading={globalLoading} colorScheme={'red'}>Remove all social cards</Button>
+            <Button onClick={() => removeAll()} isLoading={isLoading} colorScheme={'red'}>Remove all social cards</Button>
           </Stack>
         }
       </BaseContentHeaderContainer>

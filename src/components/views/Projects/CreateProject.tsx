@@ -1,14 +1,14 @@
-import React, { FC, ReactElement, useContext, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { createProject } from '@/services/projects.service';
 import { Badge, Button, FormControl, FormLabel, Input, Stack, Switch, Textarea } from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
-import { LoadingContext } from '@/providers/LoadingContext.provider';
+import { useLoading } from '@/hooks/useLoading';
 
 const CreateProject: FC = (): ReactElement => {
   const router = useRouter();
-  const {globalLoading, setGlobalLoading} = useContext(LoadingContext);
+  const {isLoading, setIsLoading} = useLoading();
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [mainTechnology, setMainTechnology] = useState<string>('');
@@ -37,7 +37,7 @@ const CreateProject: FC = (): ReactElement => {
       demo.length &&
       releaseDate.length &&
       file) {
-      setGlobalLoading(true);
+      setIsLoading(true);
 
       await createProject({
         title,
@@ -73,7 +73,7 @@ const CreateProject: FC = (): ReactElement => {
             <Input
               onChange={(e) => setTitle(e.target.value)}
               value={title}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               type={'text'}/>
           </FormControl>
 
@@ -83,7 +83,7 @@ const CreateProject: FC = (): ReactElement => {
             <Textarea
               onChange={(e) => setDescription(e.target.value)}
               value={description}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               size={'md'}
               type={'text'}/>
           </FormControl>
@@ -94,7 +94,7 @@ const CreateProject: FC = (): ReactElement => {
             <Input
               onChange={(e) => setRepository(e.target.value)}
               value={repository}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               type={'text'}/>
           </FormControl>
 
@@ -104,7 +104,7 @@ const CreateProject: FC = (): ReactElement => {
             <Input
               onChange={(e) => setDemo(e.target.value)}
               value={demo}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               type={'text'}/>
           </FormControl>
 
@@ -114,7 +114,7 @@ const CreateProject: FC = (): ReactElement => {
             <Input
               onChange={(e) => setReleaseDate(e.target.value)}
               value={releaseDate}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               type={'date'}/>
           </FormControl>
 
@@ -124,7 +124,7 @@ const CreateProject: FC = (): ReactElement => {
             <Input
               onChange={(e) => setMainTechnology(e.target.value)}
               value={mainTechnology}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               type={'text'}/>
           </FormControl>
 
@@ -136,10 +136,10 @@ const CreateProject: FC = (): ReactElement => {
                 <Input
                   onChange={(e) => setPreparedTechnology(e.target.value)}
                   value={preparedTechnology}
-                  isDisabled={globalLoading}
+                  isDisabled={isLoading}
                   type={'text'}/>
 
-                <Button onClick={() => handleSetTechnology()} colorScheme={'telegram'} isDisabled={globalLoading}>Add technology</Button>
+                <Button onClick={() => handleSetTechnology()} colorScheme={'telegram'} isDisabled={isLoading}>Add technology</Button>
               </Stack>
             </FormControl>
 
@@ -161,7 +161,7 @@ const CreateProject: FC = (): ReactElement => {
               onChange={(e) => setFile(e.target?.files[0])}
               multiple={false}
               accept={'.jpg, .jpeg, .png'}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               type={'file'}
               pl={1}
               border={'none'}/>
@@ -174,11 +174,11 @@ const CreateProject: FC = (): ReactElement => {
               onChange={() => setVisibility(!visibility)}
               isChecked={visibility}
               id={'project-visibility'}
-              isDisabled={globalLoading}
+              isDisabled={isLoading}
               colorScheme={'teal'}/>
           </FormControl>
 
-          <Button type={'submit'} isLoading={globalLoading} colorScheme={'teal'} mt={6}>Create</Button>
+          <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6}>Create</Button>
         </Stack>
       </form>
     </BaseContentContainer>
