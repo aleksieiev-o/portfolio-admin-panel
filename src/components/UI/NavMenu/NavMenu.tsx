@@ -13,6 +13,7 @@ const NavMenu: FC = (): ReactElement => {
 
   const logout = async (): Promise<void> => {
     try {
+      // TODO add confirmation modal
       await signOut();
       await nRouter.push(PublicRoutePath.LOGIN);
     } catch (e) {

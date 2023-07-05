@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useContext } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
 import { Heading, Stack, Text, Image, Card, CardBody, CardFooter, Button, Link, Badge, Icon, Tooltip } from '@chakra-ui/react';
@@ -8,12 +8,23 @@ import { StaticProps } from '@/shared/types/StaticProps.type';
 import { IProject } from 'my-portfolio-types';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
+import { removeAllProjects } from '@/services/projects.service';
+import { LoadingContext } from '@/providers/LoadingContext.provider';
 
 const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => {
   const router = useRouter();
+  const {globalLoading, setGlobalLoading} = useContext(LoadingContext);
 
   const prepareCreateProject = async () => {
     await router.push(ProtectedRoutePath.CREATE_PROJECT);
+  };
+
+  const removeAll = async () => {
+    // TODO add confirmation modal
+    // TODO fix revalidate after remove all
+    setGlobalLoading(true);
+    await removeAllProjects();
+    await setGlobalLoading(false);
   };
 
   return (
@@ -23,7 +34,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
           payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
             <Button colorScheme={'teal'} onClick={() => prepareCreateProject()}>Create project</Button>
 
-            <Button colorScheme={'red'} >Remove all projects</Button>
+            <Button onClick={() => removeAll()} isLoading={globalLoading} colorScheme={'red'}>Remove all projects</Button>
           </Stack>
         }
       </BaseContentHeaderContainer>
