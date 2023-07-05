@@ -1,23 +1,24 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement, useContext, useState } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { Button, FormControl, Input, Stack, Switch, FormLabel } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { createSkill } from '@/services/skills.service';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
+import { LoadingContext } from '@/providers/LoadingContext.provider';
 
 const CreateSkill: FC = (): ReactElement => {
   const router = useRouter();
+  const {globalLoading, setGlobalLoading} = useContext(LoadingContext);
   const [title, setTitle] = useState<string>('');
   const [visibility, setVisibility] = useState<boolean>(true);
   const [experience, setExperience] = useState<string>('');
   const [color, setColor] = useState<string>('#777777');
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handleCreateSkill = async (e) => {
     e.preventDefault();
 
     if (title.length && experience.length) {
-      setLoading(true);
+      setGlobalLoading(true);
 
       await createSkill({
         title,
@@ -48,7 +49,7 @@ const CreateSkill: FC = (): ReactElement => {
             <Input
               onChange={(e) => setTitle(e.target.value)}
               value={title}
-              isDisabled={loading}
+              isDisabled={globalLoading}
               type={'text'}/>
           </FormControl>
 
@@ -58,7 +59,7 @@ const CreateSkill: FC = (): ReactElement => {
             <Input
               onChange={(e) => setExperience(e.target.value)}
               value={experience}
-              isDisabled={loading}
+              isDisabled={globalLoading}
               type={'number'}/>
           </FormControl>
 
@@ -69,7 +70,7 @@ const CreateSkill: FC = (): ReactElement => {
               onChange={(e) => setColor(e.target.value)}
               value={color}
               type={'color'}
-              isDisabled={loading}/>
+              isDisabled={globalLoading}/>
           </FormControl>
 
           <FormControl>
@@ -79,11 +80,11 @@ const CreateSkill: FC = (): ReactElement => {
               onChange={() => setVisibility(!visibility)}
               isChecked={visibility}
               id={'skill-visibility'}
-              isDisabled={loading}
+              isDisabled={globalLoading}
               colorScheme={'teal'}/>
           </FormControl>
 
-          <Button type={'submit'} isLoading={loading} colorScheme={'teal'} mt={6}>Create</Button>
+          <Button type={'submit'} isLoading={globalLoading} colorScheme={'teal'} mt={6}>Create</Button>
         </Stack>
       </form>
     </BaseContentContainer>

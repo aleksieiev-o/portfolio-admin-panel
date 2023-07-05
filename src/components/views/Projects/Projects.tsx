@@ -23,7 +23,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
           payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
             <Button colorScheme={'teal'} onClick={() => prepareCreateProject()}>Create project</Button>
 
-            <Button colorScheme={'red'}>Remove all projects</Button>
+            <Button colorScheme={'red'} >Remove all projects</Button>
           </Stack>
         }
       </BaseContentHeaderContainer>

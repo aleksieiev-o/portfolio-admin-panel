@@ -1,4 +1,4 @@
-import React, { createContext, FC, PropsWithChildren, ReactElement, useEffect, useState } from 'react';
+import React, { createContext, FC, PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '@/firebase';
 import { User as FirebaseUser } from '@firebase/auth';
@@ -6,13 +6,13 @@ import { IUser } from '@/components/views/Login/login.types';
 import { TypeComponentAuthFields } from '@/shared/types/Page.type';
 import { useRouter } from 'next/router';
 import { PublicRoutePath } from '@/router/Routes.enum';
+import { LoadingContext } from '@/providers/LoadingContext.provider';
 
 type TypeCurrentUser = IUser | null;
 
 interface IAuthContextState {
   currentUser: TypeCurrentUser;
   authState: boolean;
-  loading: boolean;
   // error: Error | undefined;
   // setCurrentUser: Dispatch<SetStateAction<IUser>>;
 }
@@ -20,20 +20,19 @@ interface IAuthContextState {
 export const AuthContext = createContext<IAuthContextState>({
   currentUser: null,
   authState: false,
-  loading: false,
   // error: undefined,
 });
 
 const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (props): ReactElement => {
   const { children, Component: {withAuth} } = props;
+  const {setGlobalLoading} = useContext(LoadingContext);
   const [currentUser, setCurrentUser] = useState<TypeCurrentUser>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const [authState, setAuthState] = useState<boolean>(false);
   const {replace} = useRouter();
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, async (user: FirebaseUser | null) => {
-      setLoading(true);
+      setGlobalLoading(true);
 
       if (withAuth && !user) {
         setCurrentUser(null);
@@ -44,13 +43,12 @@ const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (pro
         setAuthState(true);
       }
 
-      await setLoading(false);
+      await setGlobalLoading(false);
     });
   });
 
   const authContext: IAuthContextState = {
     currentUser,
-    loading,
     authState,
   };
 
