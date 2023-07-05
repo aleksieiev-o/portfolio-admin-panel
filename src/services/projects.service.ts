@@ -35,15 +35,3 @@ export const createProject = async (payload: TypeCreateProjectDto): Promise<void
 
   return await set(projectRef, project);
 };
-
-export const updateProject = async (payload: IProject, id: string): Promise<void> => {
-  return await update(child(ref(firebaseDataBase), `${EndpointsList.PROJECTS}/${id}`), payload);
-};
-
-export const removeProject = async (id: string): Promise<void> => {
-  return await remove(child(ref(firebaseDataBase), `${EndpointsList.PROJECTS}/${id}`));
-};
-
-export const removeAllProjects = async (): Promise<void> => {
-  return await set(ref(firebaseDataBase, EndpointsList.PROJECTS), null);
-};

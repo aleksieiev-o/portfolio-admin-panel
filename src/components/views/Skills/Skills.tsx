@@ -8,8 +8,9 @@ import { ISkill } from 'my-portfolio-types';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
-import { removeAllSkills } from '@/services/skills.service';
 import { useLoading } from '@/hooks/useLoading';
+import { EndpointsList } from '@/shared/Endpoints.enum';
+import { removeAll } from '@/services/dataList.service';
 
 const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
   const router = useRouter();
@@ -19,11 +20,11 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
     await router.push(ProtectedRoutePath.CREATE_SKILL);
   };
 
-  const removeAll = async () => {
+  const removeAllSkills = async () => {
     // TODO add confirmation modal
     // TODO fix revalidate after remove all
     setIsLoading(true);
-    await removeAllSkills();
+    await removeAll(EndpointsList.SKILLS);
     await setIsLoading(false);
   };
 
@@ -34,7 +35,7 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
           payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
             <Button colorScheme={'teal'} onClick={() => prepareCreateSkill()}>Create skill</Button>
 
-            <Button onClick={() => removeAll()} isLoading={isLoading} colorScheme={'red'}>Remove all skills</Button>
+            <Button onClick={() => removeAllSkills()} isLoading={isLoading} colorScheme={'red'}>Remove all skills</Button>
           </Stack>
         }
       </BaseContentHeaderContainer>

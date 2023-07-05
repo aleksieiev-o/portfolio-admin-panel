@@ -23,15 +23,3 @@ export const createSkill = async (payload: TypeCreateSkillDto): Promise<void> =>
 
   return await set(skillRef, skill);
 };
-
-export const updateSkill = async (payload: ISkill, id: string): Promise<void> => {
-  return await update(child(ref(firebaseDataBase), `${EndpointsList.SKILLS}/${id}`), payload);
-};
-
-export const removeSkill = async (id: string): Promise<void> => {
-  return await remove(child(ref(firebaseDataBase), `${EndpointsList.SKILLS}/${id}`));
-};
-
-export const removeAllSkills = async (): Promise<void> => {
-  return await set(ref(firebaseDataBase, EndpointsList.SKILLS), null);
-};

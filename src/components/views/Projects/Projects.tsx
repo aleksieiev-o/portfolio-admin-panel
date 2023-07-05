@@ -1,15 +1,16 @@
 import React, { FC, ReactElement } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
-import { Heading, Stack, Text, Image, Card, CardBody, CardFooter, Button, Link, Badge, Icon, Tooltip } from '@chakra-ui/react';
+import { Badge, Button, Card, CardBody, CardFooter, Heading, Icon, Image, Stack, Text, Tooltip } from '@chakra-ui/react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { StaticProps } from '@/shared/types/StaticProps.type';
 import { IProject } from 'my-portfolio-types';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
-import { removeAllProjects } from '@/services/projects.service';
 import { useLoading } from '@/hooks/useLoading';
+import { removeAll } from '@/services/dataList.service';
+import { EndpointsList } from '@/shared/Endpoints.enum';
 
 const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => {
   const router = useRouter();
@@ -19,11 +20,11 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
     await router.push(ProtectedRoutePath.CREATE_PROJECT);
   };
 
-  const removeAll = async () => {
+  const removeAllProjects = async () => {
     // TODO add confirmation modal
     // TODO fix revalidate after remove all
     setIsLoading(true);
-    await removeAllProjects();
+    await removeAll(EndpointsList.PROJECTS);
     await setIsLoading(false);
   };
 
@@ -34,7 +35,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
           payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
             <Button colorScheme={'teal'} onClick={() => prepareCreateProject()}>Create project</Button>
 
-            <Button onClick={() => removeAll()} isLoading={isLoading} colorScheme={'red'}>Remove all projects</Button>
+            <Button onClick={() => removeAllProjects()} isLoading={isLoading} colorScheme={'red'}>Remove all projects</Button>
           </Stack>
         }
       </BaseContentHeaderContainer>
