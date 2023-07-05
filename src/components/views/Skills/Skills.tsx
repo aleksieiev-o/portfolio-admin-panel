@@ -10,7 +10,7 @@ import { ProtectedRoutePath } from '@/router/Routes.enum';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
 import { useLoading } from '@/hooks/useLoading';
 import { EndpointsList } from '@/shared/Endpoints.enum';
-import { removeAll } from '@/services/dataList.service';
+import { removeAll, removeById } from '@/services/dataList.service';
 
 const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
   const router = useRouter();
@@ -18,6 +18,14 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
 
   const prepareCreateSkill = async () => {
     await router.push(ProtectedRoutePath.CREATE_SKILL);
+  };
+
+  const removeSkill = async (id: string) => {
+    // TODO add confirmation modal
+    // TODO fix revalidate after remove by id
+    setIsLoading(true);
+    await removeById(EndpointsList.SKILLS, id);
+    await setIsLoading(false);
   };
 
   const removeAllSkills = async () => {
@@ -79,7 +87,7 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
                       <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
 
-                      <Button variant={'solid'} colorScheme={'red'}>Remove</Button>
+                      <Button onClick={() => removeSkill(skillCard.id)} variant={'solid'} colorScheme={'red'}>Remove</Button>
                     </Stack>
                   </CardFooter>
                 </Stack>

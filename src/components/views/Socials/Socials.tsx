@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
 import { useLoading } from '@/hooks/useLoading';
-import { removeAll } from '@/services/dataList.service';
+import { removeAll, removeById } from '@/services/dataList.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 
 const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
@@ -18,6 +18,14 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
 
   const prepareCreateSocialCard = async () => {
     await router.push(ProtectedRoutePath.CREATE_SOCIAL);
+  };
+
+  const removeSocial = async (id: string) => {
+    // TODO add confirmation modal
+    // TODO fix revalidate after remove by id
+    setIsLoading(true);
+    await removeById(EndpointsList.SOCIALS, id);
+    await setIsLoading(false);
   };
 
   const removeAllSocials = async () => {
@@ -75,7 +83,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
                       <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
 
-                      <Button variant={'solid'} colorScheme={'red'}>Remove</Button>
+                      <Button onClick={() => removeSocial(socialCard.id)} variant={'solid'} colorScheme={'red'}>Remove</Button>
                     </Stack>
                   </CardFooter>
                 </Stack>

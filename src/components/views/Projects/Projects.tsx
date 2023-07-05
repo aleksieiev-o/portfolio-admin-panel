@@ -9,7 +9,7 @@ import { IProject } from 'my-portfolio-types';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { useLoading } from '@/hooks/useLoading';
-import { removeAll } from '@/services/dataList.service';
+import { removeAll, removeById } from '@/services/dataList.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 
 const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => {
@@ -18,6 +18,14 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
 
   const prepareCreateProject = async () => {
     await router.push(ProtectedRoutePath.CREATE_PROJECT);
+  };
+
+  const removeProject = async (id: string) => {
+    // TODO add confirmation modal
+    // TODO fix revalidate after remove by id
+    setIsLoading(true);
+    await removeById(EndpointsList.PROJECTS, id);
+    await setIsLoading(false);
   };
 
   const removeAllProjects = async () => {
@@ -126,7 +134,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
                       <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
 
-                      <Button variant={'solid'} colorScheme={'red'}>Remove</Button>
+                      <Button onClick={() => removeProject(projectCard.id)} variant={'solid'} colorScheme={'red'}>Remove</Button>
                     </Stack>
                   </CardFooter>
                 </Stack>
