@@ -1,4 +1,4 @@
-import React, { FC, FormEvent, ReactElement, useState } from 'react';
+import React, { FC, FormEvent, ReactElement, useContext, useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Icon, IconButton, Input, InputGroup, InputRightElement, Stack, Text } from '@chakra-ui/react';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -6,15 +6,15 @@ import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { firebaseAuth } from '@/firebase';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
+import { LoadingContext } from '@/providers/LoadingContext.provider';
 
 const Login: FC = (): ReactElement => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordVisibility, setPasswordVisibility] = useState<boolean>(false);
-  const [signInWithEmailAndPassword, loading] = useSignInWithEmailAndPassword(firebaseAuth);
+  const [signInWithEmailAndPassword, , loading] = useSignInWithEmailAndPassword(firebaseAuth);
+  const {setGlobalLoading} = useContext(LoadingContext);
   const router = useRouter();
-
-  const handlePasswordVisibility = () => setPasswordVisibility(!passwordVisibility);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +23,9 @@ const Login: FC = (): ReactElement => {
       const user = await signInWithEmailAndPassword(email, password);
 
       if (!loading && user) {
+        await setGlobalLoading(true);
         await router.push(ProtectedRoutePath.PERSONAL_INFO);
+        await setGlobalLoading(false);
       }
     } catch (e) {
       console.error('login error: ', e);
@@ -43,6 +45,7 @@ const Login: FC = (): ReactElement => {
               <Input
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
+                isDisabled={loading}
                 type={'email'}
                 name={'email'}
                 placeholder={'E-mail'}/>
@@ -55,20 +58,22 @@ const Login: FC = (): ReactElement => {
                 <Input
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
+                  isDisabled={loading}
                   type={passwordVisibility ? 'text' : 'password'}
                   name={'password'}
                   placeholder={'Password'}/>
 
                 <InputRightElement>
                   <IconButton
+                    onClick={() => setPasswordVisibility(!passwordVisibility)}
+                    isDisabled={loading}
                     icon={<Icon as={passwordVisibility ? VisibilityOffIcon : VisibilityIcon}/>}
-                    onClick={handlePasswordVisibility}
                     aria-label={'Toggle password visibility'}/>
                 </InputRightElement>
               </InputGroup>
             </FormControl>
 
-            <Button form={'login-form'} type={'submit'} variant={'outline'}>Login</Button>
+            <Button form={'login-form'} type={'submit'} variant={'outline'} isLoading={loading}>Login</Button>
           </Stack>
         </form>
       </Box>

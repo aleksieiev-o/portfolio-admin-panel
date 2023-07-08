@@ -1,6 +1,6 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
-import { Button, Card, CardBody, CardFooter, Heading, Icon, Stack, Text, Tooltip } from '@chakra-ui/react';
+import { Button, Card, CardBody, CardFooter, Heading, Icon, Stack, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { StaticProps } from '@/shared/types/StaticProps.type';
@@ -11,25 +11,33 @@ import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHe
 import { useLoading } from '@/hooks/useLoading';
 import { removeAll, removeById } from '@/services/dataList.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
+import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
 
 const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
   const router = useRouter();
   const {isLoading, setIsLoading} = useLoading();
+  const { isOpen: isOpenRemoveByIdModal, onOpen: onOpenRemoveByIdModal, onClose: onCloseRemoveByIdModal } = useDisclosure();
+  const { isOpen: isOpenRemoveAllModal, onOpen: onOpenRemoveAllModal, onClose: onCloseRemoveAllModal } = useDisclosure();
+  const [preparedToRemoveSocial, setPreparedToRemoveSocial] = useState<ISocial | null>(null);
 
-  const prepareCreateSocialCard = async () => {
+  const handlePrepareCreateSocialCard = async () => {
     await router.push(ProtectedRoutePath.CREATE_SOCIAL);
   };
 
-  const removeSocial = async (id: string) => {
-    // TODO add confirmation modal
+  const handlePrepareRemoveById = (item: ISocial) => {
+    setPreparedToRemoveSocial(item);
+    onOpenRemoveByIdModal();
+  };
+
+  const handleRemoveById = async (id: string) => {
     // TODO fix revalidate after remove by id
     setIsLoading(true);
     await removeById(EndpointsList.SOCIALS, id);
     await setIsLoading(false);
+    await setPreparedToRemoveSocial(null);
   };
 
-  const removeAllSocials = async () => {
-    // TODO add confirmation modal
+  const handleRemoveAll = async () => {
     // TODO fix revalidate after remove all
     setIsLoading(true);
     await removeAll(EndpointsList.SOCIALS);
@@ -41,9 +49,9 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
       <BaseContentHeaderContainer>
         {
           payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
-            <Button colorScheme={'teal'} onClick={() => prepareCreateSocialCard()}>Create social card</Button>
+            <Button colorScheme={'teal'} onClick={() => handlePrepareCreateSocialCard()}>Create social card</Button>
 
-            <Button onClick={() => removeAllSocials()} isLoading={isLoading} colorScheme={'red'}>Remove all social cards</Button>
+            <Button onClick={onOpenRemoveAllModal} isLoading={isLoading} colorScheme={'red'}>Remove all social cards</Button>
           </Stack>
         }
       </BaseContentHeaderContainer>
@@ -83,7 +91,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
                       <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
 
-                      <Button onClick={() => removeSocial(socialCard.id)} variant={'solid'} colorScheme={'red'}>Remove</Button>
+                      <Button onClick={() => handlePrepareRemoveById(socialCard)} variant={'solid'} colorScheme={'red'}>Remove</Button>
                     </Stack>
                   </CardFooter>
                 </Stack>
@@ -93,10 +101,36 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
             <Stack direction={'column'} alignItems={'center'} justifyContent={'center'} w={'full'} spacing={4}>
               <Text>Social cards list is empty</Text>
 
-              <Button colorScheme={'teal'} onClick={() => prepareCreateSocialCard()}>Create social card</Button>
+              <Button colorScheme={'teal'} onClick={() => handlePrepareCreateSocialCard()}>Create social card</Button>
             </Stack>
         }
       </BaseContentContainer>
+
+      {
+        isOpenRemoveByIdModal &&
+        <ActionConfirmationModal
+          actionHandler={() => handleRemoveById(preparedToRemoveSocial.id!)}
+          isOpen={isOpenRemoveByIdModal}
+          onClose={onCloseRemoveByIdModal}
+          modalType={ActionConfirmationModalType.DANGER}
+          modalTitle={'Remove social card confirmation'}
+          modalDescription={`You are about to remove social card ${preparedToRemoveSocial.title!} now.`}
+          modalQuestion={'Are you sure?'}
+          buttonText={'Remove'}/>
+      }
+
+      {
+        isOpenRemoveAllModal &&
+        <ActionConfirmationModal
+          actionHandler={handleRemoveAll}
+          isOpen={isOpenRemoveAllModal}
+          onClose={onCloseRemoveAllModal}
+          modalType={ActionConfirmationModalType.DANGER}
+          modalTitle={'Remove all social cards confirmation'}
+          modalDescription={'You are about to remove all social cards now.'}
+          modalQuestion={'Are you sure?'}
+          buttonText={'Remove'}/>
+      }
     </>
   );
 };

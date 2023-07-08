@@ -1,7 +1,7 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
-import { Badge, Button, Card, CardBody, CardFooter, Heading, Icon, Image, Stack, Text, Tooltip } from '@chakra-ui/react';
+import { Badge, Button, Card, CardBody, CardFooter, Heading, Icon, Image, Stack, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { StaticProps } from '@/shared/types/StaticProps.type';
@@ -11,25 +11,33 @@ import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { useLoading } from '@/hooks/useLoading';
 import { removeAll, removeById } from '@/services/dataList.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
+import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
 
 const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => {
   const router = useRouter();
   const {isLoading, setIsLoading} = useLoading();
+  const { isOpen: isOpenRemoveByIdModal, onOpen: onOpenRemoveByIdModal, onClose: onCloseRemoveByIdModal } = useDisclosure();
+  const { isOpen: isOpenRemoveAllModal, onOpen: onOpenRemoveAllModal, onClose: onCloseRemoveAllModal } = useDisclosure();
+  const [preparedToRemoveProject, setPreparedToRemoveProject] = useState<IProject | null>(null);
 
-  const prepareCreateProject = async () => {
+  const handlePrepareCreateProject = async () => {
     await router.push(ProtectedRoutePath.CREATE_PROJECT);
   };
 
-  const removeProject = async (id: string) => {
-    // TODO add confirmation modal
+  const handlePrepareRemoveById = (item: IProject) => {
+    setPreparedToRemoveProject(item);
+    onOpenRemoveByIdModal();
+  };
+
+  const handleRemoveById = async (id: string) => {
     // TODO fix revalidate after remove by id
     setIsLoading(true);
     await removeById(EndpointsList.PROJECTS, id);
     await setIsLoading(false);
+    await setPreparedToRemoveProject(null);
   };
 
-  const removeAllProjects = async () => {
-    // TODO add confirmation modal
+  const handleRemoveAll = async () => {
     // TODO fix revalidate after remove all
     setIsLoading(true);
     await removeAll(EndpointsList.PROJECTS);
@@ -41,9 +49,9 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
       <BaseContentHeaderContainer>
         {
           payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
-            <Button colorScheme={'teal'} onClick={() => prepareCreateProject()}>Create project</Button>
+            <Button colorScheme={'teal'} onClick={() => handlePrepareCreateProject()}>Create project</Button>
 
-            <Button onClick={() => removeAllProjects()} isLoading={isLoading} colorScheme={'red'}>Remove all projects</Button>
+            <Button onClick={onOpenRemoveAllModal} isLoading={isLoading} colorScheme={'red'}>Remove all projects</Button>
           </Stack>
         }
       </BaseContentHeaderContainer>
@@ -134,7 +142,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
                       <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
 
-                      <Button onClick={() => removeProject(projectCard.id)} variant={'solid'} colorScheme={'red'}>Remove</Button>
+                      <Button onClick={() => handlePrepareRemoveById(projectCard)} variant={'solid'} colorScheme={'red'}>Remove</Button>
                     </Stack>
                   </CardFooter>
                 </Stack>
@@ -144,10 +152,36 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
             <Stack direction={'column'} alignItems={'center'} justifyContent={'center'} w={'full'} spacing={4}>
               <Text>Projects list is empty</Text>
 
-              <Button colorScheme={'teal'} onClick={() => prepareCreateProject()}>Create project</Button>
+              <Button colorScheme={'teal'} onClick={() => handlePrepareCreateProject()}>Create project</Button>
             </Stack>
         }
       </BaseContentContainer>
+
+      {
+        isOpenRemoveByIdModal &&
+        <ActionConfirmationModal
+          actionHandler={() => handleRemoveById(preparedToRemoveProject.id!)}
+          isOpen={isOpenRemoveByIdModal}
+          onClose={onCloseRemoveByIdModal}
+          modalType={ActionConfirmationModalType.DANGER}
+          modalTitle={'Remove project confirmation'}
+          modalDescription={`You are about to remove project ${preparedToRemoveProject.title!} now.`}
+          modalQuestion={'Are you sure?'}
+          buttonText={'Remove'}/>
+      }
+
+      {
+        isOpenRemoveAllModal &&
+        <ActionConfirmationModal
+          actionHandler={handleRemoveAll}
+          isOpen={isOpenRemoveAllModal}
+          onClose={onCloseRemoveAllModal}
+          modalType={ActionConfirmationModalType.DANGER}
+          modalTitle={'Remove all projects confirmation'}
+          modalDescription={'You are about to remove all projects now.'}
+          modalQuestion={'Are you sure?'}
+          buttonText={'Remove'}/>
+      }
     </>
   );
 };

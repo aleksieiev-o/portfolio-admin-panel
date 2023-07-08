@@ -45,7 +45,8 @@ const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (pro
 
       await setGlobalLoading(false);
     });
-  });
+    // TODO fix Warning for useEffect dependency
+  }, [currentUser?.uid]);
 
   const authContext: IAuthContextState = {
     currentUser,

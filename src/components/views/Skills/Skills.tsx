@@ -1,6 +1,6 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
-import { Button, Card, CardBody, CardFooter, Heading, Icon, Stack, Text, Tooltip } from '@chakra-ui/react';
+import { Button, Card, CardBody, CardFooter, Heading, Icon, Stack, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { StaticProps } from '@/shared/types/StaticProps.type';
@@ -11,25 +11,33 @@ import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHe
 import { useLoading } from '@/hooks/useLoading';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import { removeAll, removeById } from '@/services/dataList.service';
+import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
 
 const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
   const router = useRouter();
   const {isLoading, setIsLoading} = useLoading();
+  const { isOpen: isOpenRemoveByIdModal, onOpen: onOpenRemoveByIdModal, onClose: onCloseRemoveByIdModal } = useDisclosure();
+  const { isOpen: isOpenRemoveAllModal, onOpen: onOpenRemoveAllModal, onClose: onCloseRemoveAllModal } = useDisclosure();
+  const [preparedToRemoveSkill, setPreparedToRemoveSkill] = useState<ISkill | null>(null);
 
-  const prepareCreateSkill = async () => {
+  const handlePrepareCreateSkill = async () => {
     await router.push(ProtectedRoutePath.CREATE_SKILL);
   };
 
-  const removeSkill = async (id: string) => {
-    // TODO add confirmation modal
+  const handlePrepareRemoveById = (item: ISkill) => {
+    setPreparedToRemoveSkill(item);
+    onOpenRemoveByIdModal();
+  };
+
+  const handleRemoveById = async (id: string) => {
     // TODO fix revalidate after remove by id
     setIsLoading(true);
     await removeById(EndpointsList.SKILLS, id);
     await setIsLoading(false);
+    await setPreparedToRemoveSkill(null);
   };
 
-  const removeAllSkills = async () => {
-    // TODO add confirmation modal
+  const handleRemoveAll = async () => {
     // TODO fix revalidate after remove all
     setIsLoading(true);
     await removeAll(EndpointsList.SKILLS);
@@ -41,9 +49,9 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
       <BaseContentHeaderContainer>
         {
           payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
-            <Button colorScheme={'teal'} onClick={() => prepareCreateSkill()}>Create skill</Button>
+            <Button colorScheme={'teal'} onClick={() => handlePrepareCreateSkill()}>Create skill</Button>
 
-            <Button onClick={() => removeAllSkills()} isLoading={isLoading} colorScheme={'red'}>Remove all skills</Button>
+            <Button onClick={onOpenRemoveAllModal} isLoading={isLoading} colorScheme={'red'}>Remove all skills</Button>
           </Stack>
         }
       </BaseContentHeaderContainer>
@@ -87,7 +95,7 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
                       <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
 
-                      <Button onClick={() => removeSkill(skillCard.id)} variant={'solid'} colorScheme={'red'}>Remove</Button>
+                      <Button onClick={() => handlePrepareRemoveById(skillCard)} variant={'solid'} colorScheme={'red'}>Remove</Button>
                     </Stack>
                   </CardFooter>
                 </Stack>
@@ -97,10 +105,36 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
             <Stack direction={'column'} alignItems={'center'} justifyContent={'center'} w={'full'} spacing={4}>
               <Text>Skills list is empty</Text>
 
-              <Button colorScheme={'teal'} onClick={() => prepareCreateSkill()}>Create skill</Button>
+              <Button colorScheme={'teal'} onClick={() => handlePrepareCreateSkill()}>Create skill</Button>
             </Stack>
         }
       </BaseContentContainer>
+
+      {
+        isOpenRemoveByIdModal &&
+        <ActionConfirmationModal
+          actionHandler={() => handleRemoveById(preparedToRemoveSkill.id!)}
+          isOpen={isOpenRemoveByIdModal}
+          onClose={onCloseRemoveByIdModal}
+          modalType={ActionConfirmationModalType.DANGER}
+          modalTitle={'Remove skill confirmation'}
+          modalDescription={`You are about to remove skill ${preparedToRemoveSkill.title!} now.`}
+          modalQuestion={'Are you sure?'}
+          buttonText={'Remove'}/>
+      }
+
+      {
+        isOpenRemoveAllModal &&
+        <ActionConfirmationModal
+          actionHandler={handleRemoveAll}
+          isOpen={isOpenRemoveAllModal}
+          onClose={onCloseRemoveAllModal}
+          modalType={ActionConfirmationModalType.DANGER}
+          modalTitle={'Remove all skills confirmation'}
+          modalDescription={'You are about to remove all skills now.'}
+          modalQuestion={'Are you sure?'}
+          buttonText={'Remove'}/>
+      }
     </>
   );
 };
