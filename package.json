@@ -21,9 +21,9 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.7.0",
+    "@chakra-ui/react": "^2.7.1",
     "@chakra-ui/theme-tools": "^2.0.17",
-    "@mui/icons-material": "^5.11.16",
+    "@mui/icons-material": "^5.13.7",
     "@types/node": "18.16.0",
     "@types/react": "18.0.38",
     "@types/react-dom": "18.0.11",
@@ -32,13 +32,13 @@
     "classnames": "^2.3.2",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
-    "firebase": "^9.22.2",
+    "firebase": "^9.23.0",
     "my-portfolio-types": "^0.0.3",
     "next": "13.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.1.1",
-    "sass": "^1.63.3",
+    "sass": "^1.63.6",
     "typescript": "5.0.4"
   },
   "devDependencies": {
