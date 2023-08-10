@@ -9,7 +9,7 @@ import { IProject } from 'my-portfolio-types';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { useLoading } from '@/hooks/useLoading';
-import { removeAll, removeById } from '@/services/dataList.service';
+import { removeAll, removeById } from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
 
@@ -29,10 +29,10 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
     onOpenRemoveByIdModal();
   };
 
-  const handleRemoveById = async (id: string) => {
+  const handleRemoveById = async (payload: IProject) => {
     // TODO fix revalidate after remove by id
     setIsLoading(true);
-    await removeById(EndpointsList.PROJECTS, id);
+    await removeById<IProject>(EndpointsList.PROJECTS, payload);
     await setIsLoading(false);
     await setPreparedToRemoveProject(null);
   };
@@ -40,7 +40,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
   const handleRemoveAll = async () => {
     // TODO fix revalidate after remove all
     setIsLoading(true);
-    await removeAll(EndpointsList.PROJECTS);
+    await removeAll<Array<IProject>>(EndpointsList.PROJECTS, payload);
     await setIsLoading(false);
   };
 
@@ -140,7 +140,12 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
 
                   <CardFooter p={4}>
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                      <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
+                      <Button
+                        onClick={() => router.push(ProtectedRoutePath.UPDATE_PROJECT.replace('[id]', projectCard.id))}
+                        variant={'solid'}
+                        colorScheme={'teal'}>
+                        Edit
+                      </Button>
 
                       <Button onClick={() => handlePrepareRemoveById(projectCard)} variant={'solid'} colorScheme={'red'}>Remove</Button>
                     </Stack>
@@ -160,7 +165,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
       {
         isOpenRemoveByIdModal &&
         <ActionConfirmationModal
-          actionHandler={() => handleRemoveById(preparedToRemoveProject.id!)}
+          actionHandler={() => handleRemoveById(preparedToRemoveProject!)}
           isOpen={isOpenRemoveByIdModal}
           onClose={onCloseRemoveByIdModal}
           modalType={ActionConfirmationModalType.DANGER}

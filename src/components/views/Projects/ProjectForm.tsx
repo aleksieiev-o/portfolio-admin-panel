@@ -2,23 +2,34 @@ import React, { FC, ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { createProject } from '@/services/projects.service';
-import { Badge, Button, FormControl, FormLabel, Input, Stack, Switch, Textarea } from '@chakra-ui/react';
+import { Badge, Button, FormControl, FormLabel, Input, Stack, Switch, Textarea, Image } from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { useLoading } from '@/hooks/useLoading';
+import { updateById } from '@/services/data.service';
+import { EndpointsList } from '@/shared/Endpoints.enum';
+import {TypeCreateProjectDto, TypeUpdateProjectDto} from '@/shared/dto/createSkill.dto';
+import {IProject} from 'my-portfolio-types';
+import {StaticProps} from '@/shared/types/StaticProps.type';
 
-const CreateProject: FC = (): ReactElement => {
+interface Props extends StaticProps<IProject | null> {
+  type: 'create' | 'update';
+}
+
+const ProjectForm: FC<Props> = (props): ReactElement => {
+  const {type, payload: projectPayload} = props;
   const router = useRouter();
   const {isLoading, setIsLoading} = useLoading();
-  const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [mainTechnology, setMainTechnology] = useState<string>('');
+  const [title, setTitle] = useState<string>(projectPayload?.title || '');
+  const [description, setDescription] = useState<string>(projectPayload?.description || '');
+  const [mainTechnology, setMainTechnology] = useState<string>(projectPayload?.mainTechnology || '');
   const [preparedTechnology, setPreparedTechnology] = useState<string>('');
-  const [technologies, setTechnologies] = useState<Array<string>>([]);
-  const [repository, setRepository] = useState<string>('');
-  const [demo, setDemo] = useState<string>('');
-  const [releaseDate, setReleaseDate] = useState<string>('');
+  const [technologies, setTechnologies] = useState<Array<string>>(projectPayload?.technologies || []);
+  const [repository, setRepository] = useState<string>(projectPayload?.repository || '');
+  const [demo, setDemo] = useState<string>(projectPayload?.demo || '');
+  // TODO the date value save in two different variant. If I create project as 8/2/2023 and if I update project with releaseDate update as 2023-08-01
+  const [releaseDate, setReleaseDate] = useState<string>(projectPayload?.releaseDate || '');
   const [file, setFile] = useState<File>();
-  const [visibility, setVisibility] = useState<boolean>(true);
+  const [visibility, setVisibility] = useState<boolean>(projectPayload?.visibility || true);
 
   const handleSetTechnology = () => {
     if (preparedTechnology.length) {
@@ -27,7 +38,7 @@ const CreateProject: FC = (): ReactElement => {
     }
   };
 
-  const handleCreateProject = async (e) => {
+  const handleFormSubmit = async (e, action: typeof type) => {
     e.preventDefault();
 
     if (title.length &&
@@ -39,7 +50,7 @@ const CreateProject: FC = (): ReactElement => {
       file) {
       setIsLoading(true);
 
-      await createProject({
+      const createProjectDto: TypeCreateProjectDto = {
         title,
         visibility,
         description,
@@ -49,22 +60,42 @@ const CreateProject: FC = (): ReactElement => {
         repository,
         demo,
         file,
-      });
+      };
+
+      const updateProjectDto: TypeUpdateProjectDto = {
+        title,
+        visibility,
+        description,
+        mainTechnology,
+        releaseDate,
+        technologies,
+        repository,
+        demo,
+        file,
+        fileSrc: projectPayload?.fileSrc || '',
+      };
+
+      if (action === 'create') {
+        await createProject(createProjectDto);
+        // TODO After create project I don't go to update this project. Page update required
+      } else if (action === 'update') {
+        await updateById<TypeUpdateProjectDto>(updateProjectDto, EndpointsList.PROJECTS, router.query.id as string);
+      }
 
       await router.push(ProtectedRoutePath.PROJECTS);
     }
   };
 
-  const goBack = async () => {
+  const handleGoBack = async () => {
     await router.back();
   };
 
   return (
     <BaseContentContainer>
-      <form id={'create-project'} style={{ width: '100%' }} onSubmit={(e) => handleCreateProject(e)}>
+      <form style={{ width: '100%' }} onSubmit={(e) => handleFormSubmit(e, type)}>
         <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
           <Stack mb={6}>
-            <Button onClick={() => goBack()}>Back</Button>
+            <Button onClick={() => handleGoBack()}>Back</Button>
           </Stack>
 
           <FormControl>
@@ -139,7 +170,7 @@ const CreateProject: FC = (): ReactElement => {
                   isDisabled={isLoading}
                   type={'text'}/>
 
-                <Button onClick={() => handleSetTechnology()} colorScheme={'telegram'} isDisabled={isLoading}>Add technology</Button>
+                <Button onClick={() => handleSetTechnology()} colorScheme={'telegram'} isDisabled={isLoading}>Add</Button>
               </Stack>
             </FormControl>
 
@@ -156,6 +187,11 @@ const CreateProject: FC = (): ReactElement => {
 
           <FormControl>
             <FormLabel>Project preview:</FormLabel>
+
+            {
+              projectPayload?.fileSrc &&
+              <Image src={projectPayload?.fileSrc || ''} maxW={320} objectFit={'contain'} alt={'Project preview'} mb={4}/>
+            }
 
             <Input
               onChange={(e) => setFile(e.target?.files[0])}
@@ -178,11 +214,13 @@ const CreateProject: FC = (): ReactElement => {
               colorScheme={'teal'}/>
           </FormControl>
 
-          <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6}>Create</Button>
+          <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6}>
+            {type === 'create' ? 'Create' : 'Save'}
+          </Button>
         </Stack>
       </form>
     </BaseContentContainer>
   );
 };
 
-export default CreateProject;
+export default ProjectForm;

@@ -10,7 +10,7 @@ import { ProtectedRoutePath } from '@/router/Routes.enum';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
 import { useLoading } from '@/hooks/useLoading';
 import { EndpointsList } from '@/shared/Endpoints.enum';
-import { removeAll, removeById } from '@/services/dataList.service';
+import { removeAll, removeById } from '@/services/data.service';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
 
 const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
@@ -29,10 +29,10 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
     onOpenRemoveByIdModal();
   };
 
-  const handleRemoveById = async (id: string) => {
+  const handleRemoveById = async (payload: ISkill) => {
     // TODO fix revalidate after remove by id
     setIsLoading(true);
-    await removeById(EndpointsList.SKILLS, id);
+    await removeById<ISkill>(EndpointsList.SKILLS, payload);
     await setIsLoading(false);
     await setPreparedToRemoveSkill(null);
   };
@@ -113,7 +113,7 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
       {
         isOpenRemoveByIdModal &&
         <ActionConfirmationModal
-          actionHandler={() => handleRemoveById(preparedToRemoveSkill.id!)}
+          actionHandler={() => handleRemoveById(preparedToRemoveSkill!)}
           isOpen={isOpenRemoveByIdModal}
           onClose={onCloseRemoveByIdModal}
           modalType={ActionConfirmationModalType.DANGER}

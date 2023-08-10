@@ -5,6 +5,7 @@ import { NextPageWithAuth } from '@/shared/types/Page.type';
 import { IProject } from 'my-portfolio-types';
 import { fetchAllProjects } from '@/services/projects.service';
 import { StaticProps, StaticPropsResponse } from '@/shared/types/StaticProps.type';
+import { GetStaticProps } from 'next';
 
 const ProjectsPage: NextPageWithAuth<StaticProps<Array<IProject>>> = ({payload}): ReactElement => {
   return (
@@ -14,14 +15,14 @@ const ProjectsPage: NextPageWithAuth<StaticProps<Array<IProject>>> = ({payload})
   );
 };
 
-export async function getStaticProps(): Promise<StaticPropsResponse<Array<IProject>>> {
+export const getStaticProps: GetStaticProps<StaticProps<Array<IProject>>> = async (): Promise<StaticPropsResponse<Array<IProject>>> => {
   const payload: Array<IProject> = await fetchAllProjects();
 
   return {
     props: { payload },
     revalidate: 10,
   };
-}
+};
 
 ProjectsPage.withAuth = true;
 

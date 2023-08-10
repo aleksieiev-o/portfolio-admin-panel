@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useState } from 'react';
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, StackDivider, Text } from '@chakra-ui/react';
+import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text } from '@chakra-ui/react';
 import { useLoading } from '@/hooks/useLoading';
 
 export enum ActionConfirmationModalType {

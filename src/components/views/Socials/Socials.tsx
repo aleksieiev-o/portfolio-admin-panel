@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
 import { useLoading } from '@/hooks/useLoading';
-import { removeAll, removeById } from '@/services/dataList.service';
+import { removeAll, removeById } from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
 
@@ -29,10 +29,10 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
     onOpenRemoveByIdModal();
   };
 
-  const handleRemoveById = async (id: string) => {
+  const handleRemoveById = async (payload: ISocial) => {
     // TODO fix revalidate after remove by id
     setIsLoading(true);
-    await removeById(EndpointsList.SOCIALS, id);
+    await removeById<ISocial>(EndpointsList.SOCIALS, payload);
     await setIsLoading(false);
     await setPreparedToRemoveSocial(null);
   };
@@ -109,7 +109,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
       {
         isOpenRemoveByIdModal &&
         <ActionConfirmationModal
-          actionHandler={() => handleRemoveById(preparedToRemoveSocial.id!)}
+          actionHandler={() => handleRemoveById(preparedToRemoveSocial!)}
           isOpen={isOpenRemoveByIdModal}
           onClose={onCloseRemoveByIdModal}
           modalType={ActionConfirmationModalType.DANGER}
