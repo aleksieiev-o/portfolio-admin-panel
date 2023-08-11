@@ -1,3 +1,5 @@
-import { ISkill } from 'my-portfolio-types';
+import { IProject } from 'my-portfolio-types';
 
-export type TypeCreateSkillDto = Omit<ISkill, 'id'>;
+export type TypeCreateProjectDto = Omit<IProject, 'id' | 'fileSrc' | 'fileName'> & {file? : File};
+
+export type TypeUpdateProjectDto = Omit<IProject, 'id' | 'fileName'> & {file? : File};

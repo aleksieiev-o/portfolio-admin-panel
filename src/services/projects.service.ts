@@ -3,7 +3,7 @@ import { EndpointsList } from '@/shared/Endpoints.enum';
 import { fetchDataList } from '@/services/data.service';
 import { child, push, ref, remove, set, update } from '@firebase/database';
 import { firebaseDataBase, firebaseStorage } from '@/firebase';
-import { TypeCreateProjectDto } from '@/shared/dto/createSkill.dto';
+import { TypeCreateProjectDto } from '@/shared/dto/createProject.dto';
 import { uploadFile } from '@/services/data.service';
 
 export const fetchAllProjects = async (): Promise<Array<IProject>> => {

@@ -7,7 +7,7 @@ import BaseContentContainer from '@/components/UI/Containers/BaseContent.contain
 import { useLoading } from '@/hooks/useLoading';
 import { updateById } from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
-import {TypeCreateProjectDto, TypeUpdateProjectDto} from '@/shared/dto/createSkill.dto';
+import {TypeCreateProjectDto, TypeUpdateProjectDto} from '@/shared/dto/createProject.dto';
 import {IProject} from 'my-portfolio-types';
 import {StaticProps} from '@/shared/types/StaticProps.type';
 
