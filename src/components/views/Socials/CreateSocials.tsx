@@ -12,6 +12,7 @@ const CreateSocials: FC = (): ReactElement => {
   const [title, setTitle] = useState<string>('');
   const [visibility, setVisibility] = useState<boolean>(true);
   const [url, setUrl] = useState<string>('');
+  const [position, setPosition] = useState<string>('');
 
   const handleCreateSocial = async (e: any) => {
     e.preventDefault();
@@ -23,6 +24,7 @@ const CreateSocials: FC = (): ReactElement => {
         title,
         visibility,
         url,
+        position,
       });
 
       await router.push(ProtectedRoutePath.SOCIALS);
@@ -59,6 +61,16 @@ const CreateSocials: FC = (): ReactElement => {
               value={url}
               isDisabled={isLoading}
               type={'text'}/>
+          </FormControl>
+
+          <FormControl>
+            <FormLabel>Social position in list:</FormLabel>
+
+            <Input
+              onChange={(e) => setPosition(e.target.value)}
+              value={position}
+              type={'text'}
+              isDisabled={isLoading}/>
           </FormControl>
 
           <FormControl>

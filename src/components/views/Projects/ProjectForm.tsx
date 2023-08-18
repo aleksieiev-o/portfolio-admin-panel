@@ -19,7 +19,7 @@ import BaseContentContainer from '@/components/UI/Containers/BaseContent.contain
 import { useLoading } from '@/hooks/useLoading';
 import { updateById } from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
-import {TypeUpdateProjectDto} from '@/shared/dto/createProject.dto';
+import {TypeCreateProjectDto} from '@/shared/dto/createProject.dto';
 import {IProject} from 'my-portfolio-types';
 import {StaticProps} from '@/shared/types/StaticProps.type';
 import {FormikHelpers, useFormik} from 'formik';
@@ -38,17 +38,18 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
   const [tempTechnology, setPreparedTechnology] = useState<string>('');
   const [technologies, setTechnologies] = useState<Array<string>>(projectPayload?.technologies || []);
 
-  const initialValues: TypeUpdateProjectDto = {
+  const initialValues: TypeCreateProjectDto = {
     demo: projectPayload?.demo || '',
     description: projectPayload?.description || '',
     fileSrc: projectPayload?.fileSrc || '',
     mainTechnology: projectPayload?.mainTechnology || '',
     // TODO the date value save in two different variant. If I create project as 8/2/2023 and if I update project with releaseDate update as 2023-08-01
-    releaseDate: projectPayload?.releaseDate || '',
+    releaseDate: projectPayload?.releaseDate.slice(0, 10) || '',
     repository: projectPayload?.repository || '',
+    position: projectPayload?.position || '',
     technologies: projectPayload?.technologies || [],
     title: projectPayload?.title || '',
-    visibility: projectPayload?.visibility || true,
+    visibility: projectPayload ? projectPayload.visibility : true,
   };
 
   const validationSchema = useMemo(() => {
@@ -60,6 +61,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
         mainTechnology: string().trim().required(STRINGS.requiredField),
         releaseDate: string().trim().required(STRINGS.requiredField),
         repository: string().trim().required(STRINGS.requiredField),
+        position: string().trim().required(STRINGS.requiredField),
         title: string().trim().required(STRINGS.requiredField),
       });
     }
@@ -71,6 +73,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
       mainTechnology: string().trim().required(STRINGS.requiredField),
       releaseDate: string().trim().required(STRINGS.requiredField),
       repository: string().trim().required(STRINGS.requiredField),
+      position: string().trim().required(STRINGS.requiredField),
       title: string().trim().required(STRINGS.requiredField),
     });
   }, [type]);
@@ -84,7 +87,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
     }
   };
   
-  const handleFormSubmit = async (payload: TypeUpdateProjectDto, formikHelpers: FormikHelpers<TypeUpdateProjectDto>) => {
+  const handleFormSubmit = async (payload: TypeCreateProjectDto, formikHelpers: FormikHelpers<TypeCreateProjectDto>) => {
     setIsLoading(true);
     
     try {
@@ -92,7 +95,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
         // TODO After create project I don't go to update this project. Page update required
         await createProject(payload);
       } else if (type === 'update') {
-        await updateById<TypeUpdateProjectDto>(payload, EndpointsList.PROJECTS, router.query.id as string);
+        await updateById<TypeCreateProjectDto>(payload, EndpointsList.PROJECTS, router.query.id as string);
       }
 
       formikHelpers.resetForm();
@@ -106,7 +109,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
     }
   };
 
-  const formik = useFormik<TypeUpdateProjectDto>({
+  const formik = useFormik<TypeCreateProjectDto>({
     initialValues,
     validationSchema,
     onSubmit: handleFormSubmit,
@@ -178,6 +181,17 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
               isDisabled={isLoading}
               type={'date'}
               {...getFieldProps('releaseDate')}/>
+
+            {touched.releaseDate && Boolean(errors.releaseDate) && <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>}
+          </FormControl>
+
+          <FormControl isRequired={true} isInvalid={Boolean(touched.position && errors.position)}>
+            <FormLabel>Project position in list:</FormLabel>
+
+            <Input
+              isDisabled={isLoading}
+              type={'text'}
+              {...getFieldProps('position')}/>
 
             {touched.releaseDate && Boolean(errors.releaseDate) && <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>}
           </FormControl>
@@ -258,12 +272,16 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
           <FormControl>
             <FormLabel htmlFor={'project-visibility'}>Project visibility:</FormLabel>
 
-            <Switch
-              id={'project-visibility'}
-              isDisabled={isLoading}
-              colorScheme={'teal'}
-              isChecked={values.visibility}
-              {...getFieldProps('visibility')}/>
+            <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={6}>
+              <Switch
+                id={'project-visibility'}
+                isDisabled={isLoading}
+                colorScheme={'teal'}
+                isChecked={values.visibility}
+                {...getFieldProps('visibility')}/>
+
+              <Text>{values.visibility ? 'Visible' : 'Hidden'}</Text>
+            </Stack>
           </FormControl>
 
           <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6}>

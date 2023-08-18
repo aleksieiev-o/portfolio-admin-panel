@@ -59,7 +59,7 @@ export const updateById = async<T> (payload: T, path: EndpointsList, id: string)
     });
   }
 
-  return await update(child(ref(firebaseDataBase), `${path}/${id}`), payload);
+  return await update(child(ref(firebaseDataBase), `${path}/${id}`), {...payload, updatedDate: new Date().toISOString()});
 };
 
 export const removeById = async<T> (path: EndpointsList, payload: T): Promise<void> => {

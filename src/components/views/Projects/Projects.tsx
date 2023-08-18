@@ -113,7 +113,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
                         <Text as={'b'} whiteSpace={'nowrap'}>Release date:</Text>
 
-                        <Text>{`${projectCard.releaseDate}`}</Text>
+                        <Text>{new Date(projectCard.releaseDate).toDateString()}</Text>
                       </Stack>
 
                       <Stack direction={'row'} w={'auto'} alignItems={'center'} spacing={2}>

@@ -1,5 +1,5 @@
 import { IProject } from 'my-portfolio-types';
 
-export type TypeCreateProjectDto = Omit<IProject, 'id' | 'fileSrc' | 'fileName'> & {file?: File};
+// export type TypeCreateProjectDto = Omit<IProject, 'id' | 'fileSrc' | 'fileName'> & {file?: File};
 
-export type TypeUpdateProjectDto = Omit<IProject, 'id' | 'fileName'> & {fileSrc?: string, file?: File};
+export type TypeCreateProjectDto = Omit<IProject, 'id' | 'fileName' | 'createdDate' | 'updatedDate'> & {fileSrc?: string, file?: File};

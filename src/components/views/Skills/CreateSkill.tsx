@@ -13,6 +13,7 @@ const CreateSkill: FC = (): ReactElement => {
   const [visibility, setVisibility] = useState<boolean>(true);
   const [experience, setExperience] = useState<string>('');
   const [color, setColor] = useState<string>('#777777');
+  const [position, setPosition] = useState<string>('');
 
   const handleCreateSkill = async (e: any) => {
     e.preventDefault();
@@ -25,6 +26,7 @@ const CreateSkill: FC = (): ReactElement => {
         visibility,
         experience: `${experience}%`,
         color,
+        position,
       });
 
       await router.push(ProtectedRoutePath.SKILLS);
@@ -70,6 +72,16 @@ const CreateSkill: FC = (): ReactElement => {
               onChange={(e) => setColor(e.target.value)}
               value={color}
               type={'color'}
+              isDisabled={isLoading}/>
+          </FormControl>
+
+          <FormControl>
+            <FormLabel>Skill position in list:</FormLabel>
+
+            <Input
+              onChange={(e) => setPosition(e.target.value)}
+              value={position}
+              type={'text'}
               isDisabled={isLoading}/>
           </FormControl>
 
