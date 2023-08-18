@@ -36,7 +36,6 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
   const router = useRouter();
   const {isLoading, setIsLoading} = useLoading();
   const [tempTechnology, setPreparedTechnology] = useState<string>('');
-  const [technologies, setTechnologies] = useState<Array<string>>(projectPayload?.technologies || []);
 
   const initialValues: TypeCreateProjectDto = {
     demo: projectPayload?.demo || '',
@@ -77,15 +76,6 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
       title: string().trim().required(STRINGS.requiredField),
     });
   }, [type]);
-
-  const handleSetTechnology = (type: 'add' | 'remove', technology: string | null) => {
-    if (type === 'add' && tempTechnology.length) {
-      setTechnologies([...technologies, tempTechnology]);
-      setPreparedTechnology('');
-    } else if (type === 'remove') {
-      setTechnologies(technologies.filter((item) => item !== technology));
-    }
-  };
   
   const handleFormSubmit = async (payload: TypeCreateProjectDto, formikHelpers: FormikHelpers<TypeCreateProjectDto>) => {
     setIsLoading(true);
@@ -117,6 +107,17 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
   });
 
   const { handleSubmit, setFieldValue, values, touched, errors, getFieldProps } = formik;
+
+  const technologiesValue = {...getFieldProps('technologies')}.value;
+
+  const handleSetTechnology = (type: 'add' | 'remove', technology: string | null) => {
+    if (type === 'add' && tempTechnology.length) {
+      setFieldValue('technologies', [...technologiesValue, tempTechnology]);
+      setPreparedTechnology('');
+    } else if (type === 'remove') {
+      setFieldValue('technologies', technologiesValue.filter((item) => item !== technology));
+    }
+  };
 
   const handleGoBack = async () => {
     await router.back();
@@ -223,9 +224,9 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
             </FormControl>
 
             {
-              technologies.length && <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} w={'full'} spacing={4}>
+              technologiesValue.length && <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} w={'full'} spacing={4}>
                 {
-                  technologies.map((item) => (
+                  technologiesValue.map((item) => (
                     <Badge key={item} p={2} colorScheme={'telegram'}>
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
                         <Text>{item}</Text>

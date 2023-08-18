@@ -127,7 +127,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
 
                         <Stack direction={'row'} w={'full'} alignItems={'center'} justifyContent={'start'} spacing={4} overflowX={'auto'}>
                           {
-                            projectCard.technologies.length ?
+                            projectCard.technologies?.length ?
                               projectCard.technologies.map((technology) => (
                                 <Badge key={technology} p={2} colorScheme={'telegram'}>{technology}</Badge>
                               ))

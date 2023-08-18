@@ -26,7 +26,7 @@ export const createProject = async (payload: TypeCreateProjectDto): Promise<void
     description: description,
     mainTechnology: mainTechnology,
     releaseDate: new Date(releaseDate).toISOString(),
-    technologies: technologies.length ? technologies : [''],
+    technologies: technologies.length ? technologies : [mainTechnology],
     demo: demo,
     repository: repository,
     fileSrc: uploadedFile?.fileSrc,
