@@ -2,7 +2,12 @@ import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import RootLayout from '@/components/layout/RootLayout';
 import NavMenu from '@/components/UI/NavMenu/NavMenu';
 
-const Layout: FC<PropsWithChildren> = (props): ReactElement => {
+interface Props extends PropsWithChildren {
+  title: string;
+  description?: string;
+}
+
+const Layout: FC<Props> = (props): ReactElement => {
   const {children, title, description} = props;
 
   return (

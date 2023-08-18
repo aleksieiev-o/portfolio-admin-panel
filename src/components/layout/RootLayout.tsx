@@ -6,7 +6,12 @@ import Loader from '@/components/UI/Loader';
 import { AuthContext } from '@/providers/AuthContext.provider';
 import { LoadingContext } from '@/providers/LoadingContext.provider';
 
-const RootLayout: FC<PropsWithChildren<IMeta>> = (props): ReactElement => {
+interface Props<P> extends PropsWithChildren {
+  title: string;
+  description?: string;
+}
+
+const RootLayout: FC<Props<IMeta>> = (props): ReactElement => {
   const {children, title, description} = props;
   const {globalLoading} = useContext(LoadingContext);
 

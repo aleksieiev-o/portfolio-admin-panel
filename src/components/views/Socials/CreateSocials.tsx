@@ -13,7 +13,7 @@ const CreateSocials: FC = (): ReactElement => {
   const [visibility, setVisibility] = useState<boolean>(true);
   const [url, setUrl] = useState<string>('');
 
-  const handleCreateSocial = async (e) => {
+  const handleCreateSocial = async (e: any) => {
     e.preventDefault();
 
     if (title.length && url.length) {

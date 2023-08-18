@@ -1,15 +1,31 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, {FC, ReactElement, useMemo, useState} from 'react';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { createProject } from '@/services/projects.service';
-import { Badge, Button, FormControl, FormLabel, Input, Stack, Switch, Textarea, Image } from '@chakra-ui/react';
+import {
+  Badge,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+  Switch,
+  Textarea,
+  Image,
+  Text,
+  FormErrorMessage, Icon, IconButton
+} from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { useLoading } from '@/hooks/useLoading';
 import { updateById } from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
-import {TypeCreateProjectDto, TypeUpdateProjectDto} from '@/shared/dto/createProject.dto';
+import {TypeUpdateProjectDto} from '@/shared/dto/createProject.dto';
 import {IProject} from 'my-portfolio-types';
 import {StaticProps} from '@/shared/types/StaticProps.type';
+import {FormikHelpers, useFormik} from 'formik';
+import {mixed, object, string} from 'yup';
+import {STRINGS} from '@/locales';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface Props extends StaticProps<IProject | null> {
   type: 'create' | 'update';
@@ -19,72 +35,85 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
   const {type, payload: projectPayload} = props;
   const router = useRouter();
   const {isLoading, setIsLoading} = useLoading();
-  const [title, setTitle] = useState<string>(projectPayload?.title || '');
-  const [description, setDescription] = useState<string>(projectPayload?.description || '');
-  const [mainTechnology, setMainTechnology] = useState<string>(projectPayload?.mainTechnology || '');
-  const [preparedTechnology, setPreparedTechnology] = useState<string>('');
+  const [tempTechnology, setPreparedTechnology] = useState<string>('');
   const [technologies, setTechnologies] = useState<Array<string>>(projectPayload?.technologies || []);
-  const [repository, setRepository] = useState<string>(projectPayload?.repository || '');
-  const [demo, setDemo] = useState<string>(projectPayload?.demo || '');
-  // TODO the date value save in two different variant. If I create project as 8/2/2023 and if I update project with releaseDate update as 2023-08-01
-  const [releaseDate, setReleaseDate] = useState<string>(projectPayload?.releaseDate || '');
-  const [file, setFile] = useState<File>();
-  const [visibility, setVisibility] = useState<boolean>(projectPayload?.visibility || true);
 
-  const handleSetTechnology = () => {
-    if (preparedTechnology.length) {
-      setTechnologies([...technologies, preparedTechnology]);
-      setPreparedTechnology('');
-    }
+  const initialValues: TypeUpdateProjectDto = {
+    demo: projectPayload?.demo || '',
+    description: projectPayload?.description || '',
+    fileSrc: projectPayload?.fileSrc || '',
+    mainTechnology: projectPayload?.mainTechnology || '',
+    // TODO the date value save in two different variant. If I create project as 8/2/2023 and if I update project with releaseDate update as 2023-08-01
+    releaseDate: projectPayload?.releaseDate || '',
+    repository: projectPayload?.repository || '',
+    technologies: projectPayload?.technologies || [],
+    title: projectPayload?.title || '',
+    visibility: projectPayload?.visibility || true,
   };
 
-  const handleFormSubmit = async (e, action: typeof type) => {
-    e.preventDefault();
+  const validationSchema = useMemo(() => {
+    if (type === 'create') {
+      return object().shape({
+        demo: string().trim().required(STRINGS.requiredField),
+        description: string().trim().required(STRINGS.requiredField),
+        file: mixed().required(STRINGS.requiredFieldImage),
+        mainTechnology: string().trim().required(STRINGS.requiredField),
+        releaseDate: string().trim().required(STRINGS.requiredField),
+        repository: string().trim().required(STRINGS.requiredField),
+        title: string().trim().required(STRINGS.requiredField),
+      });
+    }
 
-    if (title.length &&
-      description.length &&
-      mainTechnology.length &&
-      repository.length &&
-      demo.length &&
-      releaseDate.length &&
-      file) {
-      setIsLoading(true);
+    return object().shape({
+      demo: string().trim().required(STRINGS.requiredField),
+      description: string().trim().required(STRINGS.requiredField),
+      fileSrc: string().trim().required(STRINGS.requiredField),
+      mainTechnology: string().trim().required(STRINGS.requiredField),
+      releaseDate: string().trim().required(STRINGS.requiredField),
+      repository: string().trim().required(STRINGS.requiredField),
+      title: string().trim().required(STRINGS.requiredField),
+    });
+  }, [type]);
 
-      const createProjectDto: TypeCreateProjectDto = {
-        title,
-        visibility,
-        description,
-        mainTechnology,
-        releaseDate,
-        technologies,
-        repository,
-        demo,
-        file,
-      };
-
-      const updateProjectDto: TypeUpdateProjectDto = {
-        title,
-        visibility,
-        description,
-        mainTechnology,
-        releaseDate,
-        technologies,
-        repository,
-        demo,
-        file,
-        fileSrc: projectPayload?.fileSrc || '',
-      };
-
-      if (action === 'create') {
-        await createProject(createProjectDto);
+  const handleSetTechnology = (type: 'add' | 'remove', technology: string | null) => {
+    if (type === 'add' && tempTechnology.length) {
+      setTechnologies([...technologies, tempTechnology]);
+      setPreparedTechnology('');
+    } else if (type === 'remove') {
+      setTechnologies(technologies.filter((item) => item !== technology));
+    }
+  };
+  
+  const handleFormSubmit = async (payload: TypeUpdateProjectDto, formikHelpers: FormikHelpers<TypeUpdateProjectDto>) => {
+    setIsLoading(true);
+    
+    try {
+      if (type === 'create') {
         // TODO After create project I don't go to update this project. Page update required
-      } else if (action === 'update') {
-        await updateById<TypeUpdateProjectDto>(updateProjectDto, EndpointsList.PROJECTS, router.query.id as string);
+        await createProject(payload);
+      } else if (type === 'update') {
+        await updateById<TypeUpdateProjectDto>(payload, EndpointsList.PROJECTS, router.query.id as string);
       }
 
+      formikHelpers.resetForm();
+
       await router.push(ProtectedRoutePath.PROJECTS);
+    } catch (err) {
+      console.warn(err);
+    } finally {
+      formikHelpers.setSubmitting(false);
+      setIsLoading(false);
     }
   };
+
+  const formik = useFormik<TypeUpdateProjectDto>({
+    initialValues,
+    validationSchema,
+    onSubmit: handleFormSubmit,
+    validateOnBlur: true,
+  });
+
+  const { handleSubmit, setFieldValue, values, touched, errors, getFieldProps } = formik;
 
   const handleGoBack = async () => {
     await router.back();
@@ -92,71 +121,76 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
 
   return (
     <BaseContentContainer>
-      <form style={{ width: '100%' }} onSubmit={(e) => handleFormSubmit(e, type)}>
+      <form noValidate={true} onSubmit={handleSubmit} style={{ width: '100%' }}>
         <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
           <Stack mb={6}>
             <Button onClick={() => handleGoBack()}>Back</Button>
           </Stack>
 
-          <FormControl>
+          <FormControl isRequired={true} isInvalid={Boolean(touched.title && errors.title)}>
             <FormLabel>Project title:</FormLabel>
 
             <Input
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
               isDisabled={isLoading}
-              type={'text'}/>
+              type={'text'}
+              {...getFieldProps('title')}/>
+
+            {touched.title && Boolean(errors.title) && <FormErrorMessage>{errors.title}</FormErrorMessage>}
           </FormControl>
 
-          <FormControl>
+          <FormControl isRequired={true} isInvalid={Boolean(touched.description && errors.description)}>
             <FormLabel>Project description:</FormLabel>
 
             <Textarea
-              onChange={(e) => setDescription(e.target.value)}
-              value={description}
               isDisabled={isLoading}
               size={'md'}
-              type={'text'}/>
+              {...getFieldProps('description')}/>
+
+            {touched.description && Boolean(errors.description) && <FormErrorMessage>{errors.description}</FormErrorMessage>}
           </FormControl>
 
-          <FormControl>
+          <FormControl isRequired={true} isInvalid={Boolean(touched.repository && errors.repository)}>
             <FormLabel>Project repository:</FormLabel>
 
             <Input
-              onChange={(e) => setRepository(e.target.value)}
-              value={repository}
               isDisabled={isLoading}
-              type={'text'}/>
+              type={'text'}
+              {...getFieldProps('repository')}/>
+
+            {touched.repository && Boolean(errors.repository) && <FormErrorMessage>{errors.repository}</FormErrorMessage>}
           </FormControl>
 
-          <FormControl>
+          <FormControl isRequired={true} isInvalid={Boolean(touched.demo && errors.demo)}>
             <FormLabel>Project demo:</FormLabel>
 
             <Input
-              onChange={(e) => setDemo(e.target.value)}
-              value={demo}
               isDisabled={isLoading}
-              type={'text'}/>
+              type={'text'}
+              {...getFieldProps('demo')}/>
+
+            {touched.demo && Boolean(errors.demo) && <FormErrorMessage>{errors.demo}</FormErrorMessage>}
           </FormControl>
 
-          <FormControl>
+          <FormControl isRequired={true} isInvalid={Boolean(touched.releaseDate && errors.releaseDate)}>
             <FormLabel>Project release date:</FormLabel>
 
             <Input
-              onChange={(e) => setReleaseDate(e.target.value)}
-              value={releaseDate}
               isDisabled={isLoading}
-              type={'date'}/>
+              type={'date'}
+              {...getFieldProps('releaseDate')}/>
+
+            {touched.releaseDate && Boolean(errors.releaseDate) && <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>}
           </FormControl>
 
-          <FormControl>
+          <FormControl isRequired={true} isInvalid={Boolean(touched.mainTechnology && errors.mainTechnology)}>
             <FormLabel>Project main technology:</FormLabel>
 
             <Input
-              onChange={(e) => setMainTechnology(e.target.value)}
-              value={mainTechnology}
               isDisabled={isLoading}
-              type={'text'}/>
+              type={'text'}
+              {...getFieldProps('mainTechnology')}/>
+
+            {touched.mainTechnology && Boolean(errors.mainTechnology) && <FormErrorMessage>{errors.mainTechnology}</FormErrorMessage>}
           </FormControl>
 
           <Stack direction={'column'} alignItems={'start'} justifyContent={'center'} w={'full'} spacing={4}>
@@ -166,11 +200,11 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
               <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} spacing={4}>
                 <Input
                   onChange={(e) => setPreparedTechnology(e.target.value)}
-                  value={preparedTechnology}
+                  value={tempTechnology}
                   isDisabled={isLoading}
                   type={'text'}/>
 
-                <Button onClick={() => handleSetTechnology()} colorScheme={'telegram'} isDisabled={isLoading}>Add</Button>
+                <Button onClick={() => handleSetTechnology('add', null)} colorScheme={'telegram'} isDisabled={isLoading}>Add</Button>
               </Stack>
             </FormControl>
 
@@ -178,14 +212,30 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
               technologies.length && <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} w={'full'} spacing={4}>
                 {
                   technologies.map((item) => (
-                    <Badge key={item} p={2} colorScheme={'telegram'}>{item}</Badge>
+                    <Badge key={item} p={2} colorScheme={'telegram'}>
+                      <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
+                        <Text>{item}</Text>
+
+                        <IconButton
+                          onClick={() => handleSetTechnology('remove', item)}
+                          variant={'ghost'}
+                          colorScheme={'red'}
+                          isRound={true}
+                          icon={<Icon as={CloseIcon} w={'18px'} h={'18px'}/>}
+                          minW={'20px'}
+                          minH={'20px'}
+                          w={'20px'}
+                          h={'20px'}
+                          aria-label={'Remove technology'}/>
+                      </Stack>
+                    </Badge>
                   ))
                 }
               </Stack>
             }
           </Stack>
 
-          <FormControl>
+          <FormControl isInvalid={Boolean(touched.file && errors.file)}>
             <FormLabel>Project preview:</FormLabel>
 
             {
@@ -194,24 +244,26 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
             }
 
             <Input
-              onChange={(e) => setFile(e.target?.files[0])}
+              onChange={(e) => setFieldValue('file', e.target?.files[0])}
               multiple={false}
               accept={'.jpg, .jpeg, .png'}
               isDisabled={isLoading}
               type={'file'}
               pl={1}
               border={'none'}/>
+
+            {/*{touched.file && Boolean(errors.file) && <FormErrorMessage>{errors.file}</FormErrorMessage>}*/}
           </FormControl>
 
           <FormControl>
             <FormLabel htmlFor={'project-visibility'}>Project visibility:</FormLabel>
 
             <Switch
-              onChange={() => setVisibility(!visibility)}
-              isChecked={visibility}
               id={'project-visibility'}
               isDisabled={isLoading}
-              colorScheme={'teal'}/>
+              colorScheme={'teal'}
+              isChecked={values.visibility}
+              {...getFieldProps('visibility')}/>
           </FormControl>
 
           <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6}>

@@ -14,7 +14,7 @@ const CreateSkill: FC = (): ReactElement => {
   const [experience, setExperience] = useState<string>('');
   const [color, setColor] = useState<string>('#777777');
 
-  const handleCreateSkill = async (e) => {
+  const handleCreateSkill = async (e: any) => {
     e.preventDefault();
 
     if (title.length && experience.length) {

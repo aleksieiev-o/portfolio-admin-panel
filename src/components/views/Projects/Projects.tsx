@@ -9,7 +9,7 @@ import { IProject } from 'my-portfolio-types';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { useLoading } from '@/hooks/useLoading';
-import { removeAll, removeById } from '@/services/data.service';
+import {removeAll, removeAllFiles, removeById} from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
 
@@ -18,7 +18,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
   const {isLoading, setIsLoading} = useLoading();
   const { isOpen: isOpenRemoveByIdModal, onOpen: onOpenRemoveByIdModal, onClose: onCloseRemoveByIdModal } = useDisclosure();
   const { isOpen: isOpenRemoveAllModal, onOpen: onOpenRemoveAllModal, onClose: onCloseRemoveAllModal } = useDisclosure();
-  const [preparedToRemoveProject, setPreparedToRemoveProject] = useState<IProject | null>(null);
+  const [preparedToRemoveProject, setPreparedToRemoveProject] = useState<IProject>({} as IProject);
 
   const handlePrepareCreateProject = async () => {
     await router.push(ProtectedRoutePath.CREATE_PROJECT);
@@ -34,13 +34,14 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
     setIsLoading(true);
     await removeById<IProject>(EndpointsList.PROJECTS, payload);
     await setIsLoading(false);
-    await setPreparedToRemoveProject(null);
+    await setPreparedToRemoveProject({} as IProject);
   };
 
   const handleRemoveAll = async () => {
     // TODO fix revalidate after remove all
     setIsLoading(true);
-    await removeAll<Array<IProject>>(EndpointsList.PROJECTS, payload);
+    await removeAll<Array<IProject>>(EndpointsList.PROJECTS);
+    await removeAllFiles(payload);
     await setIsLoading(false);
   };
 
@@ -165,12 +166,12 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
       {
         isOpenRemoveByIdModal &&
         <ActionConfirmationModal
-          actionHandler={() => handleRemoveById(preparedToRemoveProject!)}
+          actionHandler={() => handleRemoveById(preparedToRemoveProject)}
           isOpen={isOpenRemoveByIdModal}
           onClose={onCloseRemoveByIdModal}
           modalType={ActionConfirmationModalType.DANGER}
           modalTitle={'Remove project confirmation'}
-          modalDescription={`You are about to remove project ${preparedToRemoveProject.title!} now.`}
+          modalDescription={`You are about to remove project ${preparedToRemoveProject.title} now.`}
           modalQuestion={'Are you sure?'}
           buttonText={'Remove'}/>
       }

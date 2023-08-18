@@ -8,6 +8,8 @@ export const fetchPersonalInfo = async (): Promise<IPersonalInfo> => {
   return await fetchData(Endpoints.PERSONAL_INFO);
 };
 
-export const updatePersonalInfo = async (payload: {[key: keyof IPersonalInfo]: string}): Promise<void> => {
+// TODO fix @ts-ignore
+export const updatePersonalInfo = async (payload: {// @ts-ignore
+  [key: keyof IPersonalInfo]: string}): Promise<void> => {
   return await update(child(ref(firebaseDataBase), Endpoints.PERSONAL_INFO), payload);
 };

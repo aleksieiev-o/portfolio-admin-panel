@@ -18,7 +18,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
   const {isLoading, setIsLoading} = useLoading();
   const { isOpen: isOpenRemoveByIdModal, onOpen: onOpenRemoveByIdModal, onClose: onCloseRemoveByIdModal } = useDisclosure();
   const { isOpen: isOpenRemoveAllModal, onOpen: onOpenRemoveAllModal, onClose: onCloseRemoveAllModal } = useDisclosure();
-  const [preparedToRemoveSocial, setPreparedToRemoveSocial] = useState<ISocial | null>(null);
+  const [preparedToRemoveSocial, setPreparedToRemoveSocial] = useState<ISocial>({} as ISocial);
 
   const handlePrepareCreateSocialCard = async () => {
     await router.push(ProtectedRoutePath.CREATE_SOCIAL);
@@ -34,7 +34,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
     setIsLoading(true);
     await removeById<ISocial>(EndpointsList.SOCIALS, payload);
     await setIsLoading(false);
-    await setPreparedToRemoveSocial(null);
+    await setPreparedToRemoveSocial({} as ISocial);
   };
 
   const handleRemoveAll = async () => {
@@ -109,12 +109,12 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
       {
         isOpenRemoveByIdModal &&
         <ActionConfirmationModal
-          actionHandler={() => handleRemoveById(preparedToRemoveSocial!)}
+          actionHandler={() => handleRemoveById(preparedToRemoveSocial)}
           isOpen={isOpenRemoveByIdModal}
           onClose={onCloseRemoveByIdModal}
           modalType={ActionConfirmationModalType.DANGER}
           modalTitle={'Remove social card confirmation'}
-          modalDescription={`You are about to remove social card ${preparedToRemoveSocial.title!} now.`}
+          modalDescription={`You are about to remove social card ${preparedToRemoveSocial.title} now.`}
           modalQuestion={'Are you sure?'}
           buttonText={'Remove'}/>
       }

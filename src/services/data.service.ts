@@ -11,13 +11,13 @@ import {
 } from '@firebase/storage';
 import {IProject} from 'my-portfolio-types';
 
-const removeFile = async (currentFileSrc: string): Promise<void> => {
+export const removeFile = async (currentFileSrc: string): Promise<void> => {
   const desertRef = storageRef(firebaseStorage, currentFileSrc);
   await deleteObject(desertRef);
 };
 
 /** removeAllFiles works only for projects list */
-const removeAllFiles = async (payload): Promise<void> => {
+export const removeAllFiles = async (payload: Array<IProject>): Promise<void> => {
   const desertRefList = payload.map((item) => deleteObject(storageRef(firebaseStorage, item.fileSrc)));
   await Promise.all(desertRefList);
 };
@@ -55,7 +55,7 @@ export const updateById = async<T> (payload: T, path: EndpointsList, id: string)
     return await update(child(ref(firebaseDataBase), `${path}/${id}`), {
       ...payload,
       fileSrc: uploadedFile?.fileSrc || '',
-      fileName: uploadedFile?.fileName || '-',
+      fileName: uploadedFile?.fileName || '',
     });
   }
 
@@ -72,11 +72,7 @@ export const removeById = async<T> (path: EndpointsList, payload: T): Promise<vo
   return await remove(child(ref(firebaseDataBase), `${path}/${id}`));
 };
 
-export const removeAll = async<T = Array<{}>> (path: EndpointsList, payload?: T): Promise<void> => {
-  if (payload) {
-    await removeAllFiles(payload);
-  }
-
+export const removeAll = async<T> (path: EndpointsList): Promise<void> => {
   return await set(ref(firebaseDataBase, path), null);
 };
 

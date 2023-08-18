@@ -18,7 +18,7 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
   const {isLoading, setIsLoading} = useLoading();
   const { isOpen: isOpenRemoveByIdModal, onOpen: onOpenRemoveByIdModal, onClose: onCloseRemoveByIdModal } = useDisclosure();
   const { isOpen: isOpenRemoveAllModal, onOpen: onOpenRemoveAllModal, onClose: onCloseRemoveAllModal } = useDisclosure();
-  const [preparedToRemoveSkill, setPreparedToRemoveSkill] = useState<ISkill | null>(null);
+  const [preparedToRemoveSkill, setPreparedToRemoveSkill] = useState<ISkill>({} as ISkill);
 
   const handlePrepareCreateSkill = async () => {
     await router.push(ProtectedRoutePath.CREATE_SKILL);
@@ -34,7 +34,7 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
     setIsLoading(true);
     await removeById<ISkill>(EndpointsList.SKILLS, payload);
     await setIsLoading(false);
-    await setPreparedToRemoveSkill(null);
+    await setPreparedToRemoveSkill({} as ISkill);
   };
 
   const handleRemoveAll = async () => {
@@ -113,12 +113,12 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
       {
         isOpenRemoveByIdModal &&
         <ActionConfirmationModal
-          actionHandler={() => handleRemoveById(preparedToRemoveSkill!)}
+          actionHandler={() => handleRemoveById(preparedToRemoveSkill)}
           isOpen={isOpenRemoveByIdModal}
           onClose={onCloseRemoveByIdModal}
           modalType={ActionConfirmationModalType.DANGER}
           modalTitle={'Remove skill confirmation'}
-          modalDescription={`You are about to remove skill ${preparedToRemoveSkill.title!} now.`}
+          modalDescription={`You are about to remove skill ${preparedToRemoveSkill.title} now.`}
           modalQuestion={'Are you sure?'}
           buttonText={'Remove'}/>
       }

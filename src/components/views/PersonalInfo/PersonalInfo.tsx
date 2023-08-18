@@ -83,7 +83,7 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
             <Heading size={'lg'} color={'orange.400'}>Main image</Heading>
 
             <Input
-              onChange={(e) => setMainImageFile(e.target?.files[0])}
+              onChange={(e: any) => setMainImageFile(e.target?.files[0])}
               multiple={false}
               accept={'.jpg, .jpeg, .png'}
               isDisabled={mainImageLoading}
@@ -113,7 +113,7 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
             <Heading size={'lg'} color={'orange.400'}>Main BIO</Heading>
 
             <Input
-              onChange={(e) => setBioFile(e.target?.files[0])}
+              onChange={(e: any) => setBioFile(e.target?.files[0])}
               multiple={false}
               accept={'.pdf'}
               isDisabled={bioLoading}
