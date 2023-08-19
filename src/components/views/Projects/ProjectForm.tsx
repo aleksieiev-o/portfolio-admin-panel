@@ -13,7 +13,7 @@ import {
   Textarea,
   Image,
   Text,
-  FormErrorMessage, Icon, IconButton
+  FormErrorMessage, Icon, IconButton, Grid, GridItem
 } from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { useLoading } from '@/hooks/useLoading';
@@ -126,166 +126,185 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
   return (
     <BaseContentContainer>
       <form noValidate={true} onSubmit={handleSubmit} style={{ width: '100%' }}>
-        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-          <Stack mb={6}>
-            <Button onClick={() => handleGoBack()}>Back</Button>
-          </Stack>
+        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4} mb={6}>
+          <Button onClick={() => handleGoBack()} boxShadow={'md'}>Back</Button>
+        </Stack>
 
-          <FormControl isRequired={true} isInvalid={Boolean(touched.title && errors.title)}>
-            <FormLabel>Project title:</FormLabel>
+        <Grid templateColumns={{ md: 'repeat(2, 1fr)' }} gap={6} w={'full'}>
+          <GridItem>
+            <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
+              <FormControl isRequired={true} isInvalid={Boolean(touched.title && errors.title)}>
+                <FormLabel>Project title:</FormLabel>
 
-            <Input
-              isDisabled={isLoading}
-              type={'text'}
-              {...getFieldProps('title')}/>
-
-            {touched.title && Boolean(errors.title) && <FormErrorMessage>{errors.title}</FormErrorMessage>}
-          </FormControl>
-
-          <FormControl isRequired={true} isInvalid={Boolean(touched.description && errors.description)}>
-            <FormLabel>Project description:</FormLabel>
-
-            <Textarea
-              isDisabled={isLoading}
-              size={'md'}
-              {...getFieldProps('description')}/>
-
-            {touched.description && Boolean(errors.description) && <FormErrorMessage>{errors.description}</FormErrorMessage>}
-          </FormControl>
-
-          <FormControl isRequired={true} isInvalid={Boolean(touched.repository && errors.repository)}>
-            <FormLabel>Project repository:</FormLabel>
-
-            <Input
-              isDisabled={isLoading}
-              type={'text'}
-              {...getFieldProps('repository')}/>
-
-            {touched.repository && Boolean(errors.repository) && <FormErrorMessage>{errors.repository}</FormErrorMessage>}
-          </FormControl>
-
-          <FormControl isRequired={true} isInvalid={Boolean(touched.demo && errors.demo)}>
-            <FormLabel>Project demo:</FormLabel>
-
-            <Input
-              isDisabled={isLoading}
-              type={'text'}
-              {...getFieldProps('demo')}/>
-
-            {touched.demo && Boolean(errors.demo) && <FormErrorMessage>{errors.demo}</FormErrorMessage>}
-          </FormControl>
-
-          <FormControl isRequired={true} isInvalid={Boolean(touched.releaseDate && errors.releaseDate)}>
-            <FormLabel>Project release date:</FormLabel>
-
-            <Input
-              isDisabled={isLoading}
-              type={'date'}
-              {...getFieldProps('releaseDate')}/>
-
-            {touched.releaseDate && Boolean(errors.releaseDate) && <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>}
-          </FormControl>
-
-          <FormControl isRequired={true} isInvalid={Boolean(touched.position && errors.position)}>
-            <FormLabel>Project position in list:</FormLabel>
-
-            <Input
-              isDisabled={isLoading}
-              type={'text'}
-              {...getFieldProps('position')}/>
-
-            {touched.releaseDate && Boolean(errors.releaseDate) && <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>}
-          </FormControl>
-
-          <FormControl isRequired={true} isInvalid={Boolean(touched.mainTechnology && errors.mainTechnology)}>
-            <FormLabel>Project main technology:</FormLabel>
-
-            <Input
-              isDisabled={isLoading}
-              type={'text'}
-              {...getFieldProps('mainTechnology')}/>
-
-            {touched.mainTechnology && Boolean(errors.mainTechnology) && <FormErrorMessage>{errors.mainTechnology}</FormErrorMessage>}
-          </FormControl>
-
-          <Stack direction={'column'} alignItems={'start'} justifyContent={'center'} w={'full'} spacing={4}>
-            <FormControl>
-              <FormLabel>Project technologies list:</FormLabel>
-
-              <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} spacing={4}>
                 <Input
-                  onChange={(e) => setPreparedTechnology(e.target.value)}
-                  value={tempTechnology}
                   isDisabled={isLoading}
-                  type={'text'}/>
+                  type={'text'}
+                  boxShadow={'md'}
+                  {...getFieldProps('title')}/>
 
-                <Button onClick={() => handleSetTechnology('add', null)} colorScheme={'telegram'} isDisabled={isLoading}>Add</Button>
-              </Stack>
-            </FormControl>
+                {touched.title && Boolean(errors.title) && <FormErrorMessage>{errors.title}</FormErrorMessage>}
+              </FormControl>
 
-            {
-              technologiesValue.length && <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} w={'full'} spacing={4}>
+              <FormControl isRequired={true} isInvalid={Boolean(touched.description && errors.description)}>
+                <FormLabel>Project description:</FormLabel>
+
+                <Textarea
+                  isDisabled={isLoading}
+                  size={'md'}
+                  boxShadow={'md'}
+                  {...getFieldProps('description')}/>
+
+                {touched.description && Boolean(errors.description) && <FormErrorMessage>{errors.description}</FormErrorMessage>}
+              </FormControl>
+
+              <FormControl isRequired={true} isInvalid={Boolean(touched.repository && errors.repository)}>
+                <FormLabel>Project repository:</FormLabel>
+
+                <Input
+                  isDisabled={isLoading}
+                  type={'text'}
+                  boxShadow={'md'}
+                  {...getFieldProps('repository')}/>
+
+                {touched.repository && Boolean(errors.repository) && <FormErrorMessage>{errors.repository}</FormErrorMessage>}
+              </FormControl>
+
+              <FormControl isRequired={true} isInvalid={Boolean(touched.demo && errors.demo)}>
+                <FormLabel>Project demo:</FormLabel>
+
+                <Input
+                  isDisabled={isLoading}
+                  type={'text'}
+                  boxShadow={'md'}
+                  {...getFieldProps('demo')}/>
+
+                {touched.demo && Boolean(errors.demo) && <FormErrorMessage>{errors.demo}</FormErrorMessage>}
+              </FormControl>
+
+              <FormControl isRequired={true} isInvalid={Boolean(touched.releaseDate && errors.releaseDate)}>
+                <FormLabel>Project release date:</FormLabel>
+
+                <Input
+                  isDisabled={isLoading}
+                  type={'date'}
+                  boxShadow={'md'}
+                  {...getFieldProps('releaseDate')}/>
+
+                {touched.releaseDate && Boolean(errors.releaseDate) && <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>}
+              </FormControl>
+            </Stack>
+          </GridItem>
+
+          <GridItem overflow={'hidden'}>
+            <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
+              <FormControl isRequired={true} isInvalid={Boolean(touched.position && errors.position)}>
+                <FormLabel>Project position in list:</FormLabel>
+
+                <Input
+                  isDisabled={isLoading}
+                  type={'text'}
+                  boxShadow={'md'}
+                  {...getFieldProps('position')}/>
+
+                {touched.releaseDate && Boolean(errors.releaseDate) && <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>}
+              </FormControl>
+
+              <FormControl isRequired={true} isInvalid={Boolean(touched.mainTechnology && errors.mainTechnology)}>
+                <FormLabel>Project main technology:</FormLabel>
+
+                <Input
+                  isDisabled={isLoading}
+                  type={'text'}
+                  boxShadow={'md'}
+                  {...getFieldProps('mainTechnology')}/>
+
+                {touched.mainTechnology && Boolean(errors.mainTechnology) && <FormErrorMessage>{errors.mainTechnology}</FormErrorMessage>}
+              </FormControl>
+
+              <Stack direction={'column'} alignItems={'start'} justifyContent={'center'} w={'full'} spacing={4}>
+                <FormControl>
+                  <FormLabel>Project technologies list:</FormLabel>
+
+                  <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} spacing={4}>
+                    <Input
+                      onChange={(e) => setPreparedTechnology(e.target.value)}
+                      value={tempTechnology}
+                      isDisabled={isLoading}
+                      boxShadow={'md'}
+                      type={'text'}/>
+
+                    <Button onClick={() => handleSetTechnology('add', null)} colorScheme={'telegram'} isLoading={isLoading} boxShadow={'md'}>Add</Button>
+                  </Stack>
+                </FormControl>
+
                 {
-                  technologiesValue.map((item) => (
-                    <Badge key={item} p={2} colorScheme={'telegram'}>
-                      <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
-                        <Text>{item}</Text>
+                  technologiesValue.length && <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} w={'full'} spacing={4} overflowX={'auto'}>
+                    {
+                      technologiesValue.map((item, idx) => (
+                        <Badge key={`${idx}-${item}`} p={2} colorScheme={'telegram'}>
+                          <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
+                            <Text>{item}</Text>
 
-                        <IconButton
-                          onClick={() => handleSetTechnology('remove', item)}
-                          variant={'ghost'}
-                          colorScheme={'red'}
-                          isRound={true}
-                          icon={<Icon as={CloseIcon} w={'18px'} h={'18px'}/>}
-                          minW={'20px'}
-                          minH={'20px'}
-                          w={'20px'}
-                          h={'20px'}
-                          aria-label={'Remove technology'}/>
-                      </Stack>
-                    </Badge>
-                  ))
+                            <IconButton
+                              onClick={() => handleSetTechnology('remove', item)}
+                              variant={'ghost'}
+                              colorScheme={'red'}
+                              isDisabled={isLoading}
+                              isRound={true}
+                              icon={<Icon as={CloseIcon} w={'18px'} h={'18px'}/>}
+                              minW={'20px'}
+                              minH={'20px'}
+                              w={'20px'}
+                              h={'20px'}
+                              aria-label={'Remove technology'}/>
+                          </Stack>
+                        </Badge>
+                      ))
+                    }
+                  </Stack>
                 }
               </Stack>
-            }
-          </Stack>
 
-          <FormControl isInvalid={Boolean(touched.file && errors.file)}>
-            <FormLabel>Project preview:</FormLabel>
+              <FormControl isInvalid={Boolean(touched.file && errors.file)}>
+                <FormLabel>Project preview:</FormLabel>
 
-            {
-              projectPayload?.fileSrc &&
-              <Image src={projectPayload?.fileSrc || ''} maxW={320} objectFit={'contain'} alt={'Project preview'} mb={4}/>
-            }
+                {
+                  projectPayload?.fileSrc &&
+                  <Image src={projectPayload?.fileSrc || ''} maxW={320} objectFit={'contain'} alt={'Project preview'} mb={4}/>
+                }
 
-            <Input
-              onChange={(e) => setFieldValue('file', e.target?.files[0])}
-              multiple={false}
-              accept={'.jpg, .jpeg, .png'}
-              isDisabled={isLoading}
-              type={'file'}
-              pl={1}
-              border={'none'}/>
+                <Input
+                  onChange={(e) => setFieldValue('file', e.target?.files[0])}
+                  multiple={false}
+                  accept={'.jpg, .jpeg, .png'}
+                  isDisabled={isLoading}
+                  type={'file'}
+                  pl={1}
+                  border={'none'}/>
 
-            {/*{touched.file && Boolean(errors.file) && <FormErrorMessage>{errors.file}</FormErrorMessage>}*/}
-          </FormControl>
+                {/*{touched.file && Boolean(errors.file) && <FormErrorMessage>{errors.file}</FormErrorMessage>}*/}
+              </FormControl>
 
-          <FormControl>
-            <FormLabel htmlFor={'project-visibility'}>Project visibility:</FormLabel>
+              <FormControl>
+                <FormLabel htmlFor={'project-visibility'}>Project visibility:</FormLabel>
 
-            <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={6}>
-              <Switch
-                id={'project-visibility'}
-                isDisabled={isLoading}
-                colorScheme={'teal'}
-                isChecked={values.visibility}
-                {...getFieldProps('visibility')}/>
+                <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={6}>
+                  <Switch
+                    id={'project-visibility'}
+                    isDisabled={isLoading}
+                    colorScheme={'teal'}
+                    isChecked={values.visibility}
+                    {...getFieldProps('visibility')}/>
 
-              <Text>{values.visibility ? 'Visible' : 'Hidden'}</Text>
+                  <Text>{values.visibility ? 'Visible' : 'Hidden'}</Text>
+                </Stack>
+              </FormControl>
             </Stack>
-          </FormControl>
+          </GridItem>
+        </Grid>
 
-          <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6}>
+        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
+          <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6} boxShadow={'md'}>
             {type === 'create' ? 'Create' : 'Save'}
           </Button>
         </Stack>

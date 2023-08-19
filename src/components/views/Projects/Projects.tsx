@@ -2,6 +2,7 @@ import React, { FC, ReactElement, useState } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import BaseContentHeaderContainer from '@/components/UI/Containers/BaseContentHeader.container';
 import {
+  Accordion, AccordionButton, AccordionItem, AccordionPanel,
   Badge,
   Button,
   Card,
@@ -14,7 +15,8 @@ import {
   Stack,
   Text,
   Tooltip,
-  useDisclosure
+  useDisclosure,
+  AccordionIcon,
 } from '@chakra-ui/react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -26,6 +28,7 @@ import { useLoading } from '@/hooks/useLoading';
 import {removeAll, removeAllFiles, removeById} from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
+import {Box} from '@mui/material';
 
 const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => {
   const router = useRouter();
@@ -86,39 +89,47 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
                   <CardBody p={4}>
                     <Grid gridTemplateColumns={{md: '1fr 400px'}} gap={6} w={'full'}>
                       <GridItem overflow={'hidden'}>
-                        <Stack direction={'column'} w={'full'} spacing={4} overflow={'hidden'}>
+                        <Stack direction={'column'} w={'full'} spacing={4}>
                           <Stack direction={'row'} spacing={4}>
-                            <Tooltip label={'Project visibility'} aria-label={'project visibility'}>
-                              <Icon color={projectCard.visibility ? 'teal.500' : 'red.500'} as={projectCard.visibility ? VisibilityIcon : VisibilityOffIcon}/>
-                            </Tooltip>
-
                             <Heading size={'md'} color={'orange.400'}>{projectCard.title}</Heading>
                           </Stack>
 
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
-                            <Text as={'b'} whiteSpace={'nowrap'}>Project description:</Text>
+                          <Stack direction={'row'} alignItems={'flex-start'} justifyContent={'flex-start'} spacing={2}>
+                            <Accordion allowToggle={true} w={'full'}>
+                              <AccordionItem w={'full'}>
+                                <AccordionButton justifyContent={'space-between'} w={'full'} pl={0} pr={0} boxShadow={'md'}>
+                                  <Text as={'b'} whiteSpace={'nowrap'}>Project description:</Text>
 
-                            <Text>{projectCard.description}</Text>
+                                  <AccordionIcon/>
+                                </AccordionButton>
+
+                                <AccordionPanel pb={2} pl={0} pr={0}>{projectCard.description}</AccordionPanel>
+                              </AccordionItem>
+                            </Accordion>
                           </Stack>
 
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
-                            <Text as={'b'} whiteSpace={'nowrap'}>Repository page:</Text>
+                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2}>
+                            <Text as={'b'} whiteSpace={'nowrap'}>Repository:</Text>
 
-                            <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={2}>
-                              <Text>{projectCard.repository}</Text>
-
-                              <Button variant={'link'} colorScheme={'teal'} onClick={() => window.open(projectCard.repository, '_blank')}>Open repository</Button>
-                            </Stack>
+                            <Button
+                              onClick={() => window.open(projectCard.repository, '_blank')}
+                              variant={'link'}
+                              colorScheme={'teal'}
+                              title={projectCard.repository}>
+                              Open repository
+                            </Button>
                           </Stack>
 
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
+                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2}>
                             <Text as={'b'} whiteSpace={'nowrap'}>Demo page:</Text>
 
-                            <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={2}>
-                              <Text>{projectCard.demo}</Text>
-
-                              <Button variant={'link'} colorScheme={'teal'} onClick={() => window.open(projectCard.demo, '_blank')}>Open demo page</Button>
-                            </Stack>
+                            <Button
+                              onClick={() => window.open(projectCard.demo, '_blank')}
+                              variant={'link'}
+                              colorScheme={'teal'}
+                              title={projectCard.demo}>
+                              Open demo page
+                            </Button>
                           </Stack>
 
                           <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
@@ -130,22 +141,53 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
                           <Stack direction={'row'} w={'auto'} alignItems={'center'} spacing={2}>
                             <Text as={'b'} whiteSpace={'nowrap'}>Main technology:</Text>
 
-                            <Badge p={2} colorScheme={'green'}>{projectCard.mainTechnology}</Badge>
+                            <Badge
+                              p={2}
+                              colorScheme={'green'}
+                              title={projectCard.mainTechnology}
+                              whiteSpace={'nowrap'}>
+                              {projectCard.mainTechnology}
+                            </Badge>
                           </Stack>
 
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflowX={'hidden'}>
-                            <Text as={'b'} whiteSpace={'nowrap'}>Technologies:</Text>
+                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2}>
+                            <Accordion allowToggle={true} w={'full'}>
+                              <AccordionItem w={'full'}>
+                                <AccordionButton justifyContent={'space-between'} w={'full'} pl={0} pr={0} boxShadow={'md'}>
+                                  <Text as={'b'} whiteSpace={'nowrap'}>Technologies:</Text>
 
-                            <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflowX={'auto'}>
-                              {
-                                projectCard.technologies?.length ?
-                                  projectCard.technologies.map((technology) => (
-                                    <Badge key={technology} p={2} colorScheme={'telegram'}>{technology}</Badge>
-                                  ))
-                                  :
-                                  <Text>Technologies list is empty</Text>
-                              }
-                            </Stack>
+                                  <AccordionIcon/>
+                                </AccordionButton>
+
+                                <AccordionPanel pb={2} pl={0} pr={0}>
+                                  <Stack direction={'column'} alignItems={'flex-start'} spacing={2} w={'full'} overflowX={'auto'}>
+                                    {
+                                      projectCard.technologies?.length ?
+                                        projectCard.technologies.map((technology, idx) => (
+                                          <Badge
+                                            key={`${idx}-${technology}`}
+                                            p={2}
+                                            colorScheme={'telegram'}
+                                            title={technology}
+                                            whiteSpace={'nowrap'}>
+                                            {technology}
+                                          </Badge>
+                                        ))
+                                        :
+                                        <Text>Technologies list is empty</Text>
+                                    }
+                                  </Stack>
+                                </AccordionPanel>
+                              </AccordionItem>
+                            </Accordion>
+                          </Stack>
+
+                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
+                            <Text as={'b'} whiteSpace={'nowrap'}>Project visibility:</Text>
+
+                            <Tooltip label={projectCard.visibility ? 'Visible' : 'Hidden'} aria-label={'project visibility'}>
+                              <Icon color={projectCard.visibility ? 'teal.500' : 'red.500'} as={projectCard.visibility ? VisibilityIcon : VisibilityOffIcon}/>
+                            </Tooltip>
                           </Stack>
                         </Stack>
                       </GridItem>
