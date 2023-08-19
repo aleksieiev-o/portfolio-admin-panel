@@ -71,17 +71,13 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
                   <CardBody p={4}>
                     <Stack direction={'column'} w={'full'} spacing={4} overflow={'hidden'}>
                       <Stack direction={'row'} spacing={4}>
-                        <Tooltip label={'Skill visibility'} aria-label={'skill visibility'}>
-                          <Icon color={skillCard.visibility ? 'teal.500' : 'red.500'} as={skillCard.visibility ? VisibilityIcon : VisibilityOffIcon}/>
-                        </Tooltip>
-
-                        <Heading size={'md'}>{skillCard.title}</Heading>
+                        <Heading size={'md'} color={'orange.400'}>{skillCard.title}</Heading>
                       </Stack>
 
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
                         <Text as={'b'} fontSize={18} whiteSpace={'nowrap'}>Experience:</Text>
 
-                        <Text>{skillCard.experience}</Text>
+                        <Text>{skillCard.experience}%</Text>
                       </Stack>
 
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
@@ -89,12 +85,26 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
 
                         <Text>{skillCard.color}</Text>
                       </Stack>
+
+                      <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
+                        <Text as={'b'} whiteSpace={'nowrap'}>Skill visibility:</Text>
+
+                        <Tooltip label={skillCard.visibility ? 'Visible' : 'Hidden'} aria-label={'skill visibility'}>
+                          <Icon color={skillCard.visibility ? 'teal.500' : 'red.500'} as={skillCard.visibility ? VisibilityIcon : VisibilityOffIcon}/>
+                        </Tooltip>
+                      </Stack>
                     </Stack>
                   </CardBody>
 
                   <CardFooter p={4}>
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                      <Button variant={'solid'} colorScheme={'teal'} boxShadow={'md'}>Edit</Button>
+                      <Button
+                        onClick={() => router.push(ProtectedRoutePath.UPDATE_SKILL.replace('[id]', skillCard.id))}
+                        variant={'solid'}
+                        colorScheme={'teal'}
+                        boxShadow={'md'}>
+                        Edit
+                      </Button>
 
                       <Button onClick={() => handlePrepareRemoveById(skillCard)} variant={'solid'} colorScheme={'red'} boxShadow={'md'}>Remove</Button>
                     </Stack>

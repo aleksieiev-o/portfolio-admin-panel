@@ -3,9 +3,13 @@ export enum ProtectedRoutePath {
   PROJECTS = '/projects',
   SKILLS = '/skills',
   SOCIALS = '/socials',
+
   CREATE_PROJECT = '/projects/create',
   UPDATE_PROJECT = '/projects/update/[id]',
-  CREATE_SKILL = '/create-skill',
+
+  CREATE_SKILL = '/skills/create',
+  UPDATE_SKILL = '/skills/update/[id]',
+
   CREATE_SOCIAL = '/create-social',
 }
 

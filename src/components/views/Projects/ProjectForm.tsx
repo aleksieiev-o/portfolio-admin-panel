@@ -265,7 +265,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
                 }
               </Stack>
 
-              <FormControl isInvalid={Boolean(touched.file && errors.file)}>
+              <FormControl isRequired={true} isInvalid={Boolean(touched.file && errors.file)}>
                 <FormLabel>Project preview:</FormLabel>
 
                 {
