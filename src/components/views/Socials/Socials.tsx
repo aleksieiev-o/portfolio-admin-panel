@@ -49,9 +49,9 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
       <BaseContentHeaderContainer>
         {
           payload.length && <Stack direction={'row'} alignItems={'start'} justifyContent={'end'} w={'full'} spacing={4}>
-            <Button colorScheme={'teal'} onClick={() => handlePrepareCreateSocialCard()}>Create social card</Button>
+            <Button colorScheme={'teal'} onClick={() => handlePrepareCreateSocialCard()} boxShadow={'md'}>Create social card</Button>
 
-            <Button onClick={onOpenRemoveAllModal} isLoading={isLoading} colorScheme={'red'}>Remove all social cards</Button>
+            <Button onClick={onOpenRemoveAllModal} isLoading={isLoading} colorScheme={'red'} boxShadow={'md'}>Remove all social cards</Button>
           </Stack>
         }
       </BaseContentHeaderContainer>
@@ -65,6 +65,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
                 direction={{ base: 'column', sm: 'row' }}
                 overflow={'hidden'}
                 variant={'outline'}
+                boxShadow={'md'}
                 w={'full'}>
                 <Stack direction={'column'} w={'full'} overflow={'hidden'}>
                   <CardBody p={4}>
@@ -82,16 +83,16 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
 
                         <Text>{socialCard.url}</Text>
 
-                        <Button variant={'ghost'} colorScheme={'teal'} onClick={() => window.open(socialCard.url, '_blank')}>Open</Button>
+                        <Button variant={'link'} colorScheme={'teal'} onClick={() => window.open(socialCard.url, '_blank')}>Open</Button>
                       </Stack>
                     </Stack>
                   </CardBody>
 
                   <CardFooter p={4}>
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                      <Button variant={'solid'} colorScheme={'teal'}>Edit</Button>
+                      <Button variant={'solid'} colorScheme={'teal'} boxShadow={'md'}>Edit</Button>
 
-                      <Button onClick={() => handlePrepareRemoveById(socialCard)} variant={'solid'} colorScheme={'red'}>Remove</Button>
+                      <Button onClick={() => handlePrepareRemoveById(socialCard)} variant={'solid'} colorScheme={'red'} boxShadow={'md'}>Remove</Button>
                     </Stack>
                   </CardFooter>
                 </Stack>
@@ -101,7 +102,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
             <Stack direction={'column'} alignItems={'center'} justifyContent={'center'} w={'full'} spacing={4}>
               <Text>Social cards list is empty</Text>
 
-              <Button colorScheme={'teal'} onClick={() => handlePrepareCreateSocialCard()}>Create social card</Button>
+              <Button colorScheme={'teal'} onClick={() => handlePrepareCreateSocialCard()} boxShadow={'md'}>Create social card</Button>
             </Stack>
         }
       </BaseContentContainer>

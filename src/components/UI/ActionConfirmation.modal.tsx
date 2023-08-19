@@ -75,11 +75,12 @@ const ActionConfirmationModal: FC<Props> = (props): ReactElement => {
             isLoading={isLoading}
             colorScheme={actionButtonColorScheme}
             title={buttonText}
+            boxShadow={'md'}
             mr={4}>
             {buttonText}
           </Button>
 
-          <Button onClick={handleCloseModalButton} colorScheme={'gray'} title={'Close'}>
+          <Button onClick={handleCloseModalButton} colorScheme={'gray'} title={'Close'} boxShadow={'md'}>
             Close
           </Button>
         </ModalFooter>
