@@ -1,67 +1,66 @@
 import React, { FC, ReactElement } from 'react';
-import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import {
   Button,
   FormControl,
-  Input,
-  Stack,
-  Switch,
+  FormErrorMessage,
   FormLabel,
   Grid,
   GridItem,
-  Text,
-  FormErrorMessage
+  Input,
+  Stack,
+  Switch,
+  Text
 } from '@chakra-ui/react';
+import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { useRouter } from 'next/router';
-import { createSkill } from '@/services/skills.service';
+import { createSocial } from '@/services/socialsList.service';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { useLoading } from '@/hooks/useLoading';
-import {StaticProps} from '@/shared/types/StaticProps.type';
-import {ISkill} from 'my-portfolio-types';
 import {object, string} from 'yup';
-import {TypeCreateSkillDto} from '@/shared/dto/createSkill.dto';
 import {STRINGS} from '@/locales';
 import {FormikHelpers, useFormik} from 'formik';
 import {updateById} from '@/services/data.service';
 import {EndpointsList} from '@/shared/Endpoints.enum';
+import {TypeCreateSocialDto} from '@/shared/dto/createSocial.dto';
+import {StaticProps} from '@/shared/types/StaticProps.type';
+import {ISocial} from 'my-portfolio-types';
 
-interface Props extends StaticProps<ISkill | null> {
+interface Props extends StaticProps<ISocial | null> {
   type: 'create' | 'update';
 }
 
-const SkillForm: FC<Props> = (props): ReactElement => {
-  const {type, payload: skillPayload} = props;
+const SocialCardForm: FC<Props> = (props): ReactElement => {
+  const {type, payload: socialPayload} = props;
   const router = useRouter();
   const {isLoading, setIsLoading} = useLoading();
 
-  const initialValues: TypeCreateSkillDto = {
-    color: skillPayload?.color || '#777777',
-    experience: skillPayload?.experience || '',
-    position: skillPayload?.position || '',
-    title: skillPayload?.title || '',
-    visibility: skillPayload ? skillPayload.visibility : true,
+  const initialValues: TypeCreateSocialDto = {
+    position: socialPayload?.position || '',
+    title: socialPayload?.title || '',
+    visibility: socialPayload ? socialPayload.visibility : true,
+    url: socialPayload?.url || '',
   };
 
   const validationSchema = object().shape({
-    experience: string().trim().required(STRINGS.requiredField),
     position: string().trim().required(STRINGS.requiredField),
     title: string().trim().required(STRINGS.requiredField),
+    url: string().trim().required(STRINGS.requiredField),
   });
 
-  const handleFormSubmit = async (payload: TypeCreateSkillDto, formikHelpers: FormikHelpers<TypeCreateSkillDto>) => {
+  const handleFormSubmit = async (payload: TypeCreateSocialDto, formikHelpers: FormikHelpers<TypeCreateSocialDto>) => {
     setIsLoading(true);
 
     try {
       if (type === 'create') {
-        // TODO After create skill I don't go to update this skill. Page update required
-        await createSkill(payload);
+        // TODO After create social card I don't go to update this social card. Page update required
+        await createSocial(payload);
       } else if (type === 'update') {
-        await updateById<TypeCreateSkillDto>(payload, EndpointsList.SKILLS, router.query.id as string);
+        await updateById<TypeCreateSocialDto>(payload, EndpointsList.SOCIALS, router.query.id as string);
       }
 
       formikHelpers.resetForm();
 
-      await router.push(ProtectedRoutePath.SKILLS);
+      await router.push(ProtectedRoutePath.SOCIALS);
     } catch (err) {
       console.warn(err);
     } finally {
@@ -70,7 +69,7 @@ const SkillForm: FC<Props> = (props): ReactElement => {
     }
   };
 
-  const formik = useFormik<TypeCreateSkillDto>({
+  const formik = useFormik<TypeCreateSocialDto>({
     initialValues,
     validationSchema,
     onSubmit: handleFormSubmit,
@@ -94,7 +93,7 @@ const SkillForm: FC<Props> = (props): ReactElement => {
           <GridItem>
             <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
               <FormControl isRequired={true} isInvalid={Boolean(touched.title && errors.title)}>
-                <FormLabel>Skill title:</FormLabel>
+                <FormLabel>Social title:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
@@ -105,26 +104,16 @@ const SkillForm: FC<Props> = (props): ReactElement => {
                 {touched.title && Boolean(errors.title) && <FormErrorMessage>{errors.title}</FormErrorMessage>}
               </FormControl>
 
-              <FormControl isRequired={true} isInvalid={Boolean(touched.experience && errors.experience)}>
-                <FormLabel>Skill experience:</FormLabel>
+              <FormControl isRequired={true} isInvalid={Boolean(touched.url && errors.url)}>
+                <FormLabel>Social URL:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   boxShadow={'md'}
-                  type={'number'}
-                  {...getFieldProps('experience')}/>
+                  type={'text'}
+                  {...getFieldProps('url')}/>
 
-                {touched.experience && Boolean(errors.experience) && <FormErrorMessage>{errors.experience}</FormErrorMessage>}
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Skill color:</FormLabel>
-
-                <Input
-                  type={'color'}
-                  boxShadow={'md'}
-                  isDisabled={isLoading}
-                  {...getFieldProps('color')}/>
+                {touched.url && Boolean(errors.url) && <FormErrorMessage>{errors.url}</FormErrorMessage>}
               </FormControl>
             </Stack>
           </GridItem>
@@ -132,7 +121,7 @@ const SkillForm: FC<Props> = (props): ReactElement => {
           <GridItem>
             <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
               <FormControl isRequired={true} isInvalid={Boolean(touched.position && errors.position)}>
-                <FormLabel>Skill position in list:</FormLabel>
+                <FormLabel>Social position in list:</FormLabel>
 
                 <Input
                   type={'number'}
@@ -144,7 +133,7 @@ const SkillForm: FC<Props> = (props): ReactElement => {
               </FormControl>
 
               <FormControl>
-                <FormLabel htmlFor={'skill-visibility'}>Skill visibility:</FormLabel>
+                <FormLabel htmlFor={'social-visibility'}>Social card visibility:</FormLabel>
 
                 <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={6}>
                   <Switch
@@ -171,4 +160,4 @@ const SkillForm: FC<Props> = (props): ReactElement => {
   );
 };
 
-export default SkillForm;
+export default SocialCardForm;

@@ -10,7 +10,8 @@ export enum ProtectedRoutePath {
   CREATE_SKILL = '/skills/create',
   UPDATE_SKILL = '/skills/update/[id]',
 
-  CREATE_SOCIAL = '/create-social',
+  CREATE_SOCIAL = '/socials/create',
+  UPDATE_SOCIAL = '/socials/update/[id]',
 }
 
 export enum PublicRoutePath {

@@ -202,7 +202,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
 
                 <Input
                   isDisabled={isLoading}
-                  type={'text'}
+                  type={'number'}
                   boxShadow={'md'}
                   {...getFieldProps('position')}/>
 

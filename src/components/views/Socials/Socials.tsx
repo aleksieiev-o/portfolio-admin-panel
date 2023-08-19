@@ -71,26 +71,32 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
                   <CardBody p={4}>
                     <Stack direction={'column'} w={'full'} spacing={4} overflow={'hidden'}>
                       <Stack direction={'row'} spacing={4}>
-                        <Tooltip label={'Page visibility'} aria-label={'page visibility'}>
-                          <Icon color={socialCard.visibility ? 'teal.500' : 'red.500'} as={socialCard.visibility ? VisibilityIcon : VisibilityOffIcon}/>
-                        </Tooltip>
-
-                        <Heading size={'md'}>{socialCard.title}</Heading>
+                        <Heading size={'md'} color={'orange.400'}>{socialCard.title}</Heading>
                       </Stack>
 
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
                         <Text as={'b'}>Link:</Text>
 
-                        <Text>{socialCard.url}</Text>
-
                         <Button variant={'link'} colorScheme={'teal'} onClick={() => window.open(socialCard.url, '_blank')}>Open</Button>
+                      </Stack>
+
+                      <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
+                        <Text as={'b'} whiteSpace={'nowrap'}>Social card visibility:</Text>
+
+                        <Tooltip label={socialCard.visibility ? 'Visible' : 'Hidden'} aria-label={'social card visibility'}>
+                          <Icon color={socialCard.visibility ? 'teal.500' : 'red.500'} as={socialCard.visibility ? VisibilityIcon : VisibilityOffIcon}/>
+                        </Tooltip>
                       </Stack>
                     </Stack>
                   </CardBody>
 
                   <CardFooter p={4}>
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                      <Button variant={'solid'} colorScheme={'teal'} boxShadow={'md'}>Edit</Button>
+                      <Button
+                        onClick={() => router.push(ProtectedRoutePath.UPDATE_SOCIAL.replace('[id]', socialCard.id))}
+                        variant={'solid'}
+                        colorScheme={'teal'}
+                        boxShadow={'md'}>Edit</Button>
 
                       <Button onClick={() => handlePrepareRemoveById(socialCard)} variant={'solid'} colorScheme={'red'} boxShadow={'md'}>Remove</Button>
                     </Stack>
@@ -100,7 +106,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
             ))
             :
             <Stack direction={'column'} alignItems={'center'} justifyContent={'center'} w={'full'} spacing={4}>
-              <Text>Social cards list is empty</Text>
+              <Text>Social card list is empty</Text>
 
               <Button colorScheme={'teal'} onClick={() => handlePrepareCreateSocialCard()} boxShadow={'md'}>Create social card</Button>
             </Stack>
