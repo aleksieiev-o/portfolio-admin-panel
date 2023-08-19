@@ -28,7 +28,6 @@ import { useLoading } from '@/hooks/useLoading';
 import {removeAll, removeAllFiles, removeById} from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
-import {Box} from '@mui/material';
 
 const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => {
   const router = useRouter();

@@ -282,6 +282,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
                   pl={1}
                   border={'none'}/>
 
+                {/* TODO fix it*/}
                 {/*{touched.file && Boolean(errors.file) && <FormErrorMessage>{errors.file}</FormErrorMessage>}*/}
               </FormControl>
 
