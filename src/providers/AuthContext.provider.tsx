@@ -1,24 +1,22 @@
 import React, { createContext, FC, PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '@/firebase';
-import { User as FirebaseUser } from '@firebase/auth';
+import { User } from '@firebase/auth';
 import { IUser } from '@/components/views/Login/login.types';
 import { TypeComponentAuthFields } from '@/shared/types/Page.type';
 import { useRouter } from 'next/router';
-import { PublicRoutePath } from '@/router/Routes.enum';
+import {ProtectedRoutePath, PublicRoutePath} from '@/router/Routes.enum';
 import { LoadingContext } from '@/providers/LoadingContext.provider';
 
-type TypeCurrentUser = IUser | null;
-
 interface IAuthContextState {
-  currentUser: TypeCurrentUser;
+  currentUser: IUser;
   authState: boolean;
   // error: Error | undefined;
   // setCurrentUser: Dispatch<SetStateAction<IUser>>;
 }
 
 export const AuthContext = createContext<IAuthContextState>({
-  currentUser: null,
+  currentUser: {} as IUser,
   authState: false,
   // error: undefined,
 });
@@ -26,21 +24,30 @@ export const AuthContext = createContext<IAuthContextState>({
 const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (props): ReactElement => {
   const { children, Component: {withAuth} } = props;
   const {setGlobalLoading} = useContext(LoadingContext);
-  const [currentUser, setCurrentUser] = useState<TypeCurrentUser>(null);
+  const [currentUser, setCurrentUser] = useState<IUser>({} as IUser);
   const [authState, setAuthState] = useState<boolean>(false);
-  const {replace} = useRouter();
+  const {push, replace} = useRouter();
+
+  const reloadFirebaseUser = async () => {
+    await firebaseAuth.currentUser?.reload();
+
+    if (firebaseAuth.currentUser) {
+      setCurrentUser({ uid: firebaseAuth.currentUser.uid, email: firebaseAuth.currentUser.email });
+    }
+  };
 
   useEffect(() => {
-    onAuthStateChanged(firebaseAuth, async (user: FirebaseUser | null) => {
+    onAuthStateChanged(firebaseAuth, async (user: User | null) => {
       setGlobalLoading(true);
 
       if (withAuth && !user) {
-        setCurrentUser(null);
+        setCurrentUser({} as IUser);
         setAuthState(false);
         await replace(PublicRoutePath.LOGIN);
       } else if (user && user.uid) {
-        setCurrentUser({ uid: user.uid, email: user.email });
+        await reloadFirebaseUser();
         setAuthState(true);
+        await push(ProtectedRoutePath.PERSONAL_INFO);
       }
 
       await setGlobalLoading(false);

@@ -13,7 +13,7 @@ const NotFoundPage: NextPage = (): ReactElement => {
       <Stack direction={'column'} alignItems={'center'} justifyContent={'center'} spacing={4} h={'full'} w={'full'}>
         <Text>Page not found</Text>
 
-        <Button onClick={() => router.push(ProtectedRoutePath.PERSONAL_INFO)}>
+        <Button onClick={() => router.push(ProtectedRoutePath.PERSONAL_INFO)} boxShadow={'md'}>
           Go home
         </Button>
       </Stack>

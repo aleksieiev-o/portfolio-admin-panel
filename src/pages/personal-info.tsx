@@ -33,4 +33,6 @@ export async function getStaticProps(): Promise<StaticPropsResponse<IAllPersonal
   };
 }
 
+PersonalInfoPage.withAuth = true;
+
 export default PersonalInfoPage;
