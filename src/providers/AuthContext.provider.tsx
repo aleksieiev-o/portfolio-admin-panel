@@ -1,6 +1,6 @@
 import React, { createContext, FC, PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { firebaseAuth } from '@/firebase';
+import {onAuthStateChanged} from 'firebase/auth';
+import { firebaseAuth } from '@/lib/firebase';
 import { User } from '@firebase/auth';
 import { IUser } from '@/components/views/Login/login.types';
 import { TypeComponentAuthFields } from '@/shared/types/Page.type';
@@ -9,51 +9,40 @@ import {ProtectedRoutePath, PublicRoutePath} from '@/router/Routes.enum';
 import { LoadingContext } from '@/providers/LoadingContext.provider';
 
 interface IAuthContextState {
-  currentUser: IUser;
+  currentUser: IUser | null;
   authState: boolean;
-  // error: Error | undefined;
-  // setCurrentUser: Dispatch<SetStateAction<IUser>>;
 }
 
 export const AuthContext = createContext<IAuthContextState>({
-  currentUser: {} as IUser,
+  currentUser: null,
   authState: false,
-  // error: undefined,
 });
 
 const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (props): ReactElement => {
   const { children, Component: {withAuth} } = props;
   const {setGlobalLoading} = useContext(LoadingContext);
-  const [currentUser, setCurrentUser] = useState<IUser>({} as IUser);
+  const [currentUser, setCurrentUser] = useState<IUser>(null);
   const [authState, setAuthState] = useState<boolean>(false);
   const {push, replace} = useRouter();
-
-  const reloadFirebaseUser = async () => {
-    await firebaseAuth.currentUser?.reload();
-
-    if (firebaseAuth.currentUser) {
-      setCurrentUser({ uid: firebaseAuth.currentUser.uid, email: firebaseAuth.currentUser.email });
-    }
-  };
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, async (user: User | null) => {
       setGlobalLoading(true);
 
       if (withAuth && !user) {
-        setCurrentUser({} as IUser);
+        setCurrentUser(null);
         setAuthState(false);
         await replace(PublicRoutePath.LOGIN);
       } else if (user && user.uid) {
-        await reloadFirebaseUser();
+        setCurrentUser({ uid: user.uid, email: user.email });
+        const token = await user.getIdToken();
         setAuthState(true);
         await push(ProtectedRoutePath.PERSONAL_INFO);
       }
 
       await setGlobalLoading(false);
     });
-    // TODO fix Warning for useEffect dependency
-  }, [currentUser?.uid]);
+  }, []);
 
   const authContext: IAuthContextState = {
     currentUser,

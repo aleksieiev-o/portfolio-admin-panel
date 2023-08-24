@@ -32,7 +32,7 @@
     "classnames": "^2.3.2",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
-    "firebase": "^9.23.0",
+    "firebase": "^9.16.0",
     "formik": "^2.4.3",
     "my-portfolio-types": "^0.0.6",
     "next": "13.3.1",

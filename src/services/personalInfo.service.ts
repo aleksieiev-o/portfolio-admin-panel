@@ -1,7 +1,7 @@
 import { IPersonalInfo } from 'my-portfolio-types';
 import { Endpoints } from '@/shared/Endpoints.enum';
 import { child, update, ref } from '@firebase/database';
-import { firebaseDataBase } from '@/firebase';
+import { firebaseDataBase } from '@/lib/firebase';
 import { fetchData } from '@/services/data.service';
 
 export const fetchPersonalInfo = async (): Promise<IPersonalInfo> => {

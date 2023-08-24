@@ -2,7 +2,7 @@ import { IProject } from 'my-portfolio-types';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import { fetchDataList } from '@/services/data.service';
 import { push, ref, set } from '@firebase/database';
-import { firebaseDataBase } from '@/firebase';
+import { firebaseDataBase } from '@/lib/firebase';
 import {TypeCreateProjectDto} from '@/shared/dto/createProject.dto';
 import { uploadFile } from '@/services/data.service';
 

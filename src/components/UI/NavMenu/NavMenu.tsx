@@ -2,23 +2,19 @@ import React, { FC, ReactElement } from 'react';
 import Link from 'next/link';
 import { Button, Stack, useDisclosure } from '@chakra-ui/react';
 import { useSignOut } from 'react-firebase-hooks/auth';
-import { firebaseAuth } from '@/firebase';
+import { firebaseAuth } from '@/lib/firebase';
 import { router } from '@/router/Router';
-import { useRouter } from 'next/router';
-import { PublicRoutePath } from '@/router/Routes.enum';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
 
 const NavMenu: FC = (): ReactElement => {
   const [signOut, loading] = useSignOut(firebaseAuth);
-  const nRouter = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLogout = async (): Promise<void> => {
     try {
       await signOut();
-      await nRouter.push(PublicRoutePath.LOGIN);
-    } catch (e) {
-      console.error('logout error: ', e);
+    } catch (err) {
+      console.error('Logout error: ', err);
     }
   };
 

@@ -1,6 +1,6 @@
 import { Endpoints, EndpointsList } from '@/shared/Endpoints.enum';
 import { child, DataSnapshot, get, ref, remove, set, update } from '@firebase/database';
-import { firebaseDataBase, firebaseStorage } from '@/firebase';
+import { firebaseDataBase, firebaseStorage } from '@/lib/firebase';
 import {
   deleteObject,
   getDownloadURL,

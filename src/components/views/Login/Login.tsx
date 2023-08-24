@@ -3,7 +3,7 @@ import { Box, Button, FormControl, FormLabel, Icon, IconButton, Input, InputGrou
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { firebaseAuth } from '@/firebase';
+import { firebaseAuth } from '@/lib/firebase';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { LoadingContext } from '@/providers/LoadingContext.provider';

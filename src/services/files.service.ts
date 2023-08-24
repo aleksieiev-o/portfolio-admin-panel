@@ -1,7 +1,7 @@
 import { IFile } from 'my-portfolio-types';
 import { Endpoints } from '@/shared/Endpoints.enum';
 import { child, ref, update } from '@firebase/database';
-import { firebaseDataBase } from '@/firebase';
+import { firebaseDataBase } from '@/lib/firebase';
 import { fetchData, uploadFile } from '@/services/data.service';
 
 export const fetchBio = async (): Promise<IFile> => {
