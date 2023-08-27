@@ -21,30 +21,26 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.7.1",
+    "@chakra-ui/react": "^2.8.0",
     "@chakra-ui/theme-tools": "^2.0.17",
-    "@mui/icons-material": "^5.13.7",
-    "@types/node": "18.16.0",
-    "@types/react": "18.0.38",
-    "@types/react-dom": "18.0.11",
-    "axios": "^1.4.0",
-    "bowser": "^2.11.0",
-    "classnames": "^2.3.2",
-    "eslint": "8.39.0",
-    "eslint-config-next": "13.3.1",
-    "firebase": "^9.16.0",
+    "@mui/icons-material": "^5.14.6",
+    "@types/node": "^18.17.11",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "eslint": "^8.48.0",
+    "eslint-config-next": "^13.4.19",
+    "firebase": "^9.23.0",
     "formik": "^2.4.3",
     "my-portfolio-types": "^0.0.6",
-    "next": "13.3.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "next": "13.4.19",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",
-    "sass": "^1.63.6",
-    "typescript": "5.0.4",
+    "sass": "^1.66.1",
+    "typescript": "^5.2.2",
     "yup": "^1.2.0"
   },
   "devDependencies": {
-    "@types/classnames": "^2.3.1",
     "husky": "^8.0.3"
   }
 }
