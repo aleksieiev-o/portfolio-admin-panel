@@ -1,6 +1,6 @@
 import { IProject } from 'my-portfolio-types';
 import { EndpointsList } from '@/shared/Endpoints.enum';
-import {fetchDataList, removeAll, removeById, updateById} from '@/services/data.service';
+import {fetchDataList, removeAll, removeById} from '@/services/data.service';
 import {child, push, ref, set, update} from '@firebase/database';
 import {firebaseDataBase, firebaseStorage} from '@/lib/firebase';
 import {TypeCreateProjectDto} from '@/shared/dto/createProject.dto';
@@ -50,11 +50,16 @@ export const updateProjectById = async (payload: TypeCreateProjectDto, id: strin
       ...payload,
       fileSrc: uploadedFile?.fileSrc || '',
       fileName: uploadedFile?.fileName || '',
+      releaseDate: new Date(payload.releaseDate).toISOString(),
       updatedDate: new Date().toISOString(),
     });
   }
 
-  return await updateById<TypeCreateProjectDto>(payload, EndpointsList.PROJECTS, id);
+  return await update(child(ref(firebaseDataBase), `${EndpointsList.PROJECTS}/${id}`), {
+    ...payload,
+    releaseDate: new Date(payload.releaseDate).toISOString(),
+    updatedDate: new Date().toISOString(),
+  });
 };
 
 export const removeProjectById = async (payload: IProject, path: EndpointsList): Promise<void> => {

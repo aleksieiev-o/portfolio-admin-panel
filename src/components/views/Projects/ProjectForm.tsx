@@ -45,7 +45,6 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
     description: projectPayload?.description || '',
     fileSrc: projectPayload?.fileSrc || '',
     mainTechnology: projectPayload?.mainTechnology || '',
-    // TODO the date value save in two different variant. If I create project as 8/2/2023 and if I update project with releaseDate update as 2023-08-01
     releaseDate: projectPayload?.releaseDate.slice(0, 10) || '',
     repository: projectPayload?.repository || '',
     position: projectPayload?.position || '',
@@ -214,7 +213,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
                   boxShadow={'md'}
                   {...getFieldProps('position')}/>
 
-                {touched.releaseDate && Boolean(errors.releaseDate) && <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>}
+                {touched.position && Boolean(errors.position) && <FormErrorMessage>{errors.position}</FormErrorMessage>}
               </FormControl>
 
               <FormControl isRequired={true} isInvalid={Boolean(touched.mainTechnology && errors.mainTechnology)}>

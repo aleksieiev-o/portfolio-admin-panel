@@ -4,7 +4,8 @@ import { updatePersonalInfo } from '@/services/personalInfo.service';
 import { IPersonalInfo } from 'my-portfolio-types';
 
 interface Props {
-  textInputType: 'input' | 'textarea';
+  textInputMode: 'input' | 'textarea';
+  inputType?: 'text' | 'email' | 'date';
   fieldKey: keyof IPersonalInfo;
   title: string;
   defaultValue: string;
@@ -12,12 +13,12 @@ interface Props {
 }
 
 const EditableField: FC<Props> = (props): ReactElement => {
-  const {title, fieldKey, textInputType, defaultValue, textInputPlaceholder} = props;
+  const {title, fieldKey, textInputMode, inputType, defaultValue, textInputPlaceholder} = props;
 
   const handleSubmit = async (val: string) => {
     await updatePersonalInfo({
       field: fieldKey,
-      value: val,
+      value: fieldKey === 'birthDate' ? new Date(val).toISOString() : val,
     });
   };
 
@@ -27,7 +28,7 @@ const EditableField: FC<Props> = (props): ReactElement => {
 
       <Editable
         onSubmit={(val) => handleSubmit(val)}
-        defaultValue={defaultValue}
+        defaultValue={fieldKey === 'birthDate' ? defaultValue.slice(0, 10) : defaultValue}
         submitOnBlur={false}
         placeholder={textInputPlaceholder}
         w={'full'}
@@ -35,9 +36,9 @@ const EditableField: FC<Props> = (props): ReactElement => {
         <EditablePreview w={'full'}/>
 
         {
-          textInputType === 'input'
+          textInputMode === 'input'
             ?
-            <EditableInput/>
+            <EditableInput type={inputType || 'text'}/>
             :
             <EditableTextarea/>
         }

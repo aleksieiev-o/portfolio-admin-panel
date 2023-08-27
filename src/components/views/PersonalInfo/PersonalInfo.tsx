@@ -43,42 +43,43 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
           <EditableField
             title={'First name'}
             fieldKey={'firstName'}
-            textInputType={'input'}
+            textInputMode={'input'}
             defaultValue={firstName}
             textInputPlaceholder={'Enter your first name'}/>
 
           <EditableField
             title={'Last name'}
             fieldKey={'lastName'}
-            textInputType={'input'}
+            textInputMode={'input'}
             defaultValue={lastName}
             textInputPlaceholder={'Enter your last name'}/>
 
           <EditableField
             title={'Birth date'}
             fieldKey={'birthDate'}
-            textInputType={'input'}
-            defaultValue={birthDate?.toString()}
-            textInputPlaceholder={'Enter your birth date. Format - DD.MM.YYYY'}/>
+            textInputMode={'input'}
+            inputType={'date'}
+            defaultValue={birthDate}
+            textInputPlaceholder={'Enter your birth date'}/>
 
           <EditableField
             title={'Country'}
             fieldKey={'country'}
-            textInputType={'input'}
+            textInputMode={'input'}
             defaultValue={country}
             textInputPlaceholder={'Enter your country'}/>
 
           <EditableField
             title={'Town'}
             fieldKey={'town'}
-            textInputType={'input'}
+            textInputMode={'input'}
             defaultValue={town}
             textInputPlaceholder={'Enter your town'}/>
 
           <EditableField
             title={'About me'}
             fieldKey={'aboutMe'}
-            textInputType={'textarea'}
+            textInputMode={'textarea'}
             defaultValue={aboutMe}
             textInputPlaceholder={'Enter your information'}/>
         </Stack>
