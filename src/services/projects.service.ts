@@ -30,8 +30,8 @@ export const createProject = async (payload: TypeCreateProjectDto): Promise<void
     technologies: technologies.length ? technologies : [mainTechnology],
     demo: demo,
     repository: repository,
-    fileSrc: uploadedFile?.fileSrc,
-    fileName: uploadedFile?.fileName,
+    fileSrc: uploadedFile?.fileSrc || '',
+    fileName: uploadedFile?.fileName || '',
     position: position,
     createdDate: new Date().toISOString(),
     updatedDate: new Date().toISOString(),
@@ -57,12 +57,12 @@ export const updateProjectById = async (payload: TypeCreateProjectDto, id: strin
   return await updateById<TypeCreateProjectDto>(payload, EndpointsList.PROJECTS, id);
 };
 
-export const removeProjectById = async (payload: TypeCreateProjectDto, path: EndpointsList): Promise<void> => {
+export const removeProjectById = async (payload: IProject, path: EndpointsList): Promise<void> => {
   if (payload.fileSrc) {
     await removeImage(payload.fileSrc);
   }
 
-  return await removeById(payload, path);
+  return await removeById({data: payload}, path);
 };
 
 export const removeAllProjects = async (payload: Array<IProject>): Promise<void> => {

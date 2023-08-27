@@ -1,6 +1,11 @@
 import { Endpoints, EndpointsList } from '@/shared/Endpoints.enum';
 import { child, DataSnapshot, get, ref, remove, set, update } from '@firebase/database';
 import { firebaseDataBase } from '@/lib/firebase';
+import {IProject, ISkill, ISocial} from 'my-portfolio-types';
+
+interface IUpdatePayload<T> {
+  data: Partial<T>;
+}
 
 export const fetchDataList = async<T> (path: EndpointsList): Promise<Array<T>> => {
   const snapshot: DataSnapshot = await get(child(ref(firebaseDataBase), path));
@@ -25,8 +30,8 @@ export const updateById = async<T> (payload: T, path: EndpointsList, id: string)
   return await update(child(ref(firebaseDataBase), `${path}/${id}`), {...payload, updatedDate: new Date().toISOString()});
 };
 
-export const removeById = async<T> (payload: T, path: EndpointsList): Promise<void> => {
-  return await remove(child(ref(firebaseDataBase), `${path}/${payload.id}`));
+export const removeById = async<T extends IProject | ISkill | ISocial> (payload: IUpdatePayload<T>, path: EndpointsList): Promise<void> => {
+  return await remove(child(ref(firebaseDataBase), `${path}/${payload.data.id}`));
 };
 
 export const removeAll = async<T> (path: EndpointsList): Promise<void> => {

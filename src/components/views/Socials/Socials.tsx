@@ -31,7 +31,7 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
 
   const handleRemoveById = async (payload: ISocial) => {
     setIsLoading(true);
-    await removeById<ISocial>(payload, EndpointsList.SOCIALS);
+    await removeById<ISocial>({data: payload}, EndpointsList.SOCIALS);
     await setIsLoading(false);
     await setPreparedToRemoveSocial({} as ISocial);
     await router.push(ProtectedRoutePath.SOCIALS);

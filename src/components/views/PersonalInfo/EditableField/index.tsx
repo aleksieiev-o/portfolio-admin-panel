@@ -15,7 +15,10 @@ const EditableField: FC<Props> = (props): ReactElement => {
   const {title, fieldKey, textInputType, defaultValue, textInputPlaceholder} = props;
 
   const handleSubmit = async (val: string) => {
-    await updatePersonalInfo({[fieldKey]: val});
+    await updatePersonalInfo({
+      field: fieldKey,
+      value: val,
+    });
   };
 
   return (
