@@ -25,9 +25,9 @@ import { IProject } from 'my-portfolio-types';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
 import { useLoading } from '@/hooks/useLoading';
-import {removeAll, removeAllFiles, removeById} from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
+import {removeAllProjects, removeProjectById} from '@/services/projects.service';
 
 const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => {
   const router = useRouter();
@@ -47,7 +47,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
 
   const handleRemoveById = async (payload: IProject) => {
     setIsLoading(true);
-    await removeById<IProject>(payload, EndpointsList.PROJECTS);
+    await removeProjectById(payload, EndpointsList.PROJECTS);
     await setIsLoading(false);
     await setPreparedToRemoveProject({} as IProject);
     await router.push(ProtectedRoutePath.PROJECTS);
@@ -55,8 +55,7 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
 
   const handleRemoveAll = async () => {
     setIsLoading(true);
-    await removeAll<Array<IProject>>(EndpointsList.PROJECTS);
-    await removeAllFiles(payload);
+    await removeAllProjects(payload);
     await setIsLoading(false);
     await router.push(ProtectedRoutePath.PROJECTS);
   };

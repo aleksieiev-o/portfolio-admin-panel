@@ -1,7 +1,7 @@
 import React, {FC, ReactElement, useMemo, useState} from 'react';
 import { useRouter } from 'next/router';
 import { ProtectedRoutePath } from '@/router/Routes.enum';
-import { createProject } from '@/services/projects.service';
+import {createProject, updateProjectById} from '@/services/projects.service';
 import {
   Badge,
   Button,
@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { useLoading } from '@/hooks/useLoading';
-import { updateById } from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import {TypeCreateProjectDto} from '@/shared/dto/createProject.dto';
 import {IProject} from 'my-portfolio-types';
@@ -89,7 +88,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
       if (type === 'create') {
         await createProject(payload);
       } else if (type === 'update') {
-        await updateById<TypeCreateProjectDto>(payload, EndpointsList.PROJECTS, router.query.id as string);
+        await updateProjectById(payload, router.query.id as string);
       }
 
       formikHelpers.resetForm();

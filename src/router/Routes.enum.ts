@@ -1,5 +1,6 @@
 export enum ProtectedRoutePath {
   PERSONAL_INFO = '/personal-info',
+
   PROJECTS = '/projects',
   SKILLS = '/skills',
   SOCIALS = '/socials',
@@ -12,6 +13,9 @@ export enum ProtectedRoutePath {
 
   CREATE_SOCIAL = '/socials/create',
   UPDATE_SOCIAL = '/socials/update/[id]',
+
+  BIO = 'bio',
+  MAIN_IMAGE = 'main-image',
 }
 
 export enum PublicRoutePath {

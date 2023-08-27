@@ -33,7 +33,7 @@ const NavMenu: FC = (): ReactElement => {
           }
         </Stack>
 
-        <Button onClick={onOpen} isLoading={loading} title={'Log out'} variant={'ghost'}>Log out</Button>
+        <Button onClick={onOpen} isLoading={loading} title={'Log out'} variant={'ghost'}>Sign out</Button>
       </Stack>
 
       {

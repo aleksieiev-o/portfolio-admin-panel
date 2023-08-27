@@ -3,11 +3,14 @@ import BaseContentContainer from '@/components/UI/Containers/BaseContent.contain
 import { Button, Heading, Image, Input, Stack, Text } from '@chakra-ui/react';
 import EditableField from '@/components/views/PersonalInfo/EditableField';
 import { StaticProps } from '@/shared/types/StaticProps.type';
-import { updateFile } from '@/services/files.service';
+import { updatePersonalInfoFile } from '@/services/files.service';
 import { IAllPersonalInfo } from '@/shared/types/AllPersonalInfo.interface';
 import { useLoading } from '@/hooks/useLoading';
+import {ProtectedRoutePath} from '@/router/Routes.enum';
+import {useRouter} from 'next/router';
 
 const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElement => {
+  const router = useRouter();
   const {personalInfo, mainImage, bio} = payload;
   const {firstName, lastName, birthDate, country, town, aboutMe} = personalInfo;
   const [bioFile, setBioFile] = useState<File>();
@@ -15,25 +18,27 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
   const {isLoading: bioLoading, setIsLoading: setBioLoading} = useLoading();
   const {isLoading: mainImageLoading, setIsLoading: setMainImageLoading} = useLoading();
 
-  const handleUploadFile = async (path: 'bio' | 'main-image') => {
-    if (path === 'bio' && bioFile) {
+  const handleUploadFile = async (path: ProtectedRoutePath.BIO | ProtectedRoutePath.MAIN_IMAGE) => {
+    if (path === ProtectedRoutePath.BIO && bioFile) {
       setBioLoading(true);
-      await updateFile(bioFile, path);
+      await updatePersonalInfoFile(bio, bioFile, ProtectedRoutePath.BIO);
       await setBioFile(undefined);
       await setBioLoading(false);
-    } else if (path === 'main-image' && mainImageFile) {
+    } else if (path === ProtectedRoutePath.MAIN_IMAGE && mainImageFile) {
       setMainImageLoading(true);
-      await updateFile(mainImageFile, path);
+      await updatePersonalInfoFile(mainImage, mainImageFile, ProtectedRoutePath.MAIN_IMAGE);
       await setMainImageFile(undefined);
       await setMainImageLoading(false);
     }
+
+    await router.push(ProtectedRoutePath.PERSONAL_INFO);
   };
 
   return (
     <BaseContentContainer>
       <Stack direction={'column'} alignItems={'center'} justifyContent={'start'} w={'full'} overflow={'hidden'} spacing={4}>
         <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} overflow={'hidden'} spacing={2}>
-          <Heading size={'lg'} color={'orange.400'}>Main info</Heading>
+          <Heading size={'lg'} color={'orange.400'}>Personal info</Heading>
 
           <EditableField
             title={'First name'}
@@ -91,7 +96,7 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
               pl={1}
               border={'none'}/>
 
-            <Button onClick={() => handleUploadFile('main-image')} colorScheme={'teal'} isLoading={mainImageLoading}>Upload image</Button>
+            <Button onClick={() => handleUploadFile(ProtectedRoutePath.MAIN_IMAGE)} colorScheme={'teal'} isLoading={mainImageLoading}>Upload image</Button>
           </Stack>
 
           <Stack alignItems={'center'} justifyContent={'center'} flex={1}>
@@ -110,7 +115,7 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
 
         <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} overflow={'hidden'} spacing={2}>
           <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} flex={1} overflow={'hidden'} spacing={2}>
-            <Heading size={'lg'} color={'orange.400'}>Main BIO</Heading>
+            <Heading size={'lg'} color={'orange.400'}>BIO</Heading>
 
             <Input
               onChange={(e: any) => setBioFile(e.target?.files[0])}
@@ -121,7 +126,7 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
               pl={1}
               border={'none'}/>
 
-            <Button onClick={() => handleUploadFile('bio')} colorScheme={'teal'} isLoading={bioLoading}>Upload BIO</Button>
+            <Button onClick={() => handleUploadFile(ProtectedRoutePath.BIO)} colorScheme={'teal'} isLoading={bioLoading}>Upload BIO</Button>
           </Stack>
 
           <Stack alignItems={'center'} justifyContent={'center'} flex={1}>
