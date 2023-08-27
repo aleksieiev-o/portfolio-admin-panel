@@ -19,7 +19,7 @@ export async function getStaticProps(): Promise<StaticPropsResponse<Array<ISocia
 
   return {
     props: { payload },
-    revalidate: 5,
+    revalidate: 10,
   };
 }
 

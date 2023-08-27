@@ -34,14 +34,12 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
     await removeById<ISocial>({data: payload}, EndpointsList.SOCIALS);
     await setIsLoading(false);
     await setPreparedToRemoveSocial({} as ISocial);
-    await router.push(ProtectedRoutePath.SOCIALS);
   };
 
   const handleRemoveAll = async () => {
     setIsLoading(true);
     await removeAll(EndpointsList.SOCIALS);
     await setIsLoading(false);
-    await router.push(ProtectedRoutePath.SOCIALS);
   };
 
   return (
@@ -71,6 +69,8 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
                   <CardBody p={4}>
                     <Stack direction={'column'} w={'full'} spacing={4} overflow={'hidden'}>
                       <Stack direction={'row'} spacing={4}>
+                        <Heading size={'md'} title={'Position'}>{socialCard.position}.</Heading>
+
                         <Heading size={'md'} color={'orange.400'}>{socialCard.title}</Heading>
                       </Stack>
 

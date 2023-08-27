@@ -34,14 +34,12 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
     await removeById<ISkill>({data: payload}, EndpointsList.SKILLS);
     await setIsLoading(false);
     await setPreparedToRemoveSkill({} as ISkill);
-    await router.push(ProtectedRoutePath.SKILLS);
   };
 
   const handleRemoveAll = async () => {
     setIsLoading(true);
     await removeAll(EndpointsList.SKILLS);
     await setIsLoading(false);
-    await router.push(ProtectedRoutePath.SKILLS);
   };
 
   return (
@@ -71,6 +69,8 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
                   <CardBody p={4}>
                     <Stack direction={'column'} w={'full'} spacing={4} overflow={'hidden'}>
                       <Stack direction={'row'} spacing={4}>
+                        <Heading size={'md'} title={'Position'}>{skillCard.position}.</Heading>
+
                         <Heading size={'md'} color={'orange.400'}>{skillCard.title}</Heading>
                       </Stack>
 

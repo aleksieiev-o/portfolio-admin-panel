@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps<StaticProps<ISkill>> = async (contex
 
     return {
       props: { payload },
-      revalidate: 5,
+      revalidate: 10,
     };
   } catch (err) {
     return Promise.reject({} as ISkill);

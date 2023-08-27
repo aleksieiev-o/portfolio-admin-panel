@@ -50,14 +50,12 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
     await removeProjectById(payload, EndpointsList.PROJECTS);
     await setIsLoading(false);
     await setPreparedToRemoveProject({} as IProject);
-    await router.push(ProtectedRoutePath.PROJECTS);
   };
 
   const handleRemoveAll = async () => {
     setIsLoading(true);
     await removeAllProjects(payload);
     await setIsLoading(false);
-    await router.push(ProtectedRoutePath.PROJECTS);
   };
 
   return (
@@ -88,7 +86,9 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
                     <Grid gridTemplateColumns={{md: '1fr 400px'}} gap={6} w={'full'}>
                       <GridItem overflow={'hidden'}>
                         <Stack direction={'column'} w={'full'} spacing={4}>
-                          <Stack direction={'row'} spacing={4}>
+                          <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                            <Heading size={'md'} title={'Position'}>{projectCard.position}.</Heading>
+
                             <Heading size={'md'} color={'orange.400'}>{projectCard.title}</Heading>
                           </Stack>
 
