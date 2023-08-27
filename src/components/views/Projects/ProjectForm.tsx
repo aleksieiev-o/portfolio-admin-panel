@@ -31,6 +31,11 @@ interface Props extends StaticProps<IProject | null> {
   type: 'create' | 'update';
 }
 
+enum UpdateTechnologyListEnum {
+  ADD,
+  REMOVE,
+}
+
 const ProjectForm: FC<Props> = (props): ReactElement => {
   const {type, payload: projectPayload} = props;
   const router = useRouter();
@@ -82,7 +87,6 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
     
     try {
       if (type === 'create') {
-        // TODO After create project I don't go to update this project. Page update required
         await createProject(payload);
       } else if (type === 'update') {
         await updateById<TypeCreateProjectDto>(payload, EndpointsList.PROJECTS, router.query.id as string);
@@ -110,13 +114,19 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
 
   const technologiesValue = {...getFieldProps('technologies')}.value;
 
-  const handleSetTechnology = (type: 'add' | 'remove', technology: string | null) => {
-    if (type === 'add' && tempTechnology.length) {
+  const handleSetTechnology = (action: UpdateTechnologyListEnum, technology: string | null) => {
+    if (action === UpdateTechnologyListEnum.ADD && tempTechnology.length) {
       setFieldValue('technologies', [...technologiesValue, tempTechnology]);
       setPreparedTechnology('');
-    } else if (type === 'remove') {
-      setFieldValue('technologies', technologiesValue.filter((item) => item !== technology));
+    } else if (action === UpdateTechnologyListEnum.REMOVE) {
+      setFieldValue('technologies', technologiesValue.filter((item: string) => item !== technology));
     }
+  };
+
+  const updateFileInputValue = (files: FileList | null) => {
+    if (!files) return;
+
+    setFieldValue('file', files[0]);
   };
 
   const handleGoBack = async () => {
@@ -233,20 +243,20 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
                       boxShadow={'md'}
                       type={'text'}/>
 
-                    <Button onClick={() => handleSetTechnology('add', null)} colorScheme={'telegram'} isLoading={isLoading} boxShadow={'md'}>Add</Button>
+                    <Button onClick={() => handleSetTechnology(UpdateTechnologyListEnum.ADD, null)} colorScheme={'telegram'} isLoading={isLoading} boxShadow={'md'}>Add</Button>
                   </Stack>
                 </FormControl>
 
                 {
                   technologiesValue.length && <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} w={'full'} spacing={4} overflowX={'auto'}>
                     {
-                      technologiesValue.map((item, idx) => (
+                      technologiesValue.map((item: string, idx: number) => (
                         <Badge key={`${idx}-${item}`} p={2} colorScheme={'telegram'}>
                           <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
                             <Text>{item}</Text>
 
                             <IconButton
-                              onClick={() => handleSetTechnology('remove', item)}
+                              onClick={() => handleSetTechnology(UpdateTechnologyListEnum.REMOVE, item)}
                               variant={'ghost'}
                               colorScheme={'red'}
                               isDisabled={isLoading}
@@ -274,7 +284,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
                 }
 
                 <Input
-                  onChange={(e) => setFieldValue('file', e.target?.files[0])}
+                  onChange={(e) => updateFileInputValue(e.target.files)}
                   multiple={false}
                   accept={'.jpg, .jpeg, .png'}
                   isDisabled={isLoading}

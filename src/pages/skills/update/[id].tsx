@@ -34,12 +34,9 @@ export const getStaticProps: GetStaticProps<StaticProps<ISkill>> = async (contex
 
     return {
       props: { payload },
-      revalidate: 10,
+      revalidate: 5,
     };
   } catch (err) {
-    console.warn(err);
-    // return { notFound: true };
-    // TODO fix it
     return Promise.reject({} as ISkill);
   }
 };

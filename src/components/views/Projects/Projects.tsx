@@ -46,19 +46,19 @@ const Projects: FC<StaticProps<Array<IProject>>> = ({payload}): ReactElement => 
   };
 
   const handleRemoveById = async (payload: IProject) => {
-    // TODO fix revalidate after remove by id
     setIsLoading(true);
-    await removeById<IProject>(EndpointsList.PROJECTS, payload);
+    await removeById<IProject>(payload, EndpointsList.PROJECTS);
     await setIsLoading(false);
     await setPreparedToRemoveProject({} as IProject);
+    await router.push(ProtectedRoutePath.PROJECTS);
   };
 
   const handleRemoveAll = async () => {
-    // TODO fix revalidate after remove all
     setIsLoading(true);
     await removeAll<Array<IProject>>(EndpointsList.PROJECTS);
     await removeAllFiles(payload);
     await setIsLoading(false);
+    await router.push(ProtectedRoutePath.PROJECTS);
   };
 
   return (

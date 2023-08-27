@@ -21,7 +21,7 @@ export const AuthContext = createContext<IAuthContextState>({
 const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (props): ReactElement => {
   const { children, Component: {withAuth} } = props;
   const {setGlobalLoading} = useContext(LoadingContext);
-  const [currentUser, setCurrentUser] = useState<IUser>(null);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [authState, setAuthState] = useState<boolean>(false);
   const {push, replace} = useRouter();
 

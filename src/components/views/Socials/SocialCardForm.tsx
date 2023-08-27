@@ -52,7 +52,6 @@ const SocialCardForm: FC<Props> = (props): ReactElement => {
 
     try {
       if (type === 'create') {
-        // TODO After create social card I don't go to update this social card. Page update required
         await createSocial(payload);
       } else if (type === 'update') {
         await updateById<TypeCreateSocialDto>(payload, EndpointsList.SOCIALS, router.query.id as string);

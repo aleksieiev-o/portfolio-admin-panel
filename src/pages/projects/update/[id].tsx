@@ -34,12 +34,9 @@ export const getStaticProps: GetStaticProps<StaticProps<IProject>> = async (cont
 
     return {
       props: { payload },
-      revalidate: 10,
+      revalidate: 5,
     };
   } catch (err) {
-    console.warn(err);
-    // return { notFound: true };
-    // TODO fix this
     return Promise.reject({} as IProject);
   }
 };

@@ -53,7 +53,6 @@ const SkillForm: FC<Props> = (props): ReactElement => {
 
     try {
       if (type === 'create') {
-        // TODO After create skill I don't go to update this skill. Page update required
         await createSkill(payload);
       } else if (type === 'update') {
         await updateById<TypeCreateSkillDto>(payload, EndpointsList.SKILLS, router.query.id as string);

@@ -10,6 +10,9 @@ import {
   UploadResult
 } from '@firebase/storage';
 import {IProject} from 'my-portfolio-types';
+import {TypeCreateSkillDto} from '@/shared/dto/createSkill.dto';
+import {TypeCreateSocialDto} from '@/shared/dto/createSocial.dto';
+import {TypeCreateProjectDto} from '@/shared/dto/createProject.dto';
 
 export const removeFile = async (currentFileSrc: string): Promise<void> => {
   const desertRef = storageRef(firebaseStorage, currentFileSrc);
@@ -42,34 +45,30 @@ export const fetchById = async <T> (path: EndpointsList, id: string): Promise<T>
 };
 
 export const updateById = async<T> (payload: T, path: EndpointsList, id: string): Promise<void> => {
-  const {file, fileSrc} = payload;
-  let uploadedFile = undefined;
-
-  if (file) {
-    if (fileSrc) {
-      await removeFile(fileSrc);
+  if (payload.file) {
+    if (payload.fileSrc) {
+      await removeFile(payload.fileSrc);
     }
 
-    uploadedFile = await uploadFile(file, `projects/${file?.name}`);
+    const uploadedFile = await uploadFile(payload.file, `projects/${payload.file?.name}`);
 
     return await update(child(ref(firebaseDataBase), `${path}/${id}`), {
       ...payload,
       fileSrc: uploadedFile?.fileSrc || '',
       fileName: uploadedFile?.fileName || '',
+      updatedDate: new Date().toISOString(),
     });
   }
 
   return await update(child(ref(firebaseDataBase), `${path}/${id}`), {...payload, updatedDate: new Date().toISOString()});
 };
 
-export const removeById = async<T> (path: EndpointsList, payload: T): Promise<void> => {
-  const {id, fileSrc} = payload;
-
-  if (fileSrc) {
-    await removeFile(fileSrc);
+export const removeById = async<T> (payload: T, path: EndpointsList): Promise<void> => {
+  if (payload.fileSrc) {
+    await removeFile(payload.fileSrc);
   }
 
-  return await remove(child(ref(firebaseDataBase), `${path}/${id}`));
+  return await remove(child(ref(firebaseDataBase), `${path}/${payload.id}`));
 };
 
 export const removeAll = async<T> (path: EndpointsList): Promise<void> => {

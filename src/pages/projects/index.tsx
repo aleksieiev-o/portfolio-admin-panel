@@ -20,7 +20,7 @@ export const getStaticProps: GetStaticProps<StaticProps<Array<IProject>>> = asyn
 
   return {
     props: { payload },
-    revalidate: 10,
+    revalidate: 5,
   };
 };
 

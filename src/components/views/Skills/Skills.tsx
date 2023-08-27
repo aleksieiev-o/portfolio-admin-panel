@@ -30,18 +30,18 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
   };
 
   const handleRemoveById = async (payload: ISkill) => {
-    // TODO fix revalidate after remove by id
     setIsLoading(true);
-    await removeById<ISkill>(EndpointsList.SKILLS, payload);
+    await removeById<ISkill>(payload, EndpointsList.SKILLS);
     await setIsLoading(false);
     await setPreparedToRemoveSkill({} as ISkill);
+    await router.push(ProtectedRoutePath.SKILLS);
   };
 
   const handleRemoveAll = async () => {
-    // TODO fix revalidate after remove all
     setIsLoading(true);
     await removeAll(EndpointsList.SKILLS);
     await setIsLoading(false);
+    await router.push(ProtectedRoutePath.SKILLS);
   };
 
   return (
