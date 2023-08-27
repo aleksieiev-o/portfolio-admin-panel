@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { useLoading } from '@/hooks/useLoading';
-import { EndpointsList } from '@/shared/Endpoints.enum';
 import {TypeCreateProjectDto} from '@/shared/dto/createProject.dto';
 import {IProject} from 'my-portfolio-types';
 import {StaticProps} from '@/shared/types/StaticProps.type';
