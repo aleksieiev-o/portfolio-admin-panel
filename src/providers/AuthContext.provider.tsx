@@ -5,7 +5,7 @@ import { User } from '@firebase/auth';
 import { IUser } from '@/components/views/Login/login.types';
 import { TypeComponentAuthFields } from '@/shared/types/Page.type';
 import { useRouter } from 'next/router';
-import {ProtectedRoutePath, PublicRoutePath} from '@/router/Routes.enum';
+import {PublicRoutePath} from '@/router/Routes.enum';
 import { LoadingContext } from '@/providers/LoadingContext.provider';
 
 interface IAuthContextState {
@@ -35,9 +35,7 @@ const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (pro
         await replace(PublicRoutePath.LOGIN);
       } else if (user && user.uid) {
         setCurrentUser({ uid: user.uid, email: user.email });
-        const token = await user.getIdToken();
         setAuthState(true);
-        await push(ProtectedRoutePath.PERSONAL_INFO);
       }
 
       await setGlobalLoading(false);
