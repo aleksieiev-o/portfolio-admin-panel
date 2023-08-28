@@ -77,6 +77,10 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
                         <Text as={'b'}>Link:</Text>
 
+                        <Text>{socialCard.url}</Text>
+                      </Stack>
+
+                      <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
                         <Button variant={'link'} colorScheme={'teal'} onClick={() => window.open(socialCard.url, '_blank')}>Open</Button>
                       </Stack>
 
