@@ -29,7 +29,7 @@ export async function getStaticProps(): Promise<StaticPropsResponse<IAllPersonal
 
   return {
     props: { payload },
-    revalidate: 10,
+    revalidate: 1,
   };
 }
 

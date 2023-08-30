@@ -19,7 +19,7 @@ export async function getStaticProps(): Promise<StaticPropsResponse<Array<ISkill
 
   return {
     props: { payload },
-    revalidate: 10,
+    revalidate: 1,
   };
 }
 

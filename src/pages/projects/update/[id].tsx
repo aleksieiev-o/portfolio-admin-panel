@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps<StaticProps<IProject>> = async (cont
 
     return {
       props: { payload },
-      revalidate: 10,
+      revalidate: 1,
     };
   } catch (err) {
     return Promise.reject({} as IProject);
