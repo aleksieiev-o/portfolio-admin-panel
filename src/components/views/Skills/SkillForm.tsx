@@ -39,6 +39,7 @@ const SkillForm: FC<Props> = (props): ReactElement => {
     experience: skillPayload?.experience || '',
     position: skillPayload?.position || '',
     title: skillPayload?.title || '',
+    isMain: skillPayload ? skillPayload.isMain : true,
     visibility: skillPayload ? skillPayload.visibility : true,
   };
 
@@ -140,6 +141,21 @@ const SkillForm: FC<Props> = (props): ReactElement => {
                   {...getFieldProps('position')}/>
 
                 {touched.position && Boolean(errors.position) && <FormErrorMessage>{errors.position}</FormErrorMessage>}
+              </FormControl>
+
+              <FormControl>
+                <FormLabel htmlFor={'is-main-skill'}>Is main skill:</FormLabel>
+
+                <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={6}>
+                  <Switch
+                    id={'is-main-skill'}
+                    isDisabled={isLoading}
+                    colorScheme={'teal'}
+                    isChecked={values.isMain}
+                    {...getFieldProps('isMain')}/>
+
+                  <Text>{values.isMain ? 'Main skill' : 'Secondary skill'}</Text>
+                </Stack>
               </FormControl>
 
               <FormControl>

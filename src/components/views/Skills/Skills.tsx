@@ -3,6 +3,8 @@ import BaseContentContainer from '@/components/UI/Containers/BaseContent.contain
 import { Button, Card, CardBody, CardFooter, Heading, Icon, Stack, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
 import { StaticProps } from '@/shared/types/StaticProps.type';
 import { ISkill } from 'my-portfolio-types';
 import { useRouter } from 'next/router';
@@ -84,6 +86,14 @@ const Skills: FC<StaticProps<Array<ISkill>>> = ({payload}): ReactElement => {
                         <Text as={'b'} fontSize={18} whiteSpace={'nowrap'}>Color:</Text>
 
                         <Text>{skillCard.color}</Text>
+                      </Stack>
+
+                      <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
+                        <Text as={'b'} whiteSpace={'nowrap'}>Is main skill:</Text>
+
+                        <Tooltip label={skillCard.isMain ? 'Main skill' : 'Secondary skill'} aria-label={'is main skill'}>
+                          <Icon color={skillCard.isMain ? 'teal.500' : 'red.500'} as={skillCard.isMain ? DoneIcon : CloseIcon}/>
+                        </Tooltip>
                       </Stack>
 
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
