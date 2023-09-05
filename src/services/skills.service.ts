@@ -10,13 +10,14 @@ export const fetchAllSkills = async (): Promise<Array<ISkill>> => {
 };
 
 export const createSkill = async (payload: TypeCreateSkillDto): Promise<void> => {
-  const {title, visibility, experience, color, position} = payload;
+  const {title, visibility, isMain, experience, color, position} = payload;
   const skillRef = push(ref(firebaseDataBase, EndpointsList.SKILLS));
 
   const skill: ISkill = {
     id: skillRef.key!,
     title,
     visibility,
+    isMain,
     experience,
     color,
     position: position,
