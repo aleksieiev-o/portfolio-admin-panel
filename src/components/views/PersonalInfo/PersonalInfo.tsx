@@ -12,7 +12,7 @@ import {useRouter} from 'next/router';
 const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElement => {
   const router = useRouter();
   const {personalInfo, mainImage, bio} = payload;
-  const {firstName, lastName, birthDate, country, town, aboutMe} = personalInfo;
+  const {firstName, lastName, email, birthDate, country, town, aboutMe, biography} = personalInfo;
   const [bioFile, setBioFile] = useState<File>();
   const [mainImageFile, setMainImageFile] = useState<File>();
   const {isLoading: bioLoading, setIsLoading: setBioLoading} = useLoading();
@@ -55,6 +55,13 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
             textInputPlaceholder={'Enter your last name'}/>
 
           <EditableField
+            title={'Email'}
+            fieldKey={'email'}
+            textInputMode={'input'}
+            defaultValue={email}
+            textInputPlaceholder={'Enter your email'}/>
+
+          <EditableField
             title={'Birth date'}
             fieldKey={'birthDate'}
             textInputMode={'input'}
@@ -82,6 +89,13 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
             textInputMode={'textarea'}
             defaultValue={aboutMe}
             textInputPlaceholder={'Enter your information'}/>
+
+          <EditableField
+            title={'My biography'}
+            fieldKey={'biography'}
+            textInputMode={'textarea'}
+            defaultValue={biography}
+            textInputPlaceholder={'Enter your biography'}/>
         </Stack>
 
         <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} overflow={'hidden'} spacing={2}>
