@@ -4,6 +4,7 @@ export enum ProtectedRoutePath {
   PROJECTS = '/projects',
   SKILLS = '/skills',
   SOCIALS = '/socials',
+  DOCUMENTS = '/documents',
 
   CREATE_PROJECT = '/projects/create',
   UPDATE_PROJECT = '/projects/update/[id]',
@@ -13,6 +14,9 @@ export enum ProtectedRoutePath {
 
   CREATE_SOCIAL = '/socials/create',
   UPDATE_SOCIAL = '/socials/update/[id]',
+
+  CREATE_DOCUMENT = '/documents/create',
+  UPDATE_DOCUMENT = '/documents/update/[id]',
 
   BIO = 'bio',
   MAIN_IMAGE = 'main-image',
@@ -27,4 +31,5 @@ export enum ProtectedRouteName {
   PROJECTS = 'Projects',
   SKILLS = 'Skills',
   SOCIALS = 'Socials',
+  DOCUMENTS = 'Documents',
 }

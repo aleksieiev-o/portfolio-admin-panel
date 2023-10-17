@@ -2,6 +2,7 @@ export enum EndpointsList {
   PROJECTS = '/projects',
   SKILLS = '/skills',
   SOCIALS = '/socials',
+  DOCUMENTS = '/documents',
 }
 
 export enum Endpoints {

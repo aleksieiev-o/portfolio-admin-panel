@@ -132,7 +132,7 @@ const SkillForm: FC<Props> = (props): ReactElement => {
           <GridItem>
             <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
               <FormControl isRequired={true} isInvalid={Boolean(touched.position && errors.position)}>
-                <FormLabel>Skill position in list:</FormLabel>
+                <FormLabel>Skill position in a list:</FormLabel>
 
                 <Input
                   type={'number'}

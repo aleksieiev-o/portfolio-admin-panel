@@ -205,7 +205,7 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
           <GridItem overflow={'hidden'}>
             <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
               <FormControl isRequired={true} isInvalid={Boolean(touched.position && errors.position)}>
-                <FormLabel>Project position in list:</FormLabel>
+                <FormLabel>Project position in a list:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}

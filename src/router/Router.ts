@@ -12,4 +12,5 @@ export const router: Router = [
   { href: ProtectedRoutePath.PROJECTS, name: ProtectedRouteName.PROJECTS },
   { href: ProtectedRoutePath.SKILLS, name: ProtectedRouteName.SKILLS },
   { href: ProtectedRoutePath.SOCIALS, name: ProtectedRouteName.SOCIALS },
+  { href: ProtectedRoutePath.DOCUMENTS, name: ProtectedRouteName.DOCUMENTS },
 ];
