@@ -11,24 +11,17 @@ import {useRouter} from 'next/router';
 
 const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElement => {
   const router = useRouter();
-  const {personalInfo, mainImage, bio} = payload;
+  const {personalInfo, mainImage} = payload;
   const {firstName, lastName, email, birthDate, country, town, aboutMe, biography} = personalInfo;
-  const [bioFile, setBioFile] = useState<File>();
   const [mainImageFile, setMainImageFile] = useState<File>();
-  const {isLoading: bioLoading, setIsLoading: setBioLoading} = useLoading();
-  const {isLoading: mainImageLoading, setIsLoading: setMainImageLoading} = useLoading();
+  const {isLoading, setIsLoading} = useLoading();
 
-  const handleUploadFile = async (path: ProtectedRoutePath.BIO | ProtectedRoutePath.MAIN_IMAGE) => {
-    if (path === ProtectedRoutePath.BIO && bioFile) {
-      setBioLoading(true);
-      await updatePersonalInfoFile(bio, bioFile, ProtectedRoutePath.BIO);
-      await setBioFile(undefined);
-      await setBioLoading(false);
-    } else if (path === ProtectedRoutePath.MAIN_IMAGE && mainImageFile) {
-      setMainImageLoading(true);
-      await updatePersonalInfoFile(mainImage, mainImageFile, ProtectedRoutePath.MAIN_IMAGE);
+  const handleUploadFile = async () => {
+    if (mainImageFile) {
+      setIsLoading(true);
+      await updatePersonalInfoFile(mainImage, mainImageFile);
       await setMainImageFile(undefined);
-      await setMainImageLoading(false);
+      await setIsLoading(false);
     }
 
     await router.push(ProtectedRoutePath.PERSONAL_INFO);
@@ -106,12 +99,12 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
               onChange={(e: any) => setMainImageFile(e.target?.files[0])}
               multiple={false}
               accept={'.jpg, .jpeg, .png'}
-              isDisabled={mainImageLoading}
+              isDisabled={isLoading}
               type={'file'}
               pl={1}
               border={'none'}/>
 
-            <Button onClick={() => handleUploadFile(ProtectedRoutePath.MAIN_IMAGE)} colorScheme={'teal'} isLoading={mainImageLoading}>Upload image</Button>
+            <Button onClick={() => handleUploadFile()} colorScheme={'teal'} isLoading={isLoading}>Upload image</Button>
           </Stack>
 
           <Stack alignItems={'center'} justifyContent={'center'} flex={1}>
@@ -124,36 +117,6 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
                   maxW={320}/>
                 :
                 <Text>File main image is not enabled</Text>
-            }
-          </Stack>
-        </Stack>
-
-        <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} overflow={'hidden'} spacing={2}>
-          <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} flex={1} overflow={'hidden'} spacing={2}>
-            <Heading size={'lg'} color={'orange.400'}>BIO</Heading>
-
-            <Input
-              onChange={(e: any) => setBioFile(e.target?.files[0])}
-              multiple={false}
-              accept={'.pdf'}
-              isDisabled={bioLoading}
-              type={'file'}
-              pl={1}
-              border={'none'}/>
-
-            <Button onClick={() => handleUploadFile(ProtectedRoutePath.BIO)} colorScheme={'teal'} isLoading={bioLoading}>Upload BIO</Button>
-          </Stack>
-
-          <Stack alignItems={'center'} justifyContent={'center'} flex={1}>
-            {
-              bio.fileName ?
-                <Image
-                  src={bio.fileSrc}
-                  alt={bio.fileName}
-                  objectFit={'contain'}
-                  maxW={320}/>
-                :
-                <Text>File BIO is not enabled</Text>
             }
           </Stack>
         </Stack>

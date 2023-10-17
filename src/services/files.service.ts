@@ -36,22 +36,18 @@ export const removeImage = async (currentFileSrc: string): Promise<void> => {
   await deleteObject(desertRef);
 };
 
-export const fetchBio = async (): Promise<IFile> => {
-  return await fetchData(Endpoints.BIO);
-};
-
 export const fetchMainImage = async (): Promise<IFile> => {
   return await fetchData(Endpoints.MAIN_IMAGE);
 };
 
-export const updatePersonalInfoFile = async (currentFile: IFile, file: File, path: ProtectedRoutePath.BIO | ProtectedRoutePath.MAIN_IMAGE): Promise<void> => {
+export const updatePersonalInfoFile = async (currentFile: IFile, file: File): Promise<void> => {
   if (currentFile) {
     await removeImage(currentFile.fileSrc);
   }
 
   if (file) {
-    const uploadResult: IFile = await uploadImage(file, `${path}/${file.name}`);
+    const uploadResult: IFile = await uploadImage(file, `${ProtectedRoutePath.MAIN_IMAGE}/${file.name}`);
 
-    await update(child(ref(firebaseDataBase), path === ProtectedRoutePath.BIO ? Endpoints.BIO : Endpoints.MAIN_IMAGE), uploadResult);
+    await update(child(ref(firebaseDataBase), Endpoints.MAIN_IMAGE), uploadResult);
   }
 };
