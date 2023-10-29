@@ -1,7 +1,7 @@
 import React, { FC, ReactElement, useState } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import { Button, Heading, Image, Input, Stack, Text } from '@chakra-ui/react';
-import EditableField from '@/components/views/PersonalInfo/EditableField';
+import PersonalInfoForm from '@/components/views/PersonalInfo/PersonalInfoForm';
 import { StaticProps } from '@/shared/types/StaticProps.type';
 import { updatePersonalInfoFile } from '@/services/files.service';
 import { IAllPersonalInfo } from '@/shared/types/AllPersonalInfo.interface';
@@ -33,28 +33,28 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
         <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} overflow={'hidden'} spacing={2}>
           <Heading size={'lg'} color={'orange.400'}>Personal info</Heading>
 
-          <EditableField
+          <PersonalInfoForm
             title={'First name'}
             fieldKey={'firstName'}
             textInputMode={'input'}
             defaultValue={firstName}
             textInputPlaceholder={'Enter your first name'}/>
 
-          <EditableField
+          <PersonalInfoForm
             title={'Last name'}
             fieldKey={'lastName'}
             textInputMode={'input'}
             defaultValue={lastName}
             textInputPlaceholder={'Enter your last name'}/>
 
-          <EditableField
+          <PersonalInfoForm
             title={'Email'}
             fieldKey={'email'}
             textInputMode={'input'}
             defaultValue={email}
             textInputPlaceholder={'Enter your email'}/>
 
-          <EditableField
+          <PersonalInfoForm
             title={'Birth date'}
             fieldKey={'birthDate'}
             textInputMode={'input'}
@@ -62,28 +62,28 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
             defaultValue={birthDate}
             textInputPlaceholder={'Enter your birth date'}/>
 
-          <EditableField
+          <PersonalInfoForm
             title={'Country'}
             fieldKey={'country'}
             textInputMode={'input'}
             defaultValue={country}
             textInputPlaceholder={'Enter your country'}/>
 
-          <EditableField
+          <PersonalInfoForm
             title={'Town'}
             fieldKey={'town'}
             textInputMode={'input'}
             defaultValue={town}
             textInputPlaceholder={'Enter your town'}/>
 
-          <EditableField
+          <PersonalInfoForm
             title={'About me'}
             fieldKey={'aboutMe'}
             textInputMode={'textarea'}
             defaultValue={aboutMe}
             textInputPlaceholder={'Enter your information'}/>
 
-          <EditableField
+          <PersonalInfoForm
             title={'My biography'}
             fieldKey={'biography'}
             textInputMode={'textarea'}
