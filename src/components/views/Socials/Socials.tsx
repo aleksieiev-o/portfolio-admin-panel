@@ -1,6 +1,18 @@
 import React, { FC, ReactElement, useState } from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
-import { Button, Card, CardBody, CardFooter, Heading, Icon, Stack, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Grid, GridItem,
+  Heading,
+  Icon,
+  Stack,
+  Text,
+  Tooltip,
+  useDisclosure
+} from '@chakra-ui/react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { StaticProps } from '@/shared/types/StaticProps.type';
@@ -78,6 +90,12 @@ const Socials: FC<StaticProps<Array<ISocial>>> = ({payload}): ReactElement => {
                         <Text as={'b'}>Link:</Text>
 
                         <Text>{socialCard.url}</Text>
+                      </Stack>
+
+                      <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
+                        <Text as={'b'}>Icon name:</Text>
+
+                        <Text>{socialCard.iconName}</Text>
                       </Stack>
 
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>

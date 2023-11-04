@@ -39,12 +39,14 @@ const SocialCardForm: FC<Props> = (props): ReactElement => {
     title: socialPayload?.title || '',
     visibility: socialPayload ? socialPayload.visibility : true,
     url: socialPayload?.url || '',
+    iconName: socialPayload?.iconName || '',
   };
 
   const validationSchema = object().shape({
     position: string().trim().required(STRINGS.requiredField),
     title: string().trim().required(STRINGS.requiredField),
     url: string().trim().required(STRINGS.requiredField),
+    iconName: string().trim().required(STRINGS.requiredField),
   });
 
   const handleFormSubmit = async (payload: TypeCreateSocialDto, formikHelpers: FormikHelpers<TypeCreateSocialDto>) => {
@@ -113,6 +115,18 @@ const SocialCardForm: FC<Props> = (props): ReactElement => {
                   {...getFieldProps('url')}/>
 
                 {touched.url && Boolean(errors.url) && <FormErrorMessage>{errors.url}</FormErrorMessage>}
+              </FormControl>
+
+              <FormControl isRequired={true} isInvalid={Boolean(touched.iconName && errors.iconName)}>
+                <FormLabel>{`Social icon name (only from "react-icons/fa6"):`}</FormLabel>
+
+                <Input
+                  isDisabled={isLoading}
+                  boxShadow={'md'}
+                  type={'text'}
+                  {...getFieldProps('iconName')}/>
+
+                {touched.iconName && Boolean(errors.iconName) && <FormErrorMessage>{errors.iconName}</FormErrorMessage>}
               </FormControl>
             </Stack>
           </GridItem>
