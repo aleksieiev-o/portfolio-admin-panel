@@ -10,7 +10,7 @@ export const fetchSocialsList = async (): Promise<Array<ISocial>> => {
 };
 
 export const createSocial = async (payload: TypeCreateSocialDto): Promise<void> => {
-  const {title, visibility, url, position} = payload;
+  const {title, visibility, url, iconName, position} = payload;
   const socialRef = push(ref(firebaseDataBase, EndpointsList.SOCIALS));
 
   const social: ISocial = {
@@ -18,6 +18,7 @@ export const createSocial = async (payload: TypeCreateSocialDto): Promise<void> 
     title,
     visibility,
     url,
+    iconName,
     position: position,
     createdDate: new Date().toISOString(),
     updatedDate: new Date().toISOString(),
