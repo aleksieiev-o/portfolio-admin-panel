@@ -1,7 +1,7 @@
 {
   "name": "portfolio-admin-panel",
   "description": "Portfolio admin panel application",
-  "version": "0.6.3",
+  "version": "0.6.31",
   "license": "MIT",
   "author": "Oleksandr Aleksieiev",
   "private": true,
