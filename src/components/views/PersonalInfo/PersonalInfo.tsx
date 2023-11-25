@@ -12,7 +12,7 @@ import {useRouter} from 'next/router';
 const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElement => {
   const router = useRouter();
   const {personalInfo, mainImage} = payload;
-  const {firstName, lastName, email, birthDate, country, town, aboutMe, biography} = personalInfo;
+  const {firstName, lastName, email, birthDate, country, town, mapPoint, aboutMe, biography} = personalInfo;
   const [mainImageFile, setMainImageFile] = useState<File>();
   const {isLoading, setIsLoading} = useLoading();
 
@@ -75,6 +75,13 @@ const PersonalInfo: FC<StaticProps<IAllPersonalInfo>> = ({payload}): ReactElemen
             textInputMode={'input'}
             defaultValue={town}
             textInputPlaceholder={'Enter your town'}/>
+
+          <PersonalInfoForm
+            title={'Map point'}
+            fieldKey={'mapPoint'}
+            textInputMode={'input'}
+            defaultValue={mapPoint}
+            textInputPlaceholder={'Enter your map point'}/>
 
           <PersonalInfoForm
             title={'About me'}

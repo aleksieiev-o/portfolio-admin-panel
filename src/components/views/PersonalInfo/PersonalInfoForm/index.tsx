@@ -21,6 +21,8 @@ interface Props {
 }
 
 const PersonalInfoForm: FC<Props> = (props): ReactElement => {
+  // eslint-disable-next-line no-console
+  console.log(11, props);
   const {title, fieldKey, textInputMode, inputType, defaultValue, textInputPlaceholder} = props;
   const { isLoading, setIsLoading } = useLoading();
   const [val, setVal] = useState(fieldKey === 'birthDate' ? defaultValue.slice(0, 10) : defaultValue);
@@ -63,7 +65,7 @@ const PersonalInfoForm: FC<Props> = (props): ReactElement => {
           }
         </FormControl>
 
-        <Button type={'submit'} colorScheme={'teal'} isDisabled={!val.length} isLoading={isLoading}>
+        <Button type={'submit'} colorScheme={'teal'} isDisabled={!val?.length} isLoading={isLoading}>
           Save
         </Button>
       </Stack>
