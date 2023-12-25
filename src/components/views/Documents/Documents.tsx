@@ -5,7 +5,7 @@ import {useLoading} from '@/hooks/useLoading';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import {
   Button, Card,
-  CardBody, CardFooter, Grid, GridItem,
+  CardBody, CardFooter,
   Heading, Icon,
   Stack,
   Text, Tooltip,
@@ -19,15 +19,10 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {removeAllDocuments, removeDocumentById} from '@/services/documents.service';
 import ActionConfirmationModal, {ActionConfirmationModalType} from '@/components/UI/ActionConfirmation.modal';
-import { Document as PDFDocument, Page as PDFPage } from 'react-pdf';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
 
 const Documents: FC<StaticProps<Array<IDocument>>> = ({payload}): ReactElement => {
   const router = useRouter();
   const {isLoading, setIsLoading} = useLoading();
-  const [numPages, setNumPages] = useState<number>();
-  const [pageNumber, setPageNumber] = useState<number>(1);
   const { isOpen: isOpenRemoveByIdModal, onOpen: onOpenRemoveByIdModal, onClose: onCloseRemoveByIdModal } = useDisclosure();
   const { isOpen: isOpenRemoveAllModal, onOpen: onOpenRemoveAllModal, onClose: onCloseRemoveAllModal } = useDisclosure();
   const [preparedToRemoveDocument, setPreparedToRemoveDocument] = useState<IDocument>({} as IDocument);
@@ -50,12 +45,8 @@ const Documents: FC<StaticProps<Array<IDocument>>> = ({payload}): ReactElement =
 
   const handleRemoveAll = async () => {
     setIsLoading(true);
-    await removeAllDocuments(payload);
+    await removeAllDocuments();
     await setIsLoading(false);
-  };
-
-  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }): void => {
-    setNumPages(numPages);
   };
 
   return (
@@ -83,39 +74,27 @@ const Documents: FC<StaticProps<Array<IDocument>>> = ({payload}): ReactElement =
                 w={'full'}>
                 <Stack direction={'column'} w={'full'} overflow={'hidden'}>
                   <CardBody p={4}>
-                    <Grid gridTemplateColumns={{md: '1fr 400px'}} gap={6} w={'full'}>
-                      <GridItem>
-                        <Stack direction={'column'} w={'full'} spacing={4}>
-                          <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                            <Heading size={'md'} title={'Position'}>{documentCard.position}.</Heading>
+                    <Stack direction={'column'} w={'full'} spacing={4}>
+                      <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                        <Heading size={'md'} title={'Position'}>{documentCard.position}.</Heading>
 
-                            <Heading size={'md'} color={'orange.400'}>{documentCard.title}</Heading>
-                          </Stack>
+                        <Heading size={'md'} color={'orange.400'}>{documentCard.title}</Heading>
+                      </Stack>
 
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2}>
-                            <Text as={'b'} whiteSpace={'nowrap'}>Language:</Text>
+                      <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2}>
+                        <Text as={'b'} whiteSpace={'nowrap'}>Language:</Text>
 
-                            <Text as={'b'} whiteSpace={'nowrap'}>{documentCard.lang}</Text>
-                          </Stack>
+                        <Text as={'b'} whiteSpace={'nowrap'}>{documentCard.lang}</Text>
+                      </Stack>
 
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
-                            <Text as={'b'} whiteSpace={'nowrap'}>Document visibility:</Text>
+                      <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} spacing={2} overflow={'hidden'}>
+                        <Text as={'b'} whiteSpace={'nowrap'}>Document visibility:</Text>
 
-                            <Tooltip label={documentCard.visibility ? 'Visible' : 'Hidden'} aria-label={'document visibility'}>
-                              <Icon color={documentCard.visibility ? 'teal.500' : 'red.500'} as={documentCard.visibility ? VisibilityIcon : VisibilityOffIcon}/>
-                            </Tooltip>
-                          </Stack>
-                        </Stack>
-                      </GridItem>
-
-                      <GridItem>
-                        <Stack direction={'row'} alignItems={'flex-start'} justifyContent={'flex-start'}>
-                          <PDFDocument file={documentCard.fileSrc} onLoadSuccess={onDocumentLoadSuccess}>
-                            <PDFPage pageNumber={pageNumber} width={150}/>
-                          </PDFDocument>
-                        </Stack>
-                      </GridItem>
-                    </Grid>
+                        <Tooltip label={documentCard.visibility ? 'Visible' : 'Hidden'} aria-label={'document visibility'}>
+                          <Icon color={documentCard.visibility ? 'teal.500' : 'red.500'} as={documentCard.visibility ? VisibilityIcon : VisibilityOffIcon}/>
+                        </Tooltip>
+                      </Stack>
+                    </Stack>
                   </CardBody>
 
                   <CardFooter p={4}>

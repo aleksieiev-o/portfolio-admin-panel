@@ -6,11 +6,8 @@ import { ChakraProvider } from '@chakra-ui/provider';
 import { theme } from '@/theme';
 import AuthContextProvider  from '@/providers/AuthContext.provider';
 import { TypeComponentAuthFields } from '@/shared/types/Page.type';
-import {pdfjs} from 'react-pdf';
 
 type TypeAppProps = AppProps & TypeComponentAuthFields;
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 const App: FC<TypeAppProps> = (props): ReactElement => {
   const {Component, pageProps} = props;

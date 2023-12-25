@@ -32,7 +32,6 @@ const DocumentsForm: FC<Props> = (props): ReactElement => {
   const {isLoading, setIsLoading} = useLoading();
 
   const initialValues: TypeCreateDocumentDto = {
-    fileSrc: documentPayload?.fileSrc || '',
     position: documentPayload?.position || '',
     title: documentPayload?.title || '',
     lang: documentPayload?.lang || '',
@@ -42,7 +41,6 @@ const DocumentsForm: FC<Props> = (props): ReactElement => {
   const validationSchema = useMemo(() => {
     if (type === 'create') {
       return object().shape({
-        file: mixed().required(STRINGS.requiredFieldImage),
         position: string().trim().required(STRINGS.requiredField),
         title: string().trim().required(STRINGS.requiredField),
         lang: mixed().required(STRINGS.requiredField).oneOf([AppLocaleEnum.EN_US, AppLocaleEnum.DE_DE, AppLocaleEnum.RU_RU]),
@@ -50,7 +48,6 @@ const DocumentsForm: FC<Props> = (props): ReactElement => {
     }
 
     return object().shape({
-      fileSrc: string().trim().required(STRINGS.requiredField),
       position: string().trim().required(STRINGS.requiredField),
       title: string().trim().required(STRINGS.requiredField),
       lang: mixed().required(STRINGS.requiredField).oneOf([AppLocaleEnum.EN_US, AppLocaleEnum.DE_DE, AppLocaleEnum.RU_RU]),
@@ -85,13 +82,7 @@ const DocumentsForm: FC<Props> = (props): ReactElement => {
     validateOnBlur: true,
   });
 
-  const { handleSubmit, setFieldValue, values, touched, errors, getFieldProps } = formik;
-
-  const updateFileInputValue = (files: FileList | null) => {
-    if (!files) return;
-
-    setFieldValue('file', files[0]);
-  };
+  const { handleSubmit, values, touched, errors, getFieldProps } = formik;
 
   const handleGoBack = async () => {
     await router.back();
@@ -149,22 +140,6 @@ const DocumentsForm: FC<Props> = (props): ReactElement => {
                   {...getFieldProps('position')}/>
 
                 {touched.position && Boolean(errors.position) && <FormErrorMessage>{errors.position}</FormErrorMessage>}
-              </FormControl>
-
-              <FormControl isRequired={true} isInvalid={Boolean(touched.file && errors.file)}>
-                <FormLabel>Document file:</FormLabel>
-
-                <Input
-                  onChange={(e) => updateFileInputValue(e.target.files)}
-                  multiple={false}
-                  accept={'.pdf'}
-                  isDisabled={isLoading}
-                  type={'file'}
-                  pl={1}
-                  border={'none'}/>
-
-                {/* TODO fix it*/}
-                {/*{touched.file && Boolean(errors.file) && <FormErrorMessage>{errors.file}</FormErrorMessage>}*/}
               </FormControl>
 
               <FormControl>
