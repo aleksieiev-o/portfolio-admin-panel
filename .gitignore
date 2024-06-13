@@ -5,6 +5,7 @@
 /dist
 /.pnp
 .pnp.js
+.yarn/install-state.gz
 
 # testing
 /coverage
@@ -28,7 +29,7 @@ yarn-error.log*
 
 # local env files
 /env
-.env
+.env.production
 .env.*
 
 # vercel
@@ -49,3 +50,8 @@ next-env.d.ts
 
 #other
 .eslintcache
+
+# Firebase
+database-debug.log
+firebase-debug.log
+ui-debug.log

@@ -23,7 +23,7 @@ interface Props {
 const PersonalInfoForm: FC<Props> = (props): ReactElement => {
   const {title, fieldKey, textInputMode, inputType, defaultValue, textInputPlaceholder} = props;
   const { isLoading, setIsLoading } = useLoading();
-  const [val, setVal] = useState(fieldKey === 'birthDate' ? defaultValue.slice(0, 10) : defaultValue);
+  const [val, setVal] = useState(fieldKey === 'birthDate' ? defaultValue?.slice(0, 10) : defaultValue);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
