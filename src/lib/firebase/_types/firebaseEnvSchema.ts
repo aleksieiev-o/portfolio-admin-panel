@@ -4,7 +4,7 @@ const envSchema = z.object({
   apiKey: z.string().trim(),
   authDomain: z.string().trim(),
   databaseURL: z.string().trim().url(),
-  storageBucket: z.string().trim().url(),
+  storageBucket: z.string().trim(),
   projectId: z.string().trim(),
   messagingSenderId: z.string().trim(),
   appId: z.string().trim(),
