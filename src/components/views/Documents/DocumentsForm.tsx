@@ -16,8 +16,11 @@ import {
   FormLabel,
   Grid,
   GridItem,
-  Input, Select,
-  Stack, Switch, Text,
+  Input,
+  Select,
+  Stack,
+  Switch,
+  Text,
 } from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import {AppLocaleEnum, AppLocaleNameEnum} from '@/shared/types/AppLocale.enum';
@@ -43,18 +46,29 @@ const DocumentsForm: FC<Props> = (props): ReactElement => {
       return object().shape({
         position: string().trim().required(STRINGS.requiredField),
         title: string().trim().required(STRINGS.requiredField),
-        lang: mixed().required(STRINGS.requiredField).oneOf([AppLocaleEnum.EN_US, AppLocaleEnum.DE_DE, AppLocaleEnum.RU_RU]),
+        lang: mixed()
+          .required(STRINGS.requiredField)
+          .oneOf([
+            AppLocaleEnum.EN_US,
+            AppLocaleEnum.DE_DE,
+            AppLocaleEnum.RU_RU,
+          ]),
       });
     }
 
     return object().shape({
       position: string().trim().required(STRINGS.requiredField),
       title: string().trim().required(STRINGS.requiredField),
-      lang: mixed().required(STRINGS.requiredField).oneOf([AppLocaleEnum.EN_US, AppLocaleEnum.DE_DE, AppLocaleEnum.RU_RU]),
+      lang: mixed()
+        .required(STRINGS.requiredField)
+        .oneOf([AppLocaleEnum.EN_US, AppLocaleEnum.DE_DE, AppLocaleEnum.RU_RU]),
     });
   }, [type]);
 
-  const handleFormSubmit = async (payload: TypeCreateDocumentDto, formikHelpers: FormikHelpers<TypeCreateDocumentDto>) => {
+  const handleFormSubmit = async (
+    payload: TypeCreateDocumentDto,
+    formikHelpers: FormikHelpers<TypeCreateDocumentDto>,
+  ) => {
     setIsLoading(true);
 
     try {
@@ -82,7 +96,7 @@ const DocumentsForm: FC<Props> = (props): ReactElement => {
     validateOnBlur: true,
   });
 
-  const { handleSubmit, values, touched, errors, getFieldProps } = formik;
+  const {handleSubmit, values, touched, errors, getFieldProps} = formik;
 
   const handleGoBack = async () => {
     await router.back();
@@ -90,68 +104,121 @@ const DocumentsForm: FC<Props> = (props): ReactElement => {
 
   return (
     <BaseContentContainer>
-      <form noValidate={true} onSubmit={handleSubmit} style={{ width: '100%' }}>
-        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4} mb={6}>
-          <Button onClick={() => handleGoBack()} boxShadow={'md'}>Back</Button>
+      <form noValidate={true} onSubmit={handleSubmit} style={{width: '100%'}}>
+        <Stack
+          direction={'column'}
+          alignItems={'start'}
+          justifyContent={'start'}
+          w={'full'}
+          spacing={4}
+          mb={6}
+        >
+          <Button onClick={() => handleGoBack()} boxShadow={'md'}>
+            Back
+          </Button>
         </Stack>
 
-        <Grid templateColumns={{ md: 'repeat(2, 1fr)' }} gap={6} w={'full'}>
+        <Grid templateColumns={{md: 'repeat(2, 1fr)'}} gap={6} w={'full'}>
           <GridItem>
-            <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-              <FormControl isRequired={true} isInvalid={Boolean(touched.title && errors.title)}>
+            <Stack
+              direction={'column'}
+              alignItems={'start'}
+              justifyContent={'start'}
+              w={'full'}
+              spacing={4}
+            >
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.title && errors.title)}
+              >
                 <FormLabel>Document title:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   type={'text'}
                   boxShadow={'md'}
-                  {...getFieldProps('title')}/>
+                  {...getFieldProps('title')}
+                />
 
-                {touched.title && Boolean(errors.title) && <FormErrorMessage>{errors.title}</FormErrorMessage>}
+                {touched.title && Boolean(errors.title) && (
+                  <FormErrorMessage>{errors.title}</FormErrorMessage>
+                )}
               </FormControl>
 
-              <FormControl isRequired={true} isInvalid={Boolean(touched.lang && errors.lang)}>
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.lang && errors.lang)}
+              >
                 <FormLabel>Document language:</FormLabel>
 
                 <Select
                   isDisabled={isLoading}
                   boxShadow={'md'}
                   placeholder={'Select language'}
-                  {...getFieldProps('lang')}>
-                  <option value={AppLocaleEnum.EN_US}>{AppLocaleNameEnum.EN_US}</option>
-                  <option value={AppLocaleEnum.DE_DE}>{AppLocaleNameEnum.DE_DE}</option>
-                  <option value={AppLocaleEnum.RU_RU}>{AppLocaleNameEnum.RU_RU}</option>
+                  {...getFieldProps('lang')}
+                >
+                  <option value={AppLocaleEnum.EN_US}>
+                    {AppLocaleNameEnum.EN_US}
+                  </option>
+                  <option value={AppLocaleEnum.DE_DE}>
+                    {AppLocaleNameEnum.DE_DE}
+                  </option>
+                  <option value={AppLocaleEnum.RU_RU}>
+                    {AppLocaleNameEnum.RU_RU}
+                  </option>
                 </Select>
 
-                {touched.lang && Boolean(errors.lang) && <FormErrorMessage>{errors.lang}</FormErrorMessage>}
+                {touched.lang && Boolean(errors.lang) && (
+                  <FormErrorMessage>{errors.lang}</FormErrorMessage>
+                )}
               </FormControl>
             </Stack>
           </GridItem>
 
           <GridItem overflow={'hidden'}>
-            <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-              <FormControl isRequired={true} isInvalid={Boolean(touched.position && errors.position)}>
+            <Stack
+              direction={'column'}
+              alignItems={'start'}
+              justifyContent={'start'}
+              w={'full'}
+              spacing={4}
+            >
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.position && errors.position)}
+              >
                 <FormLabel>Document position in a list:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   type={'number'}
                   boxShadow={'md'}
-                  {...getFieldProps('position')}/>
+                  {...getFieldProps('position')}
+                />
 
-                {touched.position && Boolean(errors.position) && <FormErrorMessage>{errors.position}</FormErrorMessage>}
+                {touched.position && Boolean(errors.position) && (
+                  <FormErrorMessage>{errors.position}</FormErrorMessage>
+                )}
               </FormControl>
 
               <FormControl>
-                <FormLabel htmlFor={'document-visibility'}>Document visibility:</FormLabel>
+                <FormLabel htmlFor={'document-visibility'}>
+                  Document visibility:
+                </FormLabel>
 
-                <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={6}>
+                <Stack
+                  direction={'row'}
+                  alignItems={'center'}
+                  justifyContent={'flex-start'}
+                  spacing={6}
+                >
                   <Switch
                     id={'document-visibility'}
                     isDisabled={isLoading}
                     colorScheme={'teal'}
                     isChecked={values.visibility}
-                    {...getFieldProps('visibility')}/>
+                    {...getFieldProps('visibility')}
+                  />
 
                   <Text>{values.visibility ? 'Visible' : 'Hidden'}</Text>
                 </Stack>
@@ -160,8 +227,20 @@ const DocumentsForm: FC<Props> = (props): ReactElement => {
           </GridItem>
         </Grid>
 
-        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-          <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6} boxShadow={'md'}>
+        <Stack
+          direction={'column'}
+          alignItems={'start'}
+          justifyContent={'start'}
+          w={'full'}
+          spacing={4}
+        >
+          <Button
+            type={'submit'}
+            isLoading={isLoading}
+            colorScheme={'teal'}
+            mt={6}
+            boxShadow={'md'}
+          >
             {type === 'create' ? 'Create' : 'Save'}
           </Button>
         </Stack>

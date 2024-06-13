@@ -5,5 +5,5 @@ export interface IAuthRequestDto {
 
 export interface IUser {
   uid: string;
-  email: string | null
+  email: string | null;
 }

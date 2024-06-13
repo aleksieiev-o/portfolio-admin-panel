@@ -1,11 +1,25 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
-import { Container, Stack } from '@chakra-ui/react';
+import React, {FC, PropsWithChildren, ReactElement} from 'react';
+import {Container, Stack} from '@chakra-ui/react';
 
-const BaseContentContainer: FC<PropsWithChildren> = ({children}): ReactElement => {
+const BaseContentContainer: FC<PropsWithChildren> = ({
+  children,
+}): ReactElement => {
   return (
-    <Stack direction={'row'} w={'full'} h={'full'} justifyContent={'center'} overflowY={'auto'}>
+    <Stack
+      direction={'row'}
+      w={'full'}
+      h={'full'}
+      justifyContent={'center'}
+      overflowY={'auto'}
+    >
       <Container maxWidth={'5xl'} h={'full'} centerContent={true}>
-        <Stack direction={'column'} w={'full'} alignItems={'center'} spacing={4} pb={2}>
+        <Stack
+          direction={'column'}
+          w={'full'}
+          alignItems={'center'}
+          spacing={4}
+          pb={2}
+        >
           {children}
         </Stack>
       </Container>

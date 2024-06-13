@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
+import React, {FC, PropsWithChildren, ReactElement} from 'react';
 import RootLayout from '@/components/layout/RootLayout';
 
 interface Props extends PropsWithChildren {

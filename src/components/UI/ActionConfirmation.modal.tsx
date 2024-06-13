@@ -1,6 +1,17 @@
-import React, { FC, ReactElement, useState } from 'react';
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text } from '@chakra-ui/react';
-import { useLoading } from '@/hooks/useLoading';
+import React, {FC, ReactElement, useState} from 'react';
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
+import {useLoading} from '@/hooks/useLoading';
 
 export enum ActionConfirmationModalType {
   INFO,
@@ -20,8 +31,17 @@ interface Props {
 }
 
 const ActionConfirmationModal: FC<Props> = (props): ReactElement => {
-  const { modalType,  modalTitle, modalDescription, modalQuestion, buttonText, isOpen, onClose, actionHandler } = props;
-  const { isLoading, setIsLoading } = useLoading();
+  const {
+    modalType,
+    modalTitle,
+    modalDescription,
+    modalQuestion,
+    buttonText,
+    isOpen,
+    onClose,
+    actionHandler,
+  } = props;
+  const {isLoading, setIsLoading} = useLoading();
   const [closeEsc, setCloseEsc] = useState<boolean>(true);
   const [closeOverlayClick, setCloseOverlayClick] = useState<boolean>(true);
 
@@ -53,13 +73,18 @@ const ActionConfirmationModal: FC<Props> = (props): ReactElement => {
   }[modalType];
 
   return (
-    <Modal isOpen={isOpen} onClose={handleCloseModalButton} closeOnEsc={closeEsc} closeOnOverlayClick={closeOverlayClick}>
-      <ModalOverlay/>
+    <Modal
+      isOpen={isOpen}
+      onClose={handleCloseModalButton}
+      closeOnEsc={closeEsc}
+      closeOnOverlayClick={closeOverlayClick}
+    >
+      <ModalOverlay />
 
       <ModalContent>
         <ModalHeader>{modalTitle}</ModalHeader>
 
-        <ModalCloseButton title={'Close'}/>
+        <ModalCloseButton title={'Close'} />
 
         <ModalBody>
           <Stack>
@@ -76,11 +101,17 @@ const ActionConfirmationModal: FC<Props> = (props): ReactElement => {
             colorScheme={actionButtonColorScheme}
             title={buttonText}
             boxShadow={'md'}
-            mr={4}>
+            mr={4}
+          >
             {buttonText}
           </Button>
 
-          <Button onClick={handleCloseModalButton} colorScheme={'gray'} title={'Close'} boxShadow={'md'}>
+          <Button
+            onClick={handleCloseModalButton}
+            colorScheme={'gray'}
+            title={'Close'}
+            boxShadow={'md'}
+          >
             Close
           </Button>
         </ModalFooter>

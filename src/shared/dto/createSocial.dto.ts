@@ -1,3 +1,6 @@
-import { ISocial } from 'my-portfolio-types';
+import {ISocial} from 'my-portfolio-types';
 
-export type TypeCreateSocialDto = Omit<ISocial, 'id' | 'createdDate' | 'updatedDate'>;
+export type TypeCreateSocialDto = Omit<
+  ISocial,
+  'id' | 'createdDate' | 'updatedDate'
+>;

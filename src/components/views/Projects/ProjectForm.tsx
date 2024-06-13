@@ -1,6 +1,6 @@
 import React, {FC, ReactElement, useMemo, useState} from 'react';
-import { useRouter } from 'next/router';
-import { ProtectedRoutePath } from '@/router/Routes.enum';
+import {useRouter} from 'next/router';
+import {ProtectedRoutePath} from '@/router/Routes.enum';
 import {createProject, updateProjectById} from '@/services/projects.service';
 import {
   Badge,
@@ -13,10 +13,14 @@ import {
   Textarea,
   Image,
   Text,
-  FormErrorMessage, Icon, IconButton, Grid, GridItem
+  FormErrorMessage,
+  Icon,
+  IconButton,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
-import { useLoading } from '@/hooks/useLoading';
+import {useLoading} from '@/hooks/useLoading';
 import {TypeCreateProjectDto} from '@/shared/dto/createProject.dto';
 import {IProject} from 'my-portfolio-types';
 import {StaticProps} from '@/shared/types/StaticProps.type';
@@ -78,10 +82,13 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
       title: string().trim().required(STRINGS.requiredField),
     });
   }, [type]);
-  
-  const handleFormSubmit = async (payload: TypeCreateProjectDto, formikHelpers: FormikHelpers<TypeCreateProjectDto>) => {
+
+  const handleFormSubmit = async (
+    payload: TypeCreateProjectDto,
+    formikHelpers: FormikHelpers<TypeCreateProjectDto>,
+  ) => {
     setIsLoading(true);
-    
+
     try {
       if (type === 'create') {
         await createProject(payload);
@@ -107,16 +114,23 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
     validateOnBlur: true,
   });
 
-  const { handleSubmit, setFieldValue, values, touched, errors, getFieldProps } = formik;
+  const {handleSubmit, setFieldValue, values, touched, errors, getFieldProps} =
+    formik;
 
   const technologiesValue = {...getFieldProps('technologies')}.value;
 
-  const handleSetTechnology = (action: UpdateTechnologyListEnum, technology: string | null) => {
+  const handleSetTechnology = (
+    action: UpdateTechnologyListEnum,
+    technology: string | null,
+  ) => {
     if (action === UpdateTechnologyListEnum.ADD && tempTechnology.length) {
       setFieldValue('technologies', [...technologiesValue, tempTechnology]);
       setPreparedTechnology('');
     } else if (action === UpdateTechnologyListEnum.REMOVE) {
-      setFieldValue('technologies', technologiesValue.filter((item: string) => item !== technology));
+      setFieldValue(
+        'technologies',
+        technologiesValue.filter((item: string) => item !== technology),
+      );
     }
   };
 
@@ -132,153 +146,268 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
 
   return (
     <BaseContentContainer>
-      <form noValidate={true} onSubmit={handleSubmit} style={{ width: '100%' }}>
-        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4} mb={6}>
-          <Button onClick={() => handleGoBack()} boxShadow={'md'}>Back</Button>
+      <form noValidate={true} onSubmit={handleSubmit} style={{width: '100%'}}>
+        <Stack
+          direction={'column'}
+          alignItems={'start'}
+          justifyContent={'start'}
+          w={'full'}
+          spacing={4}
+          mb={6}
+        >
+          <Button onClick={() => handleGoBack()} boxShadow={'md'}>
+            Back
+          </Button>
         </Stack>
 
-        <Grid templateColumns={{ md: 'repeat(2, 1fr)' }} gap={6} w={'full'}>
+        <Grid templateColumns={{md: 'repeat(2, 1fr)'}} gap={6} w={'full'}>
           <GridItem>
-            <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-              <FormControl isRequired={true} isInvalid={Boolean(touched.title && errors.title)}>
+            <Stack
+              direction={'column'}
+              alignItems={'start'}
+              justifyContent={'start'}
+              w={'full'}
+              spacing={4}
+            >
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.title && errors.title)}
+              >
                 <FormLabel>Project title:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   type={'text'}
                   boxShadow={'md'}
-                  {...getFieldProps('title')}/>
+                  {...getFieldProps('title')}
+                />
 
-                {touched.title && Boolean(errors.title) && <FormErrorMessage>{errors.title}</FormErrorMessage>}
+                {touched.title && Boolean(errors.title) && (
+                  <FormErrorMessage>{errors.title}</FormErrorMessage>
+                )}
               </FormControl>
 
-              <FormControl isRequired={true} isInvalid={Boolean(touched.description && errors.description)}>
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.description && errors.description)}
+              >
                 <FormLabel>Project description:</FormLabel>
 
                 <Textarea
                   isDisabled={isLoading}
                   size={'md'}
                   boxShadow={'md'}
-                  {...getFieldProps('description')}/>
+                  {...getFieldProps('description')}
+                />
 
-                {touched.description && Boolean(errors.description) && <FormErrorMessage>{errors.description}</FormErrorMessage>}
+                {touched.description && Boolean(errors.description) && (
+                  <FormErrorMessage>{errors.description}</FormErrorMessage>
+                )}
               </FormControl>
 
-              <FormControl isRequired={true} isInvalid={Boolean(touched.repository && errors.repository)}>
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.repository && errors.repository)}
+              >
                 <FormLabel>Project repository:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   type={'text'}
                   boxShadow={'md'}
-                  {...getFieldProps('repository')}/>
+                  {...getFieldProps('repository')}
+                />
 
-                {touched.repository && Boolean(errors.repository) && <FormErrorMessage>{errors.repository}</FormErrorMessage>}
+                {touched.repository && Boolean(errors.repository) && (
+                  <FormErrorMessage>{errors.repository}</FormErrorMessage>
+                )}
               </FormControl>
 
-              <FormControl isRequired={true} isInvalid={Boolean(touched.demo && errors.demo)}>
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.demo && errors.demo)}
+              >
                 <FormLabel>Project demo:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   type={'text'}
                   boxShadow={'md'}
-                  {...getFieldProps('demo')}/>
+                  {...getFieldProps('demo')}
+                />
 
-                {touched.demo && Boolean(errors.demo) && <FormErrorMessage>{errors.demo}</FormErrorMessage>}
+                {touched.demo && Boolean(errors.demo) && (
+                  <FormErrorMessage>{errors.demo}</FormErrorMessage>
+                )}
               </FormControl>
 
-              <FormControl isRequired={true} isInvalid={Boolean(touched.releaseDate && errors.releaseDate)}>
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.releaseDate && errors.releaseDate)}
+              >
                 <FormLabel>Project release date:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   type={'date'}
                   boxShadow={'md'}
-                  {...getFieldProps('releaseDate')}/>
+                  {...getFieldProps('releaseDate')}
+                />
 
-                {touched.releaseDate && Boolean(errors.releaseDate) && <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>}
+                {touched.releaseDate && Boolean(errors.releaseDate) && (
+                  <FormErrorMessage>{errors.releaseDate}</FormErrorMessage>
+                )}
               </FormControl>
             </Stack>
           </GridItem>
 
           <GridItem overflow={'hidden'}>
-            <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-              <FormControl isRequired={true} isInvalid={Boolean(touched.position && errors.position)}>
+            <Stack
+              direction={'column'}
+              alignItems={'start'}
+              justifyContent={'start'}
+              w={'full'}
+              spacing={4}
+            >
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.position && errors.position)}
+              >
                 <FormLabel>Project position in a list:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   type={'number'}
                   boxShadow={'md'}
-                  {...getFieldProps('position')}/>
+                  {...getFieldProps('position')}
+                />
 
-                {touched.position && Boolean(errors.position) && <FormErrorMessage>{errors.position}</FormErrorMessage>}
+                {touched.position && Boolean(errors.position) && (
+                  <FormErrorMessage>{errors.position}</FormErrorMessage>
+                )}
               </FormControl>
 
-              <FormControl isRequired={true} isInvalid={Boolean(touched.mainTechnology && errors.mainTechnology)}>
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(
+                  touched.mainTechnology && errors.mainTechnology,
+                )}
+              >
                 <FormLabel>Project main technology:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   type={'text'}
                   boxShadow={'md'}
-                  {...getFieldProps('mainTechnology')}/>
+                  {...getFieldProps('mainTechnology')}
+                />
 
-                {touched.mainTechnology && Boolean(errors.mainTechnology) && <FormErrorMessage>{errors.mainTechnology}</FormErrorMessage>}
+                {touched.mainTechnology && Boolean(errors.mainTechnology) && (
+                  <FormErrorMessage>{errors.mainTechnology}</FormErrorMessage>
+                )}
               </FormControl>
 
-              <Stack direction={'column'} alignItems={'start'} justifyContent={'center'} w={'full'} spacing={4}>
+              <Stack
+                direction={'column'}
+                alignItems={'start'}
+                justifyContent={'center'}
+                w={'full'}
+                spacing={4}
+              >
                 <FormControl>
                   <FormLabel>Project technologies list:</FormLabel>
 
-                  <Stack direction={'row'} alignItems={'start'} justifyContent={'center'} w={'full'} spacing={4}>
+                  <Stack
+                    direction={'row'}
+                    alignItems={'start'}
+                    justifyContent={'center'}
+                    w={'full'}
+                    spacing={4}
+                  >
                     <Input
                       onChange={(e) => setPreparedTechnology(e.target.value)}
                       value={tempTechnology}
                       isDisabled={isLoading}
                       boxShadow={'md'}
-                      type={'text'}/>
+                      type={'text'}
+                    />
 
-                    <Button onClick={() => handleSetTechnology(UpdateTechnologyListEnum.ADD, null)} colorScheme={'telegram'} isLoading={isLoading} boxShadow={'md'}>Add</Button>
+                    <Button
+                      onClick={() =>
+                        handleSetTechnology(UpdateTechnologyListEnum.ADD, null)
+                      }
+                      colorScheme={'telegram'}
+                      isLoading={isLoading}
+                      boxShadow={'md'}
+                    >
+                      Add
+                    </Button>
                   </Stack>
                 </FormControl>
 
-                {
-                  technologiesValue.length && <Stack direction={'row'} alignItems={'center'} justifyContent={'start'} w={'full'} spacing={4} overflowX={'auto'}>
-                    {
-                      technologiesValue.map((item: string, idx: number) => (
-                        <Badge key={`${idx}-${item}`} p={2} colorScheme={'telegram'}>
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
-                            <Text>{item}</Text>
+                {technologiesValue.length && (
+                  <Stack
+                    direction={'row'}
+                    alignItems={'center'}
+                    justifyContent={'start'}
+                    w={'full'}
+                    spacing={4}
+                    overflowX={'auto'}
+                  >
+                    {technologiesValue.map((item: string, idx: number) => (
+                      <Badge
+                        key={`${idx}-${item}`}
+                        p={2}
+                        colorScheme={'telegram'}
+                      >
+                        <Stack
+                          direction={'row'}
+                          alignItems={'center'}
+                          justifyContent={'flex-start'}
+                          spacing={2}
+                        >
+                          <Text>{item}</Text>
 
-                            <IconButton
-                              onClick={() => handleSetTechnology(UpdateTechnologyListEnum.REMOVE, item)}
-                              variant={'ghost'}
-                              colorScheme={'red'}
-                              isDisabled={isLoading}
-                              isRound={true}
-                              icon={<Icon as={CloseIcon} w={'18px'} h={'18px'}/>}
-                              minW={'20px'}
-                              minH={'20px'}
-                              w={'20px'}
-                              h={'20px'}
-                              aria-label={'Remove technology'}/>
-                          </Stack>
-                        </Badge>
-                      ))
-                    }
+                          <IconButton
+                            onClick={() =>
+                              handleSetTechnology(
+                                UpdateTechnologyListEnum.REMOVE,
+                                item,
+                              )
+                            }
+                            variant={'ghost'}
+                            colorScheme={'red'}
+                            isDisabled={isLoading}
+                            isRound={true}
+                            icon={<Icon as={CloseIcon} w={'18px'} h={'18px'} />}
+                            minW={'20px'}
+                            minH={'20px'}
+                            w={'20px'}
+                            h={'20px'}
+                            aria-label={'Remove technology'}
+                          />
+                        </Stack>
+                      </Badge>
+                    ))}
                   </Stack>
-                }
+                )}
               </Stack>
 
-              <FormControl isRequired={true} isInvalid={Boolean(touched.file && errors.file)}>
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.file && errors.file)}
+              >
                 <FormLabel>Project preview:</FormLabel>
 
-                {
-                  projectPayload?.fileSrc &&
-                  <Image src={projectPayload?.fileSrc || ''} maxW={320} objectFit={'contain'} alt={'Project preview'} mb={4}/>
-                }
+                {projectPayload?.fileSrc && (
+                  <Image
+                    src={projectPayload?.fileSrc || ''}
+                    maxW={320}
+                    objectFit={'contain'}
+                    alt={'Project preview'}
+                    mb={4}
+                  />
+                )}
 
                 <Input
                   onChange={(e) => updateFileInputValue(e.target.files)}
@@ -287,22 +416,31 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
                   isDisabled={isLoading}
                   type={'file'}
                   pl={1}
-                  border={'none'}/>
+                  border={'none'}
+                />
 
                 {/* TODO fix it*/}
                 {/*{touched.file && Boolean(errors.file) && <FormErrorMessage>{errors.file}</FormErrorMessage>}*/}
               </FormControl>
 
               <FormControl>
-                <FormLabel htmlFor={'project-visibility'}>Project visibility:</FormLabel>
+                <FormLabel htmlFor={'project-visibility'}>
+                  Project visibility:
+                </FormLabel>
 
-                <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={6}>
+                <Stack
+                  direction={'row'}
+                  alignItems={'center'}
+                  justifyContent={'flex-start'}
+                  spacing={6}
+                >
                   <Switch
                     id={'project-visibility'}
                     isDisabled={isLoading}
                     colorScheme={'teal'}
                     isChecked={values.visibility}
-                    {...getFieldProps('visibility')}/>
+                    {...getFieldProps('visibility')}
+                  />
 
                   <Text>{values.visibility ? 'Visible' : 'Hidden'}</Text>
                 </Stack>
@@ -311,8 +449,20 @@ const ProjectForm: FC<Props> = (props): ReactElement => {
           </GridItem>
         </Grid>
 
-        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-          <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6} boxShadow={'md'}>
+        <Stack
+          direction={'column'}
+          alignItems={'start'}
+          justifyContent={'start'}
+          w={'full'}
+          spacing={4}
+        >
+          <Button
+            type={'submit'}
+            isLoading={isLoading}
+            colorScheme={'teal'}
+            mt={6}
+            boxShadow={'md'}
+          >
             {type === 'create' ? 'Create' : 'Save'}
           </Button>
         </Stack>

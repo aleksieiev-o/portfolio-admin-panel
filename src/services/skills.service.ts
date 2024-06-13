@@ -1,15 +1,17 @@
-import { fetchDataList } from '@/services/data.service';
-import { EndpointsList } from '@/shared/Endpoints.enum';
-import { ISkill } from 'my-portfolio-types';
-import { ref, push, set } from '@firebase/database';
-import { firebaseDataBase } from '@/lib/firebase/firebase';
-import { TypeCreateSkillDto } from '@/shared/dto/createSkill.dto';
+import {fetchDataList} from '@/services/data.service';
+import {EndpointsList} from '@/shared/Endpoints.enum';
+import {ISkill} from 'my-portfolio-types';
+import {ref, push, set} from '@firebase/database';
+import {firebaseDataBase} from '@/lib/firebase/firebase';
+import {TypeCreateSkillDto} from '@/shared/dto/createSkill.dto';
 
 export const fetchAllSkills = async (): Promise<Array<ISkill>> => {
   return await fetchDataList(EndpointsList.SKILLS);
 };
 
-export const createSkill = async (payload: TypeCreateSkillDto): Promise<void> => {
+export const createSkill = async (
+  payload: TypeCreateSkillDto,
+): Promise<void> => {
   const {title, visibility, isMain, experience, color, position} = payload;
   const skillRef = push(ref(firebaseDataBase, EndpointsList.SKILLS));
 

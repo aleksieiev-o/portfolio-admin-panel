@@ -7,8 +7,12 @@ import {
 } from 'firebase/app';
 import {getDatabase, Database} from 'firebase/database';
 import {Auth, getAuth} from 'firebase/auth';
-import { getStorage, FirebaseStorage, connectStorageEmulator } from 'firebase/storage';
-import { firebaseEnvSchema } from './_types/firebaseEnvSchema';
+import {
+  getStorage,
+  FirebaseStorage,
+  connectStorageEmulator,
+} from 'firebase/storage';
+import {firebaseEnvSchema} from './_types/firebaseEnvSchema';
 
 const firebaseConfig: FirebaseOptions = firebaseEnvSchema;
 
@@ -24,4 +28,4 @@ if (process.env.NODE_ENV === 'development') {
   connectStorageEmulator(firebaseStorage, 'localhost', 9199);
 }
 
-export { firebaseAuth, firebaseDataBase, firebaseStorage };
+export {firebaseAuth, firebaseDataBase, firebaseStorage};

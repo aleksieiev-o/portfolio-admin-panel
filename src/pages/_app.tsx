@@ -1,11 +1,11 @@
-import { FC, ReactElement } from 'react';
-import type { AppProps } from 'next/app';
+import {FC, ReactElement} from 'react';
+import type {AppProps} from 'next/app';
 import '@/styles/globals.css';
-import LoadingContextProvider  from '@/providers/LoadingContext.provider';
-import { ChakraProvider } from '@chakra-ui/provider';
-import { theme } from '@/theme';
-import AuthContextProvider  from '@/providers/AuthContext.provider';
-import { TypeComponentAuthFields } from '@/shared/types/Page.type';
+import LoadingContextProvider from '@/providers/LoadingContext.provider';
+import {ChakraProvider} from '@chakra-ui/provider';
+import {theme} from '@/theme';
+import AuthContextProvider from '@/providers/AuthContext.provider';
+import {TypeComponentAuthFields} from '@/shared/types/Page.type';
 
 type TypeAppProps = AppProps & TypeComponentAuthFields;
 

@@ -1,25 +1,30 @@
-import { NextPageWithAuth } from '@/shared/types/Page.type';
-import { ReactElement } from 'react';
+import {NextPageWithAuth} from '@/shared/types/Page.type';
+import {ReactElement} from 'react';
 import Layout from '@/components/layout/Layout';
-import { StaticProps, StaticPropsResponse } from '@/shared/types/StaticProps.type';
-import { ISkill } from 'my-portfolio-types';
-import { fetchById } from '@/services/data.service';
-import { EndpointsList } from '@/shared/Endpoints.enum';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import {
+  StaticProps,
+  StaticPropsResponse,
+} from '@/shared/types/StaticProps.type';
+import {ISkill} from 'my-portfolio-types';
+import {fetchById} from '@/services/data.service';
+import {EndpointsList} from '@/shared/Endpoints.enum';
+import {GetStaticPaths, GetStaticProps} from 'next';
 import SkillForm from '@/components/views/Skills/SkillForm';
 import {fetchAllSkills} from '@/services/skills.service';
 
-const UpdateSkillsPage: NextPageWithAuth<StaticProps<ISkill>> = ({payload}): ReactElement => {
+const UpdateSkillsPage: NextPageWithAuth<StaticProps<ISkill>> = ({
+  payload,
+}): ReactElement => {
   return (
     <Layout title={'Update skill'} description={'Update skill page'}>
-      <SkillForm type={'update'} payload={payload}/>
+      <SkillForm type={'update'} payload={payload} />
     </Layout>
   );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const payload: Array<ISkill> = await fetchAllSkills();
-  const paths = payload.map((item) => ({ params: { id: item.id } }));
+  const paths = payload.map((item) => ({params: {id: item.id}}));
 
   return {
     paths,
@@ -27,13 +32,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<StaticProps<ISkill>> = async (context): Promise<StaticPropsResponse<ISkill>> => {
+export const getStaticProps: GetStaticProps<StaticProps<ISkill>> = async (
+  context,
+): Promise<StaticPropsResponse<ISkill>> => {
   try {
     const id = context.params?.id as string;
     const payload: ISkill = await fetchById(EndpointsList.SKILLS, id);
 
     return {
-      props: { payload },
+      props: {payload},
       revalidate: 1,
     };
   } catch (err) {

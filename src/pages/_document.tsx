@@ -1,5 +1,5 @@
-import { FC, ReactElement } from 'react';
-import { Html, Head, Main, NextScript } from 'next/document';
+import {FC, ReactElement} from 'react';
+import {Html, Head, Main, NextScript} from 'next/document';
 
 const Document: FC = (): ReactElement => {
   return (
@@ -7,9 +7,9 @@ const Document: FC = (): ReactElement => {
       <Head />
 
       <body>
-      <Main />
+        <Main />
 
-      <NextScript />
+        <NextScript />
       </body>
     </Html>
   );

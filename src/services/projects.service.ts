@@ -1,5 +1,5 @@
-import { IProject } from 'my-portfolio-types';
-import { EndpointsList } from '@/shared/Endpoints.enum';
+import {IProject} from 'my-portfolio-types';
+import {EndpointsList} from '@/shared/Endpoints.enum';
 import {fetchDataList, removeAll, removeById} from '@/services/data.service';
 import {child, push, ref, set, update} from '@firebase/database';
 import {firebaseDataBase, firebaseStorage} from '@/lib/firebase/firebase';
@@ -11,8 +11,21 @@ export const fetchAllProjects = async (): Promise<Array<IProject>> => {
   return await fetchDataList(EndpointsList.PROJECTS);
 };
 
-export const createProject = async (payload: TypeCreateProjectDto): Promise<void> => {
-  const {title, visibility, description, mainTechnology, releaseDate, technologies, demo, position, repository, file} = payload;
+export const createProject = async (
+  payload: TypeCreateProjectDto,
+): Promise<void> => {
+  const {
+    title,
+    visibility,
+    description,
+    mainTechnology,
+    releaseDate,
+    technologies,
+    demo,
+    position,
+    repository,
+    file,
+  } = payload;
   const projectRef = push(ref(firebaseDataBase, EndpointsList.PROJECTS));
   let uploadedFile = undefined;
 
@@ -40,29 +53,44 @@ export const createProject = async (payload: TypeCreateProjectDto): Promise<void
   return await set(projectRef, project);
 };
 
-export const updateProjectById = async (payload: TypeCreateProjectDto, id: string): Promise<void> => {
+export const updateProjectById = async (
+  payload: TypeCreateProjectDto,
+  id: string,
+): Promise<void> => {
   if (payload.file) {
     await removeImage(payload.fileSrc);
 
-    const uploadedFile = await uploadImage(payload.file, `projects/${payload.file?.name}`);
+    const uploadedFile = await uploadImage(
+      payload.file,
+      `projects/${payload.file?.name}`,
+    );
 
-    return await update(child(ref(firebaseDataBase), `${EndpointsList.PROJECTS}/${id}`), {
-      ...payload,
-      fileSrc: uploadedFile?.fileSrc || '',
-      fileName: uploadedFile?.fileName || '',
-      releaseDate: new Date(payload.releaseDate).toISOString(),
-      updatedDate: new Date().toISOString(),
-    });
+    return await update(
+      child(ref(firebaseDataBase), `${EndpointsList.PROJECTS}/${id}`),
+      {
+        ...payload,
+        fileSrc: uploadedFile?.fileSrc || '',
+        fileName: uploadedFile?.fileName || '',
+        releaseDate: new Date(payload.releaseDate).toISOString(),
+        updatedDate: new Date().toISOString(),
+      },
+    );
   }
 
-  return await update(child(ref(firebaseDataBase), `${EndpointsList.PROJECTS}/${id}`), {
-    ...payload,
-    releaseDate: new Date(payload.releaseDate).toISOString(),
-    updatedDate: new Date().toISOString(),
-  });
+  return await update(
+    child(ref(firebaseDataBase), `${EndpointsList.PROJECTS}/${id}`),
+    {
+      ...payload,
+      releaseDate: new Date(payload.releaseDate).toISOString(),
+      updatedDate: new Date().toISOString(),
+    },
+  );
 };
 
-export const removeProjectById = async (payload: IProject, path: EndpointsList): Promise<void> => {
+export const removeProjectById = async (
+  payload: IProject,
+  path: EndpointsList,
+): Promise<void> => {
   if (payload.fileSrc) {
     await removeImage(payload.fileSrc);
   }
@@ -70,8 +98,12 @@ export const removeProjectById = async (payload: IProject, path: EndpointsList):
   return await removeById({data: payload}, path);
 };
 
-export const removeAllProjects = async (payload: Array<IProject>): Promise<void> => {
-  const desertRefList = payload.map((item) => deleteObject(storageRef(firebaseStorage, item.fileSrc)));
+export const removeAllProjects = async (
+  payload: Array<IProject>,
+): Promise<void> => {
+  const desertRefList = payload.map((item) =>
+    deleteObject(storageRef(firebaseStorage, item.fileSrc)),
+  );
   await Promise.all(desertRefList);
   await removeAll<Array<IProject>>(EndpointsList.PROJECTS);
 };

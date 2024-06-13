@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
+import React, {FC, PropsWithChildren, ReactElement} from 'react';
 import RootLayout from '@/components/layout/RootLayout';
 import NavMenu from '@/components/UI/NavMenu/NavMenu';
 
@@ -12,7 +12,7 @@ const Layout: FC<Props> = (props): ReactElement => {
 
   return (
     <RootLayout title={title} description={description || ''}>
-      <NavMenu/>
+      <NavMenu />
 
       {children}
     </RootLayout>

@@ -10,8 +10,15 @@ const GoHomeButton: FC = (): ReactElement => {
 
   return (
     <Button
-      onClick={() => router.push(currentUser ? ProtectedRoutePath.PERSONAL_INFO : PublicRoutePath.LOGIN)}
-      boxShadow={'md'}>
+      onClick={() =>
+        router.push(
+          currentUser
+            ? ProtectedRoutePath.PERSONAL_INFO
+            : PublicRoutePath.LOGIN,
+        )
+      }
+      boxShadow={'md'}
+    >
       Go home
     </Button>
   );

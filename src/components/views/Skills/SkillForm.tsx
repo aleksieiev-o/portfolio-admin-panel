@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, {FC, ReactElement} from 'react';
 import BaseContentContainer from '@/components/UI/Containers/BaseContent.container';
 import {
   Button,
@@ -10,12 +10,12 @@ import {
   Grid,
   GridItem,
   Text,
-  FormErrorMessage
+  FormErrorMessage,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { createSkill } from '@/services/skills.service';
-import { ProtectedRoutePath } from '@/router/Routes.enum';
-import { useLoading } from '@/hooks/useLoading';
+import {useRouter} from 'next/router';
+import {createSkill} from '@/services/skills.service';
+import {ProtectedRoutePath} from '@/router/Routes.enum';
+import {useLoading} from '@/hooks/useLoading';
 import {StaticProps} from '@/shared/types/StaticProps.type';
 import {ISkill} from 'my-portfolio-types';
 import {object, string} from 'yup';
@@ -49,14 +49,21 @@ const SkillForm: FC<Props> = (props): ReactElement => {
     title: string().trim().required(STRINGS.requiredField),
   });
 
-  const handleFormSubmit = async (payload: TypeCreateSkillDto, formikHelpers: FormikHelpers<TypeCreateSkillDto>) => {
+  const handleFormSubmit = async (
+    payload: TypeCreateSkillDto,
+    formikHelpers: FormikHelpers<TypeCreateSkillDto>,
+  ) => {
     setIsLoading(true);
 
     try {
       if (type === 'create') {
         await createSkill(payload);
       } else if (type === 'update') {
-        await updateById<TypeCreateSkillDto>(payload, EndpointsList.SKILLS, router.query.id as string);
+        await updateById<TypeCreateSkillDto>(
+          payload,
+          EndpointsList.SKILLS,
+          router.query.id as string,
+        );
       }
 
       formikHelpers.resetForm();
@@ -77,7 +84,7 @@ const SkillForm: FC<Props> = (props): ReactElement => {
     validateOnBlur: true,
   });
 
-  const { handleSubmit, values, touched, errors, getFieldProps } = formik;
+  const {handleSubmit, values, touched, errors, getFieldProps} = formik;
 
   const goBack = async () => {
     await router.back();
@@ -85,36 +92,63 @@ const SkillForm: FC<Props> = (props): ReactElement => {
 
   return (
     <BaseContentContainer>
-      <form noValidate={true} onSubmit={handleSubmit} style={{ width: '100%' }}>
-        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4} mb={6}>
-          <Button onClick={() => goBack()} boxShadow={'md'}>Back</Button>
+      <form noValidate={true} onSubmit={handleSubmit} style={{width: '100%'}}>
+        <Stack
+          direction={'column'}
+          alignItems={'start'}
+          justifyContent={'start'}
+          w={'full'}
+          spacing={4}
+          mb={6}
+        >
+          <Button onClick={() => goBack()} boxShadow={'md'}>
+            Back
+          </Button>
         </Stack>
 
-        <Grid templateColumns={{ md: 'repeat(2, 1fr)' }} gap={6} w={'full'}>
+        <Grid templateColumns={{md: 'repeat(2, 1fr)'}} gap={6} w={'full'}>
           <GridItem>
-            <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-              <FormControl isRequired={true} isInvalid={Boolean(touched.title && errors.title)}>
+            <Stack
+              direction={'column'}
+              alignItems={'start'}
+              justifyContent={'start'}
+              w={'full'}
+              spacing={4}
+            >
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.title && errors.title)}
+              >
                 <FormLabel>Skill title:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   boxShadow={'md'}
                   type={'text'}
-                  {...getFieldProps('title')}/>
+                  {...getFieldProps('title')}
+                />
 
-                {touched.title && Boolean(errors.title) && <FormErrorMessage>{errors.title}</FormErrorMessage>}
+                {touched.title && Boolean(errors.title) && (
+                  <FormErrorMessage>{errors.title}</FormErrorMessage>
+                )}
               </FormControl>
 
-              <FormControl isRequired={true} isInvalid={Boolean(touched.experience && errors.experience)}>
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.experience && errors.experience)}
+              >
                 <FormLabel>Skill experience:</FormLabel>
 
                 <Input
                   isDisabled={isLoading}
                   boxShadow={'md'}
                   type={'number'}
-                  {...getFieldProps('experience')}/>
+                  {...getFieldProps('experience')}
+                />
 
-                {touched.experience && Boolean(errors.experience) && <FormErrorMessage>{errors.experience}</FormErrorMessage>}
+                {touched.experience && Boolean(errors.experience) && (
+                  <FormErrorMessage>{errors.experience}</FormErrorMessage>
+                )}
               </FormControl>
 
               <FormControl>
@@ -124,50 +158,79 @@ const SkillForm: FC<Props> = (props): ReactElement => {
                   type={'color'}
                   boxShadow={'md'}
                   isDisabled={isLoading}
-                  {...getFieldProps('color')}/>
+                  {...getFieldProps('color')}
+                />
               </FormControl>
             </Stack>
           </GridItem>
 
           <GridItem>
-            <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-              <FormControl isRequired={true} isInvalid={Boolean(touched.position && errors.position)}>
+            <Stack
+              direction={'column'}
+              alignItems={'start'}
+              justifyContent={'start'}
+              w={'full'}
+              spacing={4}
+            >
+              <FormControl
+                isRequired={true}
+                isInvalid={Boolean(touched.position && errors.position)}
+              >
                 <FormLabel>Skill position in a list:</FormLabel>
 
                 <Input
                   type={'number'}
                   boxShadow={'md'}
                   isDisabled={isLoading}
-                  {...getFieldProps('position')}/>
+                  {...getFieldProps('position')}
+                />
 
-                {touched.position && Boolean(errors.position) && <FormErrorMessage>{errors.position}</FormErrorMessage>}
+                {touched.position && Boolean(errors.position) && (
+                  <FormErrorMessage>{errors.position}</FormErrorMessage>
+                )}
               </FormControl>
 
               <FormControl>
                 <FormLabel htmlFor={'is-main-skill'}>Is main skill:</FormLabel>
 
-                <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={6}>
+                <Stack
+                  direction={'row'}
+                  alignItems={'center'}
+                  justifyContent={'flex-start'}
+                  spacing={6}
+                >
                   <Switch
                     id={'is-main-skill'}
                     isDisabled={isLoading}
                     colorScheme={'teal'}
                     isChecked={values.isMain}
-                    {...getFieldProps('isMain')}/>
+                    {...getFieldProps('isMain')}
+                  />
 
-                  <Text>{values.isMain ? 'Main skill' : 'Secondary skill'}</Text>
+                  <Text>
+                    {values.isMain ? 'Main skill' : 'Secondary skill'}
+                  </Text>
                 </Stack>
               </FormControl>
 
               <FormControl>
-                <FormLabel htmlFor={'skill-visibility'}>Skill visibility:</FormLabel>
+                <FormLabel htmlFor={'skill-visibility'}>
+                  Skill visibility:
+                </FormLabel>
 
-                <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={6}>
+                <Stack
+                  direction={'row'}
+                  alignItems={'center'}
+                  justifyContent={'flex-start'}
+                  spacing={6}
+                >
                   <Switch
                     id={'skill-visibility'}
                     isDisabled={isLoading}
                     colorScheme={'teal'}
                     isChecked={values.visibility}
-                    {...getFieldProps('visibility')}/>
+                    {...getFieldProps('visibility')}
+                  />
 
                   <Text>{values.visibility ? 'Visible' : 'Hidden'}</Text>
                 </Stack>
@@ -176,8 +239,20 @@ const SkillForm: FC<Props> = (props): ReactElement => {
           </GridItem>
         </Grid>
 
-        <Stack direction={'column'} alignItems={'start'} justifyContent={'start'} w={'full'} spacing={4}>
-          <Button type={'submit'} isLoading={isLoading} colorScheme={'teal'} mt={6} boxShadow={'md'}>
+        <Stack
+          direction={'column'}
+          alignItems={'start'}
+          justifyContent={'start'}
+          w={'full'}
+          spacing={4}
+        >
+          <Button
+            type={'submit'}
+            isLoading={isLoading}
+            colorScheme={'teal'}
+            mt={6}
+            boxShadow={'md'}
+          >
             {type === 'create' ? 'Create' : 'Save'}
           </Button>
         </Stack>

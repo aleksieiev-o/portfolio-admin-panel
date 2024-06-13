@@ -1,12 +1,20 @@
-import React, { createContext, FC, PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  FC,
+  PropsWithChildren,
+  ReactElement,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {onAuthStateChanged} from 'firebase/auth';
-import { firebaseAuth } from '@/lib/firebase/firebase';
-import { User } from '@firebase/auth';
-import { IUser } from '@/components/views/Login/login.types';
-import { TypeComponentAuthFields } from '@/shared/types/Page.type';
-import { useRouter } from 'next/router';
+import {firebaseAuth} from '@/lib/firebase/firebase';
+import {User} from '@firebase/auth';
+import {IUser} from '@/components/views/Login/login.types';
+import {TypeComponentAuthFields} from '@/shared/types/Page.type';
+import {useRouter} from 'next/router';
 import {PublicRoutePath} from '@/router/Routes.enum';
-import { LoadingContext } from '@/providers/LoadingContext.provider';
+import {LoadingContext} from '@/providers/LoadingContext.provider';
 
 interface IAuthContextState {
   currentUser: IUser | null;
@@ -18,8 +26,13 @@ export const AuthContext = createContext<IAuthContextState>({
   authState: false,
 });
 
-const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (props): ReactElement => {
-  const { children, Component: {withAuth} } = props;
+const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (
+  props,
+): ReactElement => {
+  const {
+    children,
+    Component: {withAuth},
+  } = props;
   const {setGlobalLoading} = useContext(LoadingContext);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [authState, setAuthState] = useState<boolean>(false);
@@ -34,7 +47,7 @@ const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (pro
         setAuthState(false);
         await replace(PublicRoutePath.LOGIN);
       } else if (user && user.uid) {
-        setCurrentUser({ uid: user.uid, email: user.email });
+        setCurrentUser({uid: user.uid, email: user.email});
         setAuthState(true);
       }
 
@@ -48,9 +61,7 @@ const AuthContextProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = (pro
   };
 
   return (
-    <AuthContext.Provider value={authContext}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>
   );
 };
 

@@ -9,7 +9,9 @@ export const fetchAllDocuments = async (): Promise<Array<IDocument>> => {
   return await fetchDataList(EndpointsList.DOCUMENTS);
 };
 
-export const createDocument = async (payload: TypeCreateDocumentDto): Promise<void> => {
+export const createDocument = async (
+  payload: TypeCreateDocumentDto,
+): Promise<void> => {
   const {title, visibility, lang, position} = payload;
   const projectRef = push(ref(firebaseDataBase, EndpointsList.DOCUMENTS));
 
@@ -26,14 +28,23 @@ export const createDocument = async (payload: TypeCreateDocumentDto): Promise<vo
   return await set(projectRef, project);
 };
 
-export const updateDocumentById = async (payload: TypeCreateDocumentDto, id: string): Promise<void> => {
-  return await update(child(ref(firebaseDataBase), `${EndpointsList.DOCUMENTS}/${id}`), {
-    ...payload,
-    updatedDate: new Date().toISOString(),
-  });
+export const updateDocumentById = async (
+  payload: TypeCreateDocumentDto,
+  id: string,
+): Promise<void> => {
+  return await update(
+    child(ref(firebaseDataBase), `${EndpointsList.DOCUMENTS}/${id}`),
+    {
+      ...payload,
+      updatedDate: new Date().toISOString(),
+    },
+  );
 };
 
-export const removeDocumentById = async (payload: IDocument, path: EndpointsList): Promise<void> => {
+export const removeDocumentById = async (
+  payload: IDocument,
+  path: EndpointsList,
+): Promise<void> => {
   return await removeById({data: payload}, path);
 };
 

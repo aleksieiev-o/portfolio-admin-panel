@@ -1,7 +1,7 @@
-import { NextPage } from 'next';
+import {NextPage} from 'next';
 
 type TypePageRoles = {
-  withAuth?: boolean
+  withAuth?: boolean;
 };
 
 export type NextPageWithAuth<P = {}> = NextPage<P> & TypePageRoles;

@@ -1,4 +1,13 @@
-import React, { createContext, Dispatch, FC, PropsWithChildren, ReactElement, SetStateAction, useCallback, useState } from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  FC,
+  PropsWithChildren,
+  ReactElement,
+  SetStateAction,
+  useCallback,
+  useState,
+} from 'react';
 
 interface ILoadingContextState {
   globalLoading: boolean;
@@ -10,7 +19,9 @@ export const LoadingContext = createContext<ILoadingContextState>({
   setGlobalLoading: (state) => state,
 });
 
-const LoadingContextProvider: FC<PropsWithChildren> = ({children}): ReactElement => {
+const LoadingContextProvider: FC<PropsWithChildren> = ({
+  children,
+}): ReactElement => {
   const [globalLoading, setGlobalLoading] = useState<boolean>(false);
 
   const loaderContext: ILoadingContextState = {
