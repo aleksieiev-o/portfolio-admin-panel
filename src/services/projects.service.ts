@@ -2,7 +2,7 @@ import { IProject } from 'my-portfolio-types';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import {fetchDataList, removeAll, removeById} from '@/services/data.service';
 import {child, push, ref, set, update} from '@firebase/database';
-import {firebaseDataBase, firebaseStorage} from '@/lib/firebase';
+import {firebaseDataBase, firebaseStorage} from '@/lib/firebase/firebase';
 import {TypeCreateProjectDto} from '@/shared/dto/createProject.dto';
 import {deleteObject, ref as storageRef} from '@firebase/storage';
 import {removeImage, uploadImage} from '@/services/files.service';

@@ -1,6 +1,6 @@
 import React, { createContext, FC, PropsWithChildren, ReactElement, useContext, useEffect, useState } from 'react';
 import {onAuthStateChanged} from 'firebase/auth';
-import { firebaseAuth } from '@/lib/firebase';
+import { firebaseAuth } from '@/lib/firebase/firebase';
 import { User } from '@firebase/auth';
 import { IUser } from '@/components/views/Login/login.types';
 import { TypeComponentAuthFields } from '@/shared/types/Page.type';

@@ -2,7 +2,7 @@ import { ISocial } from 'my-portfolio-types';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import { fetchDataList } from '@/services/data.service';
 import { push, ref, set } from '@firebase/database';
-import { firebaseDataBase } from '@/lib/firebase';
+import { firebaseDataBase } from '@/lib/firebase/firebase';
 import { TypeCreateSocialDto } from '@/shared/dto/createSocial.dto';
 
 export const fetchSocialsList = async (): Promise<Array<ISocial>> => {

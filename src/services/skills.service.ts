@@ -2,7 +2,7 @@ import { fetchDataList } from '@/services/data.service';
 import { EndpointsList } from '@/shared/Endpoints.enum';
 import { ISkill } from 'my-portfolio-types';
 import { ref, push, set } from '@firebase/database';
-import { firebaseDataBase } from '@/lib/firebase';
+import { firebaseDataBase } from '@/lib/firebase/firebase';
 import { TypeCreateSkillDto } from '@/shared/dto/createSkill.dto';
 
 export const fetchAllSkills = async (): Promise<Array<ISkill>> => {

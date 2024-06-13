@@ -1,7 +1,7 @@
 import { Endpoints, EndpointsList } from '@/shared/Endpoints.enum';
 import { child, DataSnapshot, get, ref, remove, set, update } from '@firebase/database';
-import { firebaseDataBase } from '@/lib/firebase';
 import {IDocument, IProject, ISkill, ISocial} from 'my-portfolio-types';
+import {firebaseDataBase} from '@/lib/firebase/firebase';
 
 interface IUpdatePayload<T> {
   data: Partial<T>;

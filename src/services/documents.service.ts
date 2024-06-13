@@ -2,7 +2,7 @@ import {IDocument} from 'my-portfolio-types';
 import {fetchDataList, removeAll, removeById} from '@/services/data.service';
 import {EndpointsList} from '@/shared/Endpoints.enum';
 import {child, push, ref, set, update} from '@firebase/database';
-import {firebaseDataBase} from '@/lib/firebase';
+import {firebaseDataBase} from '@/lib/firebase/firebase';
 import {TypeCreateDocumentDto} from '@/shared/dto/createDocument.dto';
 
 export const fetchAllDocuments = async (): Promise<Array<IDocument>> => {

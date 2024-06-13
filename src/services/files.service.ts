@@ -1,7 +1,7 @@
 import { IFile } from 'my-portfolio-types';
 import { Endpoints } from '@/shared/Endpoints.enum';
 import { child, ref, update } from '@firebase/database';
-import {firebaseDataBase, firebaseStorage} from '@/lib/firebase';
+import {firebaseDataBase, firebaseStorage} from '@/lib/firebase/firebase';
 import { fetchData } from '@/services/data.service';
 import {
   deleteObject,

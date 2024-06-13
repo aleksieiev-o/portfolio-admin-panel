@@ -14,10 +14,17 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "lint_fix": "next lint --fix",
+		"fb_em_start": "firebase emulators:start",
+		"fb_em_import": "firebase emulators:start --import ./src/lib/firebase/seed.development",
+		"fb_em_export": "firebase emulators:export ./src/lib/firebase/seed.development",
+    "fb_em": "firebase emulators:start --import ./src/lib/firebase/seed.development --export-on-exit ./src/lib/firebase/seed.development",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"lint_fix": "next lint --fix",
+		"inc ver patch": "./bump-version.sh patch",
+		"inc ver minor": "./bump-version.sh minor",
+		"inc ver major": "./bump-version.sh major",
     "prepare": "husky install"
   },
   "dependencies": {

@@ -8,7 +8,7 @@ import {
   Auth,
   UserRecord,
 } from 'firebase-admin/auth';
-import {firebaseAdminEnvSchema} from '@/lib/firebase/_types/firebaseAdminEnvSchema';
+import { firebaseAdminEnvSchema } from './_types/firebaseAdminEnvSchema';
 
 const initApp = (): App => {
   return initializeApp(

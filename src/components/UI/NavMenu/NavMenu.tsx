@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react';
 import Link from 'next/link';
 import { Button, Stack, useDisclosure } from '@chakra-ui/react';
 import { useSignOut } from 'react-firebase-hooks/auth';
-import { firebaseAuth } from '@/lib/firebase';
+import { firebaseAuth } from '@/lib/firebase/firebase';
 import { router } from '@/router/Router';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '@/components/UI/ActionConfirmation.modal';
 
