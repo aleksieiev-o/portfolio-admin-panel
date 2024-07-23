@@ -10,6 +10,7 @@ import {useQuery} from '@tanstack/react-query';
 import {FC, ReactElement, useContext} from 'react';
 import ProjectContent from './_widgets/ProjectContent';
 import EmptyListNotification from '@/shared/widgets/EmptyListNotification';
+import {IFile} from 'my-portfolio-types';
 
 const Projects: FC = (): ReactElement => {
   const {user} = useContext(AppAuthContext);
@@ -43,7 +44,16 @@ const Projects: FC = (): ReactElement => {
                   createdDate={project.createdDate}
                   updatedDate={project.updatedDate}
                 >
-                  <ProjectContent test="TEST" />
+                  <ProjectContent
+                    description={project.description}
+                    mainTechnology={project.mainTechnology}
+                    releaseDate={project.releaseDate}
+                    demo={project.demo}
+                    preview={project.preview}
+                    repository={project.repository}
+                    screensList={project.screensList}
+                    technologies={project.technologies}
+                  />
                 </PageContentCard>
               ))}
             </>

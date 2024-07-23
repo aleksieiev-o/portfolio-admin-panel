@@ -14,10 +14,10 @@ const PageContentCard: FC<Props> = (props): ReactElement => {
   const {children, id, title, position, visibility, createdDate, updatedDate} = props;
 
   return (
-    <Card className="w-full bg-primary/5 shadow-md">
+    <Card className="flex w-full flex-col bg-primary/5 shadow-md">
       <CardHeaderActions id={id} title={title} />
 
-      <CardContent className="flex flex-col gap-4 md:gap-6">
+      <CardContent className="flex h-full flex-col gap-4 md:gap-6">
         <div className="flex flex-row flex-nowrap items-center justify-start gap-4 md:gap-6">
           <TooltipProvider>
             <Tooltip>
@@ -34,7 +34,7 @@ const PageContentCard: FC<Props> = (props): ReactElement => {
 
         {children}
 
-        <div className="flex flex-col items-start justify-start gap-2">
+        <div className="mt-auto flex flex-col items-start justify-start gap-2">
           <TextCardDateFormat title="Created:" date={createdDate} />
 
           <TextCardDateFormat title="Updated:" date={updatedDate} />

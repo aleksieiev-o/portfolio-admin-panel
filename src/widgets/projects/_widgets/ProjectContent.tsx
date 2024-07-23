@@ -1,13 +1,49 @@
+import {Badge} from '@/components/ui/badge';
+import ExternalLinkButton from '@/shared/ui/appButton/ExternalLink.button';
+import TextCardDateFormat from '@/shared/widgets/pageContent/_widgets/TextCardDateFormat';
+import {IProject} from 'my-portfolio-types';
 import {FC, ReactElement} from 'react';
+import ProjectsContentDescription from './ProjectsContentDescription';
 
-interface Props {
-  test: string;
-}
+type Props = Pick<IProject, 'description' | 'mainTechnology' | 'releaseDate' | 'demo' | 'preview' | 'repository' | 'screensList' | 'technologies'>;
 
 const ProjectContent: FC<Props> = (props): ReactElement => {
-  const {test} = props;
+  const {description, mainTechnology, releaseDate, demo, preview, repository, screensList, technologies} = props;
 
-  return <div>ProjectContent</div>;
+  return (
+    <div className="flex flex-col gap-4">
+      <ProjectsContentDescription description={description} />
+
+      <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
+        <span>Demo link:</span>
+        <ExternalLinkButton link={demo} title="Open demo" />
+      </div>
+
+      <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
+        <span>Repository link:</span>
+        <ExternalLinkButton link={repository} title="Open repository" />
+      </div>
+
+      <TextCardDateFormat date={releaseDate} title="Released:" />
+
+      <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
+        <span>Main technology:</span>
+        <Badge variant="success">{mainTechnology}</Badge>
+      </div>
+
+      <div className="flex w-full flex-col gap-4">
+        <span>Stack of technologies:</span>
+
+        <div className="flex w-full flex-row flex-wrap items-center justify-start gap-4 overflow-hidden">
+          {technologies.map((item) => (
+            <Badge key={item} variant="info">
+              {item}
+            </Badge>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ProjectContent;
