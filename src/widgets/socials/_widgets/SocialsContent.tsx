@@ -23,7 +23,7 @@ const SocialsContent: FC<Props> = (props): ReactElement => {
       <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
         <span>Icon name:</span>
 
-        <span className="italic">{iconName}</span>
+        <span>{iconName}</span>
       </div>
     </div>
   );

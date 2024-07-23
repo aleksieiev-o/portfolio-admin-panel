@@ -43,7 +43,7 @@ const Skills: FC = (): ReactElement => {
                   createdDate={skill.createdDate}
                   updatedDate={skill.updatedDate}
                 >
-                  <SkillsContent test="TEST" />
+                  <SkillsContent experience={skill.experience} color={skill.color} isMain={skill.isMain} />
                 </PageContentCard>
               ))}
             </>
