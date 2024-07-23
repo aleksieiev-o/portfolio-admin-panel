@@ -4,6 +4,7 @@ import {RoutePath} from '@/shared/router/Routes.enum';
 import {HydrationBoundary, QueryClient, dehydrate} from '@tanstack/react-query';
 import {getCurrentUser} from '@/lib/firebase/firebase-admin';
 import Projects from '@/widgets/projects/Projects';
+import {fetchAllProjects} from '@/entities/projects/projects.service';
 
 const ProjectsPage: FC = async (): Promise<ReactElement> => {
   const queryClient = new QueryClient();
@@ -12,7 +13,7 @@ const ProjectsPage: FC = async (): Promise<ReactElement> => {
   if (currentUser) {
     await queryClient.prefetchQuery({
       queryKey: [RoutePath.PROJECTS, currentUser.uid],
-      // queryFn: async () => await fetchCategories(currentUser.uid),
+      queryFn: async () => await fetchAllProjects(currentUser.uid),
       staleTime: 5 * 1000,
     });
   }
