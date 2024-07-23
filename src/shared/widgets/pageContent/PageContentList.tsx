@@ -8,7 +8,7 @@ interface Props extends PropsWithChildren {
 const PageContentList: FC<Props> = (props): ReactElement => {
   const {children, pending} = props;
 
-  return <div className="flex h-full w-full flex-col items-start justify-start gap-4 overflow-y-auto md:gap-6">{pending ? <ContentLoader /> : <>{children}</>}</div>;
+  return <div className="grid w-full grid-cols-1 gap-4 overflow-y-auto md:grid-cols-2 md:gap-6 xl:grid-cols-3">{pending ? <ContentLoader /> : <>{children}</>}</div>;
 };
 
 export default PageContentList;

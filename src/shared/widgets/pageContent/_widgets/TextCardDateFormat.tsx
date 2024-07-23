@@ -22,7 +22,7 @@ const TextCardDateFormat: FC<Props> = (props): ReactElement => {
   }, [date]);
 
   return (
-    <div className="flex items-center justify-start gap-4" title={`${title} ${formattedDate}`}>
+    <div className="flex items-center justify-start gap-2" title={`${title} ${formattedDate}`}>
       <span className="font-bold text-foreground/30">{title}</span>
 
       <span className="text-foreground/30">{formattedDate}</span>
