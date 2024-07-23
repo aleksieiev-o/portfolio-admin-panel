@@ -1,13 +1,32 @@
+import {ExternalLink} from 'lucide-react';
+import {ISocial} from 'my-portfolio-types';
 import {FC, ReactElement} from 'react';
+import {Button} from '@/components/ui/button';
 
-interface Props {
-  test: string;
-}
+type Props = Pick<ISocial, 'url' | 'iconName'>;
 
 const SocialsContent: FC<Props> = (props): ReactElement => {
-  const {test} = props;
+  const {url, iconName} = props;
 
-  return <div>SocialsContent</div>;
+  return (
+    <div>
+      <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
+        <span>Link:</span>
+
+        <a href={url} target="_blank">
+          <Button variant="ghost" size="icon" title="Open link" className="h-8 w-8">
+            <ExternalLink className="h-4 w-4" />
+          </Button>
+        </a>
+      </div>
+
+      <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
+        <span>Icon name:</span>
+
+        <span className="italic">{iconName}</span>
+      </div>
+    </div>
+  );
 };
 
 export default SocialsContent;

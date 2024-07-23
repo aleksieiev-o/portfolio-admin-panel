@@ -43,7 +43,7 @@ const Socials: FC = (): ReactElement => {
                   createdDate={social.createdDate}
                   updatedDate={social.updatedDate}
                 >
-                  <SocialsContent test="TEST" />
+                  <SocialsContent url={social.url} iconName={social.iconName} />
                 </PageContentCard>
               ))}
             </>
