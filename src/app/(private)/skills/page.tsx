@@ -4,6 +4,7 @@ import {RoutePath} from '@/shared/router/Routes.enum';
 import {HydrationBoundary, QueryClient, dehydrate} from '@tanstack/react-query';
 import {getCurrentUser} from '@/lib/firebase/firebase-admin';
 import Skills from '@/widgets/skills/Skills';
+import {fetchAllSkills} from '@/entities/skills/skills.service';
 
 const SkillsPage: FC = async (): Promise<ReactElement> => {
   const queryClient = new QueryClient();
@@ -12,7 +13,7 @@ const SkillsPage: FC = async (): Promise<ReactElement> => {
   if (currentUser) {
     await queryClient.prefetchQuery({
       queryKey: [RoutePath.SKILLS, currentUser.uid],
-      // queryFn: async () => await fetchCategories(currentUser.uid),
+      queryFn: async () => await fetchAllSkills(currentUser.uid),
       staleTime: 5 * 1000,
     });
   }
