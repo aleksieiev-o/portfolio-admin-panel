@@ -9,6 +9,7 @@ import PageContentList from '@/shared/widgets/pageContent/PageContentList';
 import {useQuery} from '@tanstack/react-query';
 import {FC, ReactElement, useContext} from 'react';
 import ProjectContent from './_widgets/ProjectContent';
+import EmptyListNotification from '@/shared/widgets/EmptyListNotification';
 
 const Projects: FC = (): ReactElement => {
   const {user} = useContext(AppAuthContext);
@@ -47,9 +48,7 @@ const Projects: FC = (): ReactElement => {
               ))}
             </>
           ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <span>Projects list is empty</span>
-            </div>
+            <EmptyListNotification notification="Projects list is empty" />
           )}
         </PageContentList>
       </div>
