@@ -21,7 +21,7 @@ const HeaderDrawer: FC = (): ReactElement => {
 
       <SheetContent side={'left'} className={'flex flex-col items-start justify-start'}>
         <SheetHeader className={'mb-6'}>
-          <HeaderLogo appNameVisibilityClasses={''} withSheetClose={true} />
+          <HeaderLogo withSheetClose={true} />
 
           <SheetDescription>{APP_DESCRIPTION}</SheetDescription>
         </SheetHeader>
