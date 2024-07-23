@@ -24,7 +24,7 @@ const PageContentCard: FC<Props> = (props): ReactElement => {
         <div className="flex flex-row flex-nowrap items-center justify-start gap-4 md:gap-6">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>{visibility ? <Eye className="bg-inherit" /> : <EyeOff className="bg-destructive" />}</TooltipTrigger>
+              <TooltipTrigger>{visibility ? <Eye className="stroke-primary" /> : <EyeOff className="stroke-destructive" />}</TooltipTrigger>
 
               <TooltipContent>
                 <span>{visibility ? 'Visible' : 'Hidden'}</span>
