@@ -10,12 +10,12 @@ const SocialsContent: FC<Props> = (props): ReactElement => {
   return (
     <div>
       <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
-        <span>Link:</span>
+        <span className="font-bold">Link:</span>
         <ExternalLinkButton link={url} title="Open link" />
       </div>
 
       <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
-        <span>Icon name:</span>
+        <span className="font-bold">Icon name:</span>
         <span>{iconName}</span>
       </div>
     </div>

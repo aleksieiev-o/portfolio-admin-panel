@@ -29,7 +29,7 @@ const ProjectsContentDescription: FC<Props> = (props): ReactElement => {
     <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
       <HoverCard>
         <HoverCardTrigger asChild>
-          <Button variant="link" className="text-md h-auto p-0">
+          <Button variant="link" className="text-md h-auto p-0 font-bold">
             Description
           </Button>
         </HoverCardTrigger>

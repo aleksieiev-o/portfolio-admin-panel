@@ -15,26 +15,26 @@ const ProjectContent: FC<Props> = (props): ReactElement => {
       <ProjectsContentDescription description={description} />
 
       <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
-        <span>Demo link:</span>
+        <span className="font-bold">Demo link:</span>
         <ExternalLinkButton link={demo} title="Open demo" />
       </div>
 
       <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
-        <span>Repository link:</span>
+        <span className="font-bold">Repository link:</span>
         <ExternalLinkButton link={repository} title="Open repository" />
       </div>
 
-      <TextCardDateFormat date={releaseDate} title="Released:" />
+      <TextCardDateFormat variant="default" date={releaseDate} title="Released:" />
 
       <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
-        <span>Main technology:</span>
+        <span className="font-bold">Main technology:</span>
         <Badge variant="success">{mainTechnology}</Badge>
       </div>
 
       <div className="flex w-full flex-col gap-4">
-        <span>Stack of technologies:</span>
+        <span className="font-bold">Stack of technologies:</span>
 
-        <div className="flex w-full flex-row flex-wrap items-center justify-start gap-4 overflow-hidden">
+        <div className="flex w-full flex-row flex-wrap items-center justify-start gap-2 overflow-hidden">
           {technologies.map((item) => (
             <Badge key={item} variant="info">
               {item}

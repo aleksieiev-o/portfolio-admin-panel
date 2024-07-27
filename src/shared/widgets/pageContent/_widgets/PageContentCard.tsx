@@ -24,20 +24,23 @@ const PageContentCard: FC<Props> = (props): ReactElement => {
               <TooltipTrigger>{visibility ? <Eye className="stroke-primary" /> : <EyeOff className="stroke-destructive" />}</TooltipTrigger>
 
               <TooltipContent>
-                <span>{visibility ? 'Visible' : 'Hidden'}</span>
+                <span>{visibility ? 'It is visible' : 'It is hidden'}</span>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
 
-          <span className="font-bold text-muted-foreground">Position: {position}</span>
+          <div className="flex flex-row flex-nowrap gap-2">
+            <span className="font-bold">Position: </span>
+            <span>{position}</span>
+          </div>
         </div>
 
         {children}
 
         <div className="mt-auto flex flex-col items-start justify-start gap-2">
-          <TextCardDateFormat title="Created:" date={createdDate} />
+          <TextCardDateFormat variant="muted" title="Created:" date={createdDate} />
 
-          <TextCardDateFormat title="Updated:" date={updatedDate} />
+          <TextCardDateFormat variant="muted" title="Updated:" date={updatedDate} />
         </div>
       </CardContent>
 

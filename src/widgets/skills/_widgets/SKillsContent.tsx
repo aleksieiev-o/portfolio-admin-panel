@@ -10,7 +10,7 @@ const SkillsContent: FC<Props> = (props): ReactElement => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-row flex-nowrap items-center justify-start gap-2">
-        <span>Experience:</span>
+        <span className="font-bold">Experience:</span>
         <span>{experience}%</span>
       </div>
 
