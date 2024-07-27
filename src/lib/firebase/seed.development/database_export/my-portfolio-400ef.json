@@ -26,14 +26,14 @@
     },
     "personal-info": {
       "aboutMe": "My experience lies in the creation of complicated and up-to-date websites, web services and applications, designed to cater to the diverse needs of clients",
-      "biography": "Allow me to introduce myself. I'm a front-end developer originally from Donetsk, Ukraine and I currently reside in Weissenfels, Germany. With over 3 years of experience, I derive great joy from coding and developing websites, web elements, web applications and, in general, user interfaces for exceptional clients. What truly excites me is the opportunity to collaborate with new people, as they bring fresh stories and experiences to the table.",
-      "birthDate": "1991-12-19T00:00:00.000Z",
-      "country": "Germany",
-      "email": "frontdev1991@gmail.com",
-      "firstName": "Oleksandr",
-      "lastName": "Aleksieiev",
-      "mapPoint": "https://maps.app.goo.gl/9MZgWWPt1Q5YFcMV9",
-      "town": "Weissenfels"
+      "biography": "Allow me to introduce myself. I'm a front-end developer originally from [Town_name], [Country_name] and I currently reside in [Town_name], Germany. With over 3 years of experience, I derive great joy from coding and developing websites, web elements, web applications and, in general, user interfaces for exceptional clients. What truly excites me is the opportunity to collaborate with new people, as they bring fresh stories and experiences to the table.",
+      "birthDate": "1999-01-01T00:00:00.000Z",
+      "country": "Country_name",
+      "email": "my-email@gmail.com",
+      "firstName": "First_name",
+      "lastName": "Second_name",
+      "mapPoint": "https://maps.app.goo.gl/4MZgmWPt1d5YFcMa9",
+      "town": "Town_name"
     },
     "projects": {
       "-NtHSMWL8tqgbs7v1L-8": {
@@ -314,7 +314,7 @@
         "position": 2,
         "title": "LinkedIn",
         "updatedDate": "2023-11-04T23:10:40.771Z",
-        "url": "https://www.linkedin.com/in/aleksieiev-o",
+        "url": "https://www.linkedin.com/",
         "visibility": true
       },
       "-NcsUbkWZsZiG0rlIz24": {
@@ -324,7 +324,7 @@
         "position": 3,
         "title": "Instagram",
         "updatedDate": "2023-12-10T20:55:04.386Z",
-        "url": "https://www.instagram.com/aleksieiev_o",
+        "url": "https://www.instagram.com/",
         "visibility": false
       },
       "-NcsUheHStAtfQX-5-mq": {
@@ -334,7 +334,7 @@
         "position": 4,
         "title": "Telegram",
         "updatedDate": "2023-11-04T23:10:45.768Z",
-        "url": "https://t.me/aleksieiev_o",
+        "url": "https://t.me/",
         "visibility": true
       },
       "-NcsUt93YJ6-4UX0eh0r": {
@@ -344,7 +344,7 @@
         "position": 5,
         "title": "Behance",
         "updatedDate": "2023-11-04T23:10:51.108Z",
-        "url": "https://www.behance.net/aleksieiev_o",
+        "url": "https://www.behance.net/",
         "visibility": true
       },
       "-NiRbDJHpuxzan2j4kKx": {
@@ -354,7 +354,7 @@
         "position": 6,
         "title": "Xing",
         "updatedDate": "2023-11-04T23:16:43.676Z",
-        "url": "https://www.xing.com/profile/Oleksandr_Aleksieiev/cv",
+        "url": "https://www.xing.com/",
         "visibility": true
       }
     }
