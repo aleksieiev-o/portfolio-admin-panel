@@ -138,10 +138,6 @@ const AuthenticationCard: FC = (): ReactElement => {
 
                 <AppFormInputPassword formModel={formModel} disabled={isLoading} />
               </div>
-
-              <div className={'flex items-center justify-start'}>
-                <Button variant={'link'} disabled={isLoading} title="Sign in"></Button>
-              </div>
             </form>
           </Form>
         </CardContent>

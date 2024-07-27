@@ -4,6 +4,7 @@ import {RoutePath} from '@/shared/router/Routes.enum';
 import {HydrationBoundary, QueryClient, dehydrate} from '@tanstack/react-query';
 import {getCurrentUser} from '@/lib/firebase/firebase-admin';
 import PersonalInfo from '@/widgets/personal-info/PersonalInfo';
+import {fetchPersonalInfo} from '@/entities/personalInfo/personalInfo.service';
 
 const PersonalInfoPage: FC = async (): Promise<ReactElement> => {
   const queryClient = new QueryClient();
@@ -12,13 +13,13 @@ const PersonalInfoPage: FC = async (): Promise<ReactElement> => {
   if (currentUser) {
     await queryClient.prefetchQuery({
       queryKey: [RoutePath.PERSONAL_INFO, currentUser.uid],
-      // queryFn: async () => await fetchCategories(currentUser.uid),
+      queryFn: async () => await fetchPersonalInfo(currentUser.uid),
       staleTime: 5 * 1000,
     });
 
     await queryClient.prefetchQuery({
       queryKey: [RoutePath.MAIN_IMAGE, currentUser.uid],
-      // queryFn: async () => await fetchCategories(currentUser.uid),
+      queryFn: async () => await fetchPersonalInfo(currentUser.uid),
       staleTime: 5 * 1000,
     });
   }

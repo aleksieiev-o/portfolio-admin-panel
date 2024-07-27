@@ -14,6 +14,16 @@ export const fetchAllData = async <T>(endpoint: EndpointsList, userUID?: string)
   }
 };
 
+export const fetchData = async <T>(endpoint: EndpointsList, userUID?: string): Promise<T> => {
+  try {
+    const snapshot = await get(child(ref(firebaseDataBase), createDataEndpoint({endpoint, userUID})));
+    return snapshot.val() || {};
+  } catch (err) {
+    console.warn(err);
+    return Promise.reject<T>({});
+  }
+};
+
 export const fetchDataItemById = async <T>(endpoint: EndpointsList, itemId: string, userUID?: string): Promise<T> => {
   try {
     const snapshot = await get(child(ref(firebaseDataBase), createDataItemEndpoint({endpoint, itemId, userUID})));
