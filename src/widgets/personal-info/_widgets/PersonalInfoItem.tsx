@@ -94,7 +94,8 @@ const PersonalInfoItem: FC<Props> = (props): ReactElement => {
     try {
       await updatePersonalInfo({
         field: fieldName,
-        value: values[fieldName],
+        // TODO fix this use "values[fieldName].toString()"
+        value: fieldName === 'birthDate' ? new Date(values[fieldName]).toISOString() : values[fieldName].toString(),
       });
 
       toast({
