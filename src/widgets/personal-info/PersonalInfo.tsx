@@ -32,6 +32,7 @@ const PersonalInfo: FC = (): ReactElement => {
           {personalInfosIsSuccess ? (
             <>
               <PersonalInfoItem
+                inputVariant="text"
                 mode={'input'}
                 type={'text'}
                 fieldName={'firstName'}
@@ -42,6 +43,7 @@ const PersonalInfo: FC = (): ReactElement => {
               />
 
               <PersonalInfoItem
+                inputVariant="text"
                 mode={'input'}
                 type={'text'}
                 fieldName={'lastName'}
@@ -52,6 +54,7 @@ const PersonalInfo: FC = (): ReactElement => {
               />
 
               <PersonalInfoItem
+                inputVariant="text"
                 mode={'input'}
                 type={'email'}
                 fieldName={'email'}
@@ -62,6 +65,18 @@ const PersonalInfo: FC = (): ReactElement => {
               />
 
               <PersonalInfoItem
+                inputVariant="date"
+                mode={'input'}
+                type={'text'}
+                fieldName={'birthDate'}
+                label={'Birth date'}
+                placeholder={'Enter your birth date'}
+                isDataPending={personalInfoIsPending}
+                itemValue={personalInfoQueryData['birthDate']}
+              />
+
+              <PersonalInfoItem
+                inputVariant="text"
                 mode={'input'}
                 type={'text'}
                 fieldName={'country'}
@@ -72,6 +87,7 @@ const PersonalInfo: FC = (): ReactElement => {
               />
 
               <PersonalInfoItem
+                inputVariant="text"
                 mode={'input'}
                 type={'text'}
                 fieldName={'town'}
@@ -82,6 +98,7 @@ const PersonalInfo: FC = (): ReactElement => {
               />
 
               <PersonalInfoItem
+                inputVariant="text"
                 mode={'input'}
                 type={'text'}
                 fieldName={'mapPoint'}
@@ -92,6 +109,7 @@ const PersonalInfo: FC = (): ReactElement => {
               />
 
               <PersonalInfoItem
+                inputVariant="text"
                 mode={'textarea'}
                 type={'text'}
                 fieldName={'aboutMe'}
@@ -102,6 +120,7 @@ const PersonalInfo: FC = (): ReactElement => {
               />
 
               <PersonalInfoItem
+                inputVariant="text"
                 mode={'textarea'}
                 type={'text'}
                 fieldName={'biography'}

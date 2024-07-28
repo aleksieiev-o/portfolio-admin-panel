@@ -6,6 +6,7 @@ import {updatePersonalInfo} from '@/entities/personalInfo/personalInfo.service';
 import {useLoading} from '@/shared/hooks/useLoading';
 import SubmitButton from '@/shared/ui/appButton/Submit.button';
 import {IAppFormInput} from '@/shared/ui/appInput/_types/AppFormInput.interface';
+import AppFormInputDate from '@/shared/ui/appInput/AppFormInput.date';
 import AppFormInputText from '@/shared/ui/appInput/AppFormInput.text';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {IPersonalInfo} from 'my-portfolio-types';
@@ -14,12 +15,13 @@ import {useForm} from 'react-hook-form';
 import {z, ZodIssueCode} from 'zod';
 
 interface Props extends Omit<IAppFormInput, 'formModel' | 'disabled' | 'required' | 'name'> {
+  inputVariant: 'text' | 'email' | 'date';
   itemValue: string;
   fieldName: keyof IPersonalInfo;
 }
 
 const PersonalInfoItem: FC<Props> = (props): ReactElement => {
-  const {mode, type, fieldName, label, placeholder, isDataPending, itemValue} = props;
+  const {inputVariant, mode, type, fieldName, label, placeholder, isDataPending, itemValue} = props;
   const formID = useId();
   const {toast} = useToast();
   const {isLoading, setIsLoading} = useLoading();
@@ -43,11 +45,29 @@ const PersonalInfoItem: FC<Props> = (props): ReactElement => {
     .min(3, 'Value length must be at least 3 characters')
     .max(254, 'Value length must not exceed 254 characters');
 
+  const dateValidation = z.date({
+    required_error: 'Field is required',
+    invalid_type_error: 'Value must be a date',
+  });
+
+  const currentValidation = useMemo(() => {
+    switch (inputVariant) {
+      case 'text':
+        return stringValidation;
+      case 'email':
+        return emailValidation;
+      case 'date':
+        return dateValidation;
+      default:
+        return stringValidation;
+    }
+  }, [dateValidation, emailValidation, inputVariant, stringValidation]);
+
   const personalInfoItemSchema = useMemo(
     () =>
       z
         .object({
-          [fieldName]: type === 'email' ? emailValidation : stringValidation,
+          [fieldName]: currentValidation,
         })
         .superRefine((data, ctx) => {
           if (data[fieldName] === itemValue) {
@@ -58,7 +78,7 @@ const PersonalInfoItem: FC<Props> = (props): ReactElement => {
             });
           }
         }),
-    [emailValidation, fieldName, itemValue, stringValidation, type],
+    [currentValidation, fieldName, itemValue],
   );
 
   const formModel = useForm<z.infer<typeof personalInfoItemSchema>>({
@@ -97,17 +117,21 @@ const PersonalInfoItem: FC<Props> = (props): ReactElement => {
     <div className="flex w-full flex-row flex-nowrap items-end justify-start gap-4">
       <Form {...formModel}>
         <form onSubmit={formModel.handleSubmit(handleSubmitForm)} id={formID} className={'flex w-full flex-col items-start justify-center gap-4'}>
-          <AppFormInputText
-            mode={mode}
-            type={type}
-            formModel={formModel}
-            name={fieldName}
-            label={label}
-            placeholder={placeholder}
-            required={true}
-            disabled={isLoading}
-            isDataPending={isDataPending}
-          />
+          {inputVariant === 'text' ? (
+            <AppFormInputText
+              mode={mode}
+              type={type}
+              formModel={formModel}
+              name={fieldName}
+              label={label}
+              placeholder={placeholder}
+              required={true}
+              disabled={isLoading}
+              isDataPending={isDataPending}
+            />
+          ) : (
+            <AppFormInputDate formModel={formModel} name={fieldName} label={label} placeholder={placeholder} required={true} disabled={isLoading} isDataPending={isDataPending} />
+          )}
         </form>
       </Form>
 
