@@ -1,10 +1,9 @@
 'use client';
 
 import React, {FC, ReactElement, useState} from 'react';
-import {DropdownMenu, DropdownMenuTrigger} from '@radix-ui/react-dropdown-menu';
 import {Button} from '@/components/ui/button';
 import {Languages} from 'lucide-react';
-import {DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel} from '@/components/ui/dropdown-menu';
+import {DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenu, DropdownMenuTrigger} from '@/components/ui/dropdown-menu';
 import {AppLocaleEnum, AppLocaleNameEnum} from '@/shared/types/appLocale.enum';
 
 const LocaleChangeButton: FC = (): ReactElement => {
