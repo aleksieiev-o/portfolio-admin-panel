@@ -6,7 +6,6 @@ import {Form} from '@/components/ui/form';
 import {useToast} from '@/components/ui/use-toast';
 import AppFormInputText from '@/shared/ui/appInput/AppFormInput.text';
 import AppFormInputPassword from '@/shared/ui/appInput/AppFormInput.password';
-import {Button} from '@/components/ui/button';
 import SubmitButton from '@/shared/ui/appButton/Submit.button';
 import {RoutePath} from '@/shared/router/Routes.enum';
 import {useRouter} from 'next/navigation';

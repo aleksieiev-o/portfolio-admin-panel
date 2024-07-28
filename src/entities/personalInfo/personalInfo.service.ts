@@ -3,6 +3,7 @@ import {update, child, ref} from 'firebase/database';
 import {IPersonalInfo} from 'my-portfolio-types';
 import {fetchData} from '../_db.service';
 import {EndpointsList} from '@/shared/Endpoints.enum';
+import {createDataEndpoint} from '../_vm/user';
 
 interface IUpdatePersonalInfoItemDto {
   field: keyof IPersonalInfo;
@@ -15,7 +16,7 @@ export const fetchPersonalInfo = async (userUID?: string): Promise<IPersonalInfo
 
 export const updatePersonalInfo = async (payload: IUpdatePersonalInfoItemDto): Promise<void> => {
   try {
-    return await update(child(ref(firebaseDataBase), EndpointsList.PERSONAL_INFO), {
+    return await update(child(ref(firebaseDataBase), `${createDataEndpoint({endpoint: EndpointsList.PERSONAL_INFO})}`), {
       [payload.field]: payload.value,
     });
   } catch (err) {
