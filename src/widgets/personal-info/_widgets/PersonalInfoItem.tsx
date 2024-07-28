@@ -13,13 +13,13 @@ import {FC, ReactElement, useId, useMemo} from 'react';
 import {useForm} from 'react-hook-form';
 import {z, ZodIssueCode} from 'zod';
 
-interface Props extends Omit<IAppFormInput, 'formModel' | 'disabled' | 'required'> {
+interface Props extends Omit<IAppFormInput, 'formModel' | 'disabled' | 'required' | 'name'> {
   itemValue: string;
-  name: keyof IPersonalInfo;
+  fieldName: keyof IPersonalInfo;
 }
 
 const PersonalInfoItem: FC<Props> = (props): ReactElement => {
-  const {mode, type, name, label, placeholder, isDataPending, itemValue} = props;
+  const {mode, type, fieldName, label, placeholder, isDataPending, itemValue} = props;
   const formID = useId();
   const {toast} = useToast();
   const {isLoading, setIsLoading} = useLoading();
@@ -30,8 +30,8 @@ const PersonalInfoItem: FC<Props> = (props): ReactElement => {
       invalid_type_error: 'Value must be a string',
     })
     .trim()
-    .min(3, 'Display name length must be at least 3 characters')
-    .max(20, 'Display name length must not exceed 20 characters');
+    .min(3, 'Value length must be at least 3 characters')
+    .max(20, 'Value length must not exceed 20 characters');
 
   const emailValidation = z
     .string({
@@ -40,42 +40,41 @@ const PersonalInfoItem: FC<Props> = (props): ReactElement => {
     })
     .trim()
     .email('Invalid email address')
-    .min(3, 'Email length must be at least 3 characters')
-    .max(254, 'Email length must not exceed 254 characters');
+    .min(3, 'Value length must be at least 3 characters')
+    .max(254, 'Value length must not exceed 254 characters');
 
   const personalInfoItemSchema = useMemo(
     () =>
       z
         .object({
-          personalInfoItem: type === 'email' ? emailValidation : stringValidation,
+          [fieldName]: type === 'email' ? emailValidation : stringValidation,
         })
         .superRefine((data, ctx) => {
-          if (data.personalInfoItem === itemValue) {
+          if (data[fieldName] === itemValue) {
             ctx.addIssue({
               code: ZodIssueCode.custom,
-              path: ['personalInfoItem'],
-              message: 'The old and new item value are the same',
+              path: [fieldName],
+              message: 'The old and new value are the same',
             });
           }
         }),
-    [emailValidation, itemValue, stringValidation, type],
+    [emailValidation, fieldName, itemValue, stringValidation, type],
   );
 
   const formModel = useForm<z.infer<typeof personalInfoItemSchema>>({
     resolver: zodResolver(personalInfoItemSchema),
     defaultValues: {
-      personalInfoItem: itemValue,
+      [fieldName]: itemValue,
     },
   });
 
   const handleSubmitForm = async (values: z.infer<typeof personalInfoItemSchema>) => {
-    // TODO Form handler doesn't work! There aren't any listener on this form
     setIsLoading(true);
 
     try {
       await updatePersonalInfo({
-        field: name,
-        value: values.personalInfoItem,
+        field: fieldName,
+        value: values[fieldName],
       });
 
       toast({
@@ -102,7 +101,7 @@ const PersonalInfoItem: FC<Props> = (props): ReactElement => {
             mode={mode}
             type={type}
             formModel={formModel}
-            name={name}
+            name={fieldName}
             label={label}
             placeholder={placeholder}
             required={true}

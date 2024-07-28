@@ -24,17 +24,17 @@ const PersonalInfo: FC = (): ReactElement => {
   });
 
   return (
-    <div className="flex h-full w-full flex-col gap-6 py-6">
+    <div className="flex h-full w-full flex-col gap-6 overflow-hidden py-6">
       <PageTitle title={RouteName.PERSONAL_INFO} />
 
-      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+      <div className="grid w-full grid-cols-1 gap-4 overflow-y-auto md:grid-cols-2 md:gap-6">
         <div className="gap4 flex flex-col items-start justify-start md:gap-6">
           {personalInfosIsSuccess ? (
             <>
               <PersonalInfoItem
                 mode={'input'}
                 type={'text'}
-                name={'firstName'}
+                fieldName={'firstName'}
                 label={'First name'}
                 placeholder={'Enter your first name'}
                 isDataPending={personalInfoIsPending}
@@ -44,11 +44,71 @@ const PersonalInfo: FC = (): ReactElement => {
               <PersonalInfoItem
                 mode={'input'}
                 type={'text'}
-                name={'lastName'}
+                fieldName={'lastName'}
                 label={'Last name'}
                 placeholder={'Enter your last name'}
                 isDataPending={personalInfoIsPending}
                 itemValue={personalInfoQueryData['lastName']}
+              />
+
+              <PersonalInfoItem
+                mode={'input'}
+                type={'email'}
+                fieldName={'email'}
+                label={'Email'}
+                placeholder={'Enter your email'}
+                isDataPending={personalInfoIsPending}
+                itemValue={personalInfoQueryData['email']}
+              />
+
+              <PersonalInfoItem
+                mode={'input'}
+                type={'text'}
+                fieldName={'country'}
+                label={'Country'}
+                placeholder={'Enter your country'}
+                isDataPending={personalInfoIsPending}
+                itemValue={personalInfoQueryData['country']}
+              />
+
+              <PersonalInfoItem
+                mode={'input'}
+                type={'text'}
+                fieldName={'town'}
+                label={'Town'}
+                placeholder={'Enter your town'}
+                isDataPending={personalInfoIsPending}
+                itemValue={personalInfoQueryData['town']}
+              />
+
+              <PersonalInfoItem
+                mode={'input'}
+                type={'text'}
+                fieldName={'mapPoint'}
+                label={'Map point'}
+                placeholder={'Enter your map point'}
+                isDataPending={personalInfoIsPending}
+                itemValue={personalInfoQueryData['mapPoint']}
+              />
+
+              <PersonalInfoItem
+                mode={'textarea'}
+                type={'text'}
+                fieldName={'aboutMe'}
+                label={'About me'}
+                placeholder={'Enter the information about you'}
+                isDataPending={personalInfoIsPending}
+                itemValue={personalInfoQueryData['aboutMe']}
+              />
+
+              <PersonalInfoItem
+                mode={'textarea'}
+                type={'text'}
+                fieldName={'biography'}
+                label={'Biography'}
+                placeholder={'Enter your biography'}
+                isDataPending={personalInfoIsPending}
+                itemValue={personalInfoQueryData['biography']}
               />
             </>
           ) : (
