@@ -20,7 +20,7 @@ interface Props {
 
 const ChangeDisplayNameDialog: FC<Props> = (props): ReactElement => {
   const formID = useId();
-  const {dialogIsOpen, x} = props;
+  const {dialogIsOpen, setDialogIsOpen} = props;
   const {toast} = useToast();
   const {user, updateProfile, updateProfileLoading} = useContext(AppAuthContext);
 
