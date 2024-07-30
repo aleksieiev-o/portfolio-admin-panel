@@ -3,8 +3,8 @@
 import {Input} from '@/components/ui/input';
 import {useToast} from '@/components/ui/use-toast';
 import {FC, ReactElement, useId, useMemo} from 'react';
-import {useLoading} from '../hooks/useLoading';
-import SubmitButton from '../ui/appButton/Submit.button';
+import {useLoading} from '../../../hooks/useLoading';
+import SubmitButton from '../../../ui/appButton/Submit.button';
 import {FormField, FormItem, FormLabel, FormControl, FormMessage, Form} from '@/components/ui/form';
 import {Asterisk} from 'lucide-react';
 import {z} from 'zod';

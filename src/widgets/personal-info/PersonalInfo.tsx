@@ -2,16 +2,16 @@
 
 import {RouteName, RoutePath} from '@/shared/router/Routes.enum';
 import PageTitle from '@/shared/widgets/PageTitle';
-import {FC, ReactElement, useContext} from 'react';
+import {FC, ReactElement, useContext, useState} from 'react';
 import PersonalInfoItem from './_widgets/PersonalInfoItem';
 import {AppAuthContext} from '@/shared/providers/AppAuth.provider';
 import {useQuery} from '@tanstack/react-query';
 import EmptyListNotification from '@/shared/widgets/EmptyListNotification';
 import {fetchPersonalInfo} from '@/entities/personalInfo/personalInfo.service';
 import {fetchMainImage} from '@/entities/files.service';
-import UploadImageForm from '@/shared/widgets/UploadImage.form';
 import Image from 'next/image';
 import {Skeleton} from '@/components/ui/skeleton';
+import UploadImageDialog from '@/shared/widgets/uploadImage/UploadImage.dialog';
 
 const mainImageSizes = {
   width: 300,
@@ -170,7 +170,9 @@ const PersonalInfo: FC = (): ReactElement => {
             )}
           </div>
 
-          <UploadImageForm multiple={false} currentImage={mainImageIsSuccess ? mainImageQueryData : null} />
+          <div className="flex w-full items-center justify-center">
+            <UploadImageDialog multiple={false} currentImage={mainImageIsSuccess ? mainImageQueryData : null} />
+          </div>
         </div>
       </div>
     </div>
