@@ -17,7 +17,6 @@ const AppFormInputText: FC<IAppFormInput> = (props): ReactElement => {
         <FormItem className={'w-full'}>
           <FormLabel aria-required={required} className={'flex'}>
             <span className={'mr-0.5'}>{label}</span>
-
             <Asterisk className={'h-2.5 w-2.5 self-start stroke-destructive'} />
           </FormLabel>
 

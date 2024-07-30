@@ -5,6 +5,7 @@ import {HydrationBoundary, QueryClient, dehydrate} from '@tanstack/react-query';
 import {getCurrentUser} from '@/lib/firebase/firebase-admin';
 import PersonalInfo from '@/widgets/personal-info/PersonalInfo';
 import {fetchPersonalInfo} from '@/entities/personalInfo/personalInfo.service';
+import {fetchMainImage} from '@/entities/files.service';
 
 const PersonalInfoPage: FC = async (): Promise<ReactElement> => {
   const queryClient = new QueryClient();
@@ -19,7 +20,7 @@ const PersonalInfoPage: FC = async (): Promise<ReactElement> => {
 
     await queryClient.prefetchQuery({
       queryKey: [RoutePath.MAIN_IMAGE, currentUser.uid],
-      queryFn: async () => await fetchPersonalInfo(currentUser.uid),
+      queryFn: async () => await fetchMainImage(currentUser.uid),
       staleTime: 5 * 1000,
     });
   }

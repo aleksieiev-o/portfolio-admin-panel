@@ -1,0 +1,19 @@
+{
+  "name": "main-image/my_image.png",
+  "bucket": "my-portfolio-400ef.appspot.com",
+  "metageneration": 1,
+  "generation": 1722350059322,
+  "contentType": "image/png",
+  "storageClass": "STANDARD",
+  "contentDisposition": "inline",
+  "downloadTokens": [
+    "df5a7c20-f311-4e9d-b560-1a85f685bd7f"
+  ],
+  "etag": "s0vlub/+5T1f6avm5yO9pDskWJ0",
+  "customMetadata": {},
+  "timeCreated": "2024-07-30T14:34:19.322Z",
+  "updated": "2024-07-30T14:34:19.322Z",
+  "size": 2232062,
+  "md5Hash": "uOJ4pHlt/Z0yUv3oI8Mlvw==",
+  "crc32c": "4268683914"
+}

@@ -8,6 +8,10 @@ import {AppAuthContext} from '@/shared/providers/AppAuth.provider';
 import {useQuery} from '@tanstack/react-query';
 import EmptyListNotification from '@/shared/widgets/EmptyListNotification';
 import {fetchPersonalInfo} from '@/entities/personalInfo/personalInfo.service';
+import {fetchMainImage} from '@/entities/files.service';
+import {Skeleton} from '@/components/ui/skeleton';
+import UploadImageForm from '@/shared/widgets/UploadImage.form';
+import Image from 'next/image';
 
 const PersonalInfo: FC = (): ReactElement => {
   const {user} = useContext(AppAuthContext);
@@ -15,10 +19,21 @@ const PersonalInfo: FC = (): ReactElement => {
   const {
     data: personalInfoQueryData,
     isPending: personalInfoIsPending,
-    isSuccess: personalInfosIsSuccess,
+    isSuccess: personalInfoIsSuccess,
   } = useQuery({
     queryKey: [RoutePath.PERSONAL_INFO],
     queryFn: async () => await fetchPersonalInfo(),
+    staleTime: 5 * 1000,
+    enabled: !!user,
+  });
+
+  const {
+    data: mainImageQueryData,
+    isPending: mainImageIsPending,
+    isSuccess: mainImageIsSuccess,
+  } = useQuery({
+    queryKey: [RoutePath.MAIN_IMAGE],
+    queryFn: async () => await fetchMainImage(),
     staleTime: 5 * 1000,
     enabled: !!user,
   });
@@ -29,7 +44,7 @@ const PersonalInfo: FC = (): ReactElement => {
 
       <div className="grid w-full grid-cols-1 gap-4 overflow-y-auto md:grid-cols-2 md:gap-6">
         <div className="gap4 flex flex-col items-start justify-start md:gap-6">
-          {personalInfosIsSuccess ? (
+          {personalInfoIsSuccess ? (
             <>
               <PersonalInfoItem
                 inputVariant="text"
@@ -135,7 +150,24 @@ const PersonalInfo: FC = (): ReactElement => {
           )}
         </div>
 
-        <div>Main Image Component</div>
+        <div className="gap4 flex flex-col items-start justify-start md:gap-6">
+          <div className="w-full px-4 md:px-6">
+            {mainImageIsSuccess && mainImageQueryData ? (
+              <>
+                {mainImageIsPending ? (
+                  <Skeleton className="h-60 w-60" />
+                ) : (
+                  // <Image src={mainImageQueryData.fileSrc} alt={mainImageQueryData.fileName} objectFit="contain" className="h-60 w-60" width={300} height={300} />
+                  <div>IMAGE</div>
+                )}
+              </>
+            ) : (
+              <EmptyListNotification notification="Main image is not enabled" />
+            )}
+          </div>
+
+          <UploadImageForm multiple={false} currentImage={mainImageIsSuccess ? mainImageQueryData : null} />
+        </div>
       </div>
     </div>
   );

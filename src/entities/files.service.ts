@@ -6,16 +6,17 @@ import {firebaseDataBase, firebaseStorage} from '@/lib/firebase/firebase';
 import {deleteObject, getDownloadURL, ref as storageRef, StorageReference, uploadBytes, UploadResult} from '@firebase/storage';
 import {get} from 'firebase/database';
 import {createDataEndpoint} from './_vm/user';
+import {getCurrentUserUID} from '@/lib/firebase/utils';
 
-export const uploadImage = async (file: File, path: string): Promise<IFile> => {
+export const uploadImage = async (image: File, path: string): Promise<IFile> => {
   const ref: StorageReference = storageRef(firebaseStorage, path);
 
   const metadata = {
-    contentType: file.type,
-    size: file.size,
+    contentType: image.type,
+    size: image.size,
   };
 
-  const uploadResult: UploadResult = await uploadBytes(ref, file, metadata);
+  const uploadResult: UploadResult = await uploadBytes(ref, image, metadata);
   const fileSrc: string = await getDownloadURL(storageRef(firebaseStorage, uploadResult.ref.fullPath));
   const fileName: string = uploadResult.ref.name;
 
@@ -30,26 +31,28 @@ export const removeImage = async (currentFileSrc: string): Promise<void> => {
   await deleteObject(desertRef);
 };
 
-export const fetchMainImage = async (userUID: string): Promise<IFile> => {
+export const fetchMainImage = async (userUID?: string): Promise<IFile | null> => {
   // TODO refactor this method!
   try {
     const snapshot = await get(child(ref(firebaseDataBase), createDataEndpoint({endpoint: EndpointsList.MAIN_IMAGE, userUID})));
-    const result = snapshot.val() || {};
-    return Promise.resolve<IFile>(result);
+    const result = snapshot.val() || null;
+    return Promise.resolve<IFile | null>(result);
   } catch (err) {
     console.warn(err);
-    return Promise.reject<IFile>({});
+    return Promise.reject<null>(null);
   }
 };
 
-export const updatePersonalInfoFile = async (currentFile: IFile, file: File): Promise<void> => {
-  if (currentFile) {
-    await removeImage(currentFile.fileSrc);
+export const updateMainImage = async (currentImage: IFile | null, image: File): Promise<void> => {
+  const userUID = getCurrentUserUID();
+
+  if (currentImage) {
+    await removeImage(currentImage.fileSrc);
   }
 
-  if (file) {
-    const uploadResult: IFile = await uploadImage(file, `${RoutePath.MAIN_IMAGE}/${file.name}`);
+  if (image) {
+    const uploadResult: IFile = await uploadImage(image, `${RoutePath.MAIN_IMAGE}/${image.name}`);
 
-    await update(child(ref(firebaseDataBase), EndpointsList.MAIN_IMAGE), uploadResult);
+    await update(child(ref(firebaseDataBase), createDataEndpoint({endpoint: EndpointsList.MAIN_IMAGE, userUID})), uploadResult);
   }
 };
