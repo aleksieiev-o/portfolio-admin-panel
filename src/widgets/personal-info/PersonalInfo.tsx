@@ -2,21 +2,13 @@
 
 import {RouteName, RoutePath} from '@/shared/router/Routes.enum';
 import PageTitle from '@/shared/widgets/PageTitle';
-import {FC, ReactElement, useContext, useState} from 'react';
+import {FC, ReactElement, useContext} from 'react';
 import PersonalInfoItem from './_widgets/PersonalInfoItem';
 import {AppAuthContext} from '@/shared/providers/AppAuth.provider';
 import {useQuery} from '@tanstack/react-query';
 import EmptyListNotification from '@/shared/widgets/EmptyListNotification';
 import {fetchPersonalInfo} from '@/entities/personalInfo/personalInfo.service';
-import {fetchMainImage} from '@/entities/files.service';
-import Image from 'next/image';
-import {Skeleton} from '@/components/ui/skeleton';
-import UploadImageDialog from '@/shared/widgets/uploadImage/UploadImage.dialog';
-
-const mainImageSizes = {
-  width: 300,
-  height: 300,
-};
+import PersonalInfoImage from './_widgets/PersonalInfoImage';
 
 const PersonalInfo: FC = (): ReactElement => {
   const {user} = useContext(AppAuthContext);
@@ -28,17 +20,6 @@ const PersonalInfo: FC = (): ReactElement => {
   } = useQuery({
     queryKey: [RoutePath.PERSONAL_INFO],
     queryFn: async () => await fetchPersonalInfo(),
-    staleTime: 5 * 1000,
-    enabled: !!user,
-  });
-
-  const {
-    data: mainImageQueryData,
-    isPending: mainImageIsPending,
-    isSuccess: mainImageIsSuccess,
-  } = useQuery({
-    queryKey: [RoutePath.MAIN_IMAGE],
-    queryFn: async () => await fetchMainImage(),
     staleTime: 5 * 1000,
     enabled: !!user,
   });
@@ -155,25 +136,7 @@ const PersonalInfo: FC = (): ReactElement => {
           )}
         </div>
 
-        <div className="gap4 flex flex-col items-start justify-start md:gap-6">
-          <div className="flex w-full items-center justify-center px-4 md:px-6">
-            {mainImageIsPending ? (
-              <Skeleton className={`h-[${mainImageSizes.width}px] w-[${mainImageSizes.height}0px]`} />
-            ) : (
-              <>
-                {mainImageIsSuccess && mainImageQueryData ? (
-                  <Image src={mainImageQueryData.fileSrc} alt={mainImageQueryData.fileName} width={mainImageSizes.width} height={mainImageSizes.height} priority={true} />
-                ) : (
-                  <EmptyListNotification notification="Main image is not enabled" />
-                )}
-              </>
-            )}
-          </div>
-
-          <div className="flex w-full items-center justify-center">
-            <UploadImageDialog multiple={false} currentImage={mainImageIsSuccess ? mainImageQueryData : null} />
-          </div>
-        </div>
+        <PersonalInfoImage />
       </div>
     </div>
   );

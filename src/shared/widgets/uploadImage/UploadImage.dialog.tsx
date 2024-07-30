@@ -14,6 +14,8 @@ import {Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Dia
 import {Button} from '@/components/ui/button';
 import SubmitButton from '@/shared/ui/appButton/Submit.button';
 import {useLoading} from '@/shared/hooks/useLoading';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {RoutePath} from '@/shared/router/Routes.enum';
 
 interface Props {
   multiple: boolean;
@@ -26,6 +28,7 @@ const UploadImageDialog: FC<Props> = (props): ReactElement => {
   const {toast} = useToast();
   const {isLoading, setIsLoading} = useLoading();
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   const imageUploadSchema = useMemo(
     () =>
@@ -41,29 +44,49 @@ const UploadImageDialog: FC<Props> = (props): ReactElement => {
     resolver: zodResolver(imageUploadSchema),
   });
 
+  const onSuccessCallback = async (): Promise<void> => {
+    await queryClient.invalidateQueries({
+      queryKey: [RoutePath.MAIN_IMAGE],
+    });
+
+    toast({
+      title: 'Success',
+      description: 'Image was successfully uploaded.',
+    });
+
+    formModel.reset();
+    setDialogIsOpen(false);
+  };
+
+  const onErrorCallback = async (): Promise<void> => {
+    toast({
+      title: 'Failure',
+      description: 'An error has occurred. Something went wrong.',
+      variant: 'destructive',
+    });
+  };
+
+  const onSettledCallback = async (): Promise<void> => {
+    setIsLoading(false);
+  };
+
+  const mutationCreate = useMutation({
+    mutationFn: async (values: {image: File}) => await updateMainImage(currentImage, values.image),
+    onSuccess: async (data, variables, context) => {
+      await onSuccessCallback();
+    },
+    onError: async (error, variables) => {
+      await onErrorCallback();
+      console.warn(error, variables);
+    },
+    onSettled: async (data, error, variables, context) => {
+      await onSettledCallback();
+    },
+  });
+
   const handleSubmitForm = async (values: z.infer<typeof imageUploadSchema>) => {
     setIsLoading(true);
-
-    try {
-      await updateMainImage(currentImage, values.image);
-
-      toast({
-        title: 'Success',
-        description: 'Image was successfully uploaded.',
-      });
-
-      formModel.reset();
-      setDialogIsOpen(false);
-    } catch (e) {
-      toast({
-        title: 'Failure',
-        description: 'An error has occurred. Something went wrong.',
-        variant: 'destructive',
-      });
-      console.warn(e);
-    } finally {
-      setIsLoading(false);
-    }
+    mutationCreate.mutate(values);
   };
 
   return (
