@@ -3,18 +3,18 @@
 const devImageDomain = {
   protocol: 'http',
   hostname: 'localhost',
-  port: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_EMULATOR_PORT,
-  pathname: `/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.appspot.com/**`,
+  port: '9199',
+  pathname: `/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.appspot.com/o/*`,
 };
 
 const prodImageDomain = {
   protocol: 'https',
   hostname: 'firebasestorage.googleapis.com',
   port: '',
-  pathname: `/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.appspot.com/**`,
+  pathname: `/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.appspot.com/o/*`,
 };
 
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
   // async redirects() {
   //   return [

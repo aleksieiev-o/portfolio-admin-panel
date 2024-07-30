@@ -9,9 +9,14 @@ import {useQuery} from '@tanstack/react-query';
 import EmptyListNotification from '@/shared/widgets/EmptyListNotification';
 import {fetchPersonalInfo} from '@/entities/personalInfo/personalInfo.service';
 import {fetchMainImage} from '@/entities/files.service';
-import {Skeleton} from '@/components/ui/skeleton';
 import UploadImageForm from '@/shared/widgets/UploadImage.form';
 import Image from 'next/image';
+import {Skeleton} from '@/components/ui/skeleton';
+
+const mainImageSizes = {
+  width: 300,
+  height: 300,
+};
 
 const PersonalInfo: FC = (): ReactElement => {
   const {user} = useContext(AppAuthContext);
@@ -151,18 +156,17 @@ const PersonalInfo: FC = (): ReactElement => {
         </div>
 
         <div className="gap4 flex flex-col items-start justify-start md:gap-6">
-          <div className="w-full px-4 md:px-6">
-            {mainImageIsSuccess && mainImageQueryData ? (
+          <div className="flex w-full items-center justify-center px-4 md:px-6">
+            {mainImageIsPending ? (
+              <Skeleton className={`h-[${mainImageSizes.width}px] w-[${mainImageSizes.height}0px]`} />
+            ) : (
               <>
-                {mainImageIsPending ? (
-                  <Skeleton className="h-60 w-60" />
+                {mainImageIsSuccess && mainImageQueryData ? (
+                  <Image src={mainImageQueryData.fileSrc} alt={mainImageQueryData.fileName} width={mainImageSizes.width} height={mainImageSizes.height} priority={true} />
                 ) : (
-                  // <Image src={mainImageQueryData.fileSrc} alt={mainImageQueryData.fileName} objectFit="contain" className="h-60 w-60" width={300} height={300} />
-                  <div>IMAGE</div>
+                  <EmptyListNotification notification="Main image is not enabled" />
                 )}
               </>
-            ) : (
-              <EmptyListNotification notification="Main image is not enabled" />
             )}
           </div>
 
