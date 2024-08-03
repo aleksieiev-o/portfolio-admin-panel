@@ -27,7 +27,7 @@ const Documents: FC = (): ReactElement => {
 
   return (
     <div className="flex h-full w-full flex-col gap-6 py-6">
-      <PageContentHeader pageTitle={RouteName.DOCUMENTS} createTitle="Create new document" removeTitle="Remove all documents" />
+      <PageContentHeader pageTitle={RouteName.DOCUMENTS} createTitle="Create new document" removeTitle="Remove all documents" createLink={RoutePath.CREATE_DOCUMENT} />
 
       <div className="grid w-full grid-cols-1 gap-4 overflow-hidden md:gap-6">
         <PageContentList pending={documentsIsPending}>

@@ -27,7 +27,7 @@ const Projects: FC = (): ReactElement => {
 
   return (
     <div className="flex h-full w-full flex-col gap-6 py-6">
-      <PageContentHeader pageTitle={RouteName.PROJECTS} createTitle="Create new project" removeTitle="Remove all projects" />
+      <PageContentHeader pageTitle={RouteName.PROJECTS} createTitle="Create new project" removeTitle="Remove all projects" createLink={RoutePath.CREATE_PROJECT} />
 
       <div className="grid w-full grid-cols-1 gap-4 overflow-hidden md:gap-6">
         <PageContentList pending={projectsIsPending}>

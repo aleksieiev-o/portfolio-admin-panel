@@ -27,7 +27,7 @@ const Socials: FC = (): ReactElement => {
 
   return (
     <div className="flex h-full w-full flex-col gap-6 py-6">
-      <PageContentHeader pageTitle={RouteName.SOCIALS} createTitle="Create new social" removeTitle="Remove all socials" />
+      <PageContentHeader pageTitle={RouteName.SOCIALS} createTitle="Create new social" removeTitle="Remove all socials" createLink={RoutePath.CREATE_SOCIAL} />
 
       <div className="grid w-full grid-cols-1 gap-4 overflow-hidden md:gap-6">
         <PageContentList pending={socialsIsPending}>
