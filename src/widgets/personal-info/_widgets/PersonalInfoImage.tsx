@@ -30,7 +30,7 @@ const PersonalInfoImage: FC = (): ReactElement => {
   });
 
   return (
-    <div className="gap4 flex flex-col items-start justify-start md:gap-6">
+    <div className="flex flex-col items-start justify-start gap-4 md:gap-6">
       <div className="flex w-full items-center justify-center px-4 md:px-6">
         {mainImageIsPending ? (
           <Skeleton className={`h-[${mainImageSizes.width}px] w-[${mainImageSizes.height}0px]`} />

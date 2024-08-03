@@ -13,7 +13,7 @@ const PageContentHeader: FC<Props> = (props): ReactElement => {
   const {pageTitle, createTitle, removeTitle} = props;
 
   return (
-    <div className="gap4 flex w-full flex-row flex-nowrap items-center justify-between md:gap-6">
+    <div className="flex w-full flex-row flex-nowrap items-center justify-between gap-4 md:gap-6">
       <PageTitle title={pageTitle} />
 
       <PageActions createButtonTitle={createTitle} removeButtonTitle={removeTitle} />

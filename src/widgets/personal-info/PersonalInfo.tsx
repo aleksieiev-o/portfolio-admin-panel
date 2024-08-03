@@ -28,8 +28,8 @@ const PersonalInfo: FC = (): ReactElement => {
     <div className="flex h-full w-full flex-col gap-6 overflow-hidden py-6">
       <PageTitle title={RouteName.PERSONAL_INFO} />
 
-      <div className="grid w-full grid-cols-1 gap-4 overflow-y-auto md:grid-cols-2 md:gap-6">
-        <div className="gap4 flex flex-col items-start justify-start md:gap-6">
+      <div className="grid w-full grid-cols-1 gap-6 overflow-y-auto md:grid-cols-2">
+        <div className="flex flex-col items-start justify-start gap-4 md:gap-6">
           {personalInfoIsSuccess ? (
             <>
               <PersonalInfoItem
