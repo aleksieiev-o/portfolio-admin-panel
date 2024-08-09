@@ -2,9 +2,9 @@
 
 import {FC, ReactElement} from 'react';
 import GoToPreviousPageButton from '@/shared/ui/appButton/GoToPreviousPage.button';
-import CreateOrUpdateItemForm from '@/shared/widgets/createOrUpdateItemForm/CreateOrUpdateItemForm';
 import PageTitle from '@/shared/widgets/PageTitle';
 import {RouteName} from '@/shared/router/Routes.enum';
+import CreateOrUpdateProjectForm from './_features/createOrUpdateProjectForm/CreateOrUpdateProject.form';
 
 const ProjectsCreate: FC = (): ReactElement => {
   return (
@@ -15,7 +15,7 @@ const ProjectsCreate: FC = (): ReactElement => {
         <PageTitle title={RouteName.PROJECTS_CREATE} />
       </div>
 
-      <CreateOrUpdateItemForm mode="create" />
+      <CreateOrUpdateProjectForm mode="create" />
     </div>
   );
 };

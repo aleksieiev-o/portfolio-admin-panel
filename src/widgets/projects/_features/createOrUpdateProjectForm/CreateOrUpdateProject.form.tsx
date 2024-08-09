@@ -15,12 +15,13 @@ import {createProject} from '@/entities/projects/projects.service';
 import {usePathname} from 'next/navigation';
 import AppSwitch from '@/shared/ui/appSwitch/AppSwitch';
 import AppFormInputDate from '@/shared/ui/appInput/AppFormInput.date';
+import ProjectTechnologiesListForm from './_widgets/ProjectTechnologiesList.form';
 
 interface Props {
   mode: 'create' | 'update';
 }
 
-const CreateOrUpdateItemForm: FC<Props> = (props): ReactElement => {
+const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
   const {mode} = props;
   const formID = useId();
   const {toast} = useToast();
@@ -196,8 +197,6 @@ const CreateOrUpdateItemForm: FC<Props> = (props): ReactElement => {
                 isDataPending={false}
               />
 
-              <AppSwitch formModel={formModel} name={'visibility'} label={'Project visibility'} placeholder={'Change project visibility'} required={true} disabled={isLoading} />
-
               <AppFormInputText
                 mode={'input'}
                 type={'number'}
@@ -210,17 +209,7 @@ const CreateOrUpdateItemForm: FC<Props> = (props): ReactElement => {
                 isDataPending={false}
               />
 
-              <AppFormInputText
-                mode={'textarea'}
-                type={'text'}
-                formModel={formModel}
-                name={'description'}
-                label={'Project description'}
-                placeholder={'Project description...'}
-                required={true}
-                disabled={isLoading}
-                isDataPending={false}
-              />
+              <AppSwitch formModel={formModel} name={'visibility'} label={'Project visibility'} placeholder={'Change project visibility'} required={true} disabled={isLoading} />
 
               <AppFormInputText
                 mode={'input'}
@@ -233,6 +222,8 @@ const CreateOrUpdateItemForm: FC<Props> = (props): ReactElement => {
                 disabled={isLoading}
                 isDataPending={false}
               />
+
+              <ProjectTechnologiesListForm />
 
               <AppFormInputDate
                 formModel={formModel}
@@ -267,7 +258,20 @@ const CreateOrUpdateItemForm: FC<Props> = (props): ReactElement => {
                 disabled={isLoading}
                 isDataPending={false}
               />
+
+              <AppFormInputText
+                mode={'textarea'}
+                type={'text'}
+                formModel={formModel}
+                name={'description'}
+                label={'Project description'}
+                placeholder={'Project description...'}
+                required={true}
+                disabled={isLoading}
+                isDataPending={false}
+              />
             </div>
+
             <div className="grid grid-cols-1 gap-4 md:gap-6">IMAGE FORM ITEMS</div>
           </div>
         </form>
@@ -280,4 +284,4 @@ const CreateOrUpdateItemForm: FC<Props> = (props): ReactElement => {
   );
 };
 
-export default CreateOrUpdateItemForm;
+export default CreateOrUpdateProjectForm;
