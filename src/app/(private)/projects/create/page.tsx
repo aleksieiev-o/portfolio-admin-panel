@@ -4,10 +4,10 @@ import {getCurrentUser} from '@/lib/firebase/firebase-admin';
 import ProjectsCreate from '@/widgets/projects/ProjectsCreate';
 import ScreenNotAvailable from '@/shared/widgets/ScreenNotAvailable';
 
-const ProjectsPage: FC = async (): Promise<ReactElement> => {
+const ProjectsCreatePage: FC = async (): Promise<ReactElement> => {
   const currentUser = await getCurrentUser();
 
   return <ScrollContentWrapper>{currentUser ? <ProjectsCreate /> : <ScreenNotAvailable />}</ScrollContentWrapper>;
 };
 
-export default ProjectsPage;
+export default ProjectsCreatePage;

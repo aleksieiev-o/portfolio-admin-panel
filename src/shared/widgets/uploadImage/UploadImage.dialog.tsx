@@ -34,7 +34,7 @@ const UploadImageDialog: FC<Props> = (props): ReactElement => {
     () =>
       z.object({
         image: z.instanceof(File).refine((file) => file.size <= 3000000, {
-          message: 'Your image must not exceed 3MB',
+          message: 'Image must not exceed 3MB',
         }),
       }),
     [],
