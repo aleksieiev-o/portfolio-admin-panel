@@ -3,17 +3,11 @@ import {Select} from '@/components/ui/select';
 import {FC} from 'react';
 import AppSelectTrigger from './_ui/AppSelect.trigger';
 import AppSelectContent from './_ui/AppSelect.content';
+import {IAppFormInput} from '../appInput/_types/AppFormInput.interface';
 
 /* tslint:disable */
-interface Props {
-  formModel: any; // TODO fix type
+interface Props extends Omit<IAppFormInput, 'type' | 'mode'> {
   id: string;
-  name: string;
-  label: string;
-  placeholder: string;
-  required: boolean;
-  disabled: boolean;
-  isDataPending: boolean;
   dataList: Array<any>; // TODO fix type
   emptyDataListMessage: string;
 }
