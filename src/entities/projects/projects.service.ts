@@ -31,10 +31,6 @@ export const createProject = async (payload: ICreateProjectDto): Promise<void> =
     technologies: technologies.length ? technologies : [mainTechnology],
     demo: demo,
     repository: repository,
-    preview: {
-      fileSrc: uploadedFile?.fileSrc || '',
-      fileName: uploadedFile?.fileName || '',
-    },
     screensList: [
       {
         fileSrc: uploadedFile?.fileSrc || '',
@@ -57,10 +53,6 @@ export const updateProjectById = async (payload: ICreateProjectDto, itemId: stri
 
     return await update(child(ref(firebaseDataBase), `${createDataItemEndpoint({endpoint: EndpointsList.PROJECTS, itemId})}`), {
       ...payload,
-      preview: {
-        fileSrc: uploadedFile?.fileSrc || '',
-        fileName: uploadedFile?.fileName || '',
-      },
       screensList: [], // TODO add array of files
       releaseDate: new Date(payload.releaseDate).toISOString(),
       updatedDate: new Date().toISOString(),
@@ -75,9 +67,9 @@ export const updateProjectById = async (payload: ICreateProjectDto, itemId: stri
 };
 
 export const removeProjectById = async (payload: IProject, id: string): Promise<void> => {
-  if (payload.preview.fileSrc) {
-    await removeImage(payload.preview.fileSrc);
-  }
+  // if (payload.preview.fileSrc) {
+  //   await removeImage(payload.preview.fileSrc);
+  // }
 
   // TODO add remove the list of files from screensList
 
@@ -85,8 +77,8 @@ export const removeProjectById = async (payload: IProject, id: string): Promise<
 };
 
 export const removeAllProjects = async (payload: Array<IProject>): Promise<void> => {
-  const desertRefList = payload.map((item) => deleteObject(storageRef(firebaseStorage, item.preview.fileSrc)));
+  // const desertRefList = payload.map((item) => deleteObject(storageRef(firebaseStorage, item.preview.fileSrc)));
   // TODO add remove the list of files from screensList
-  await Promise.all(desertRefList);
+  // await Promise.all(desertRefList);
   await removeAllData(EndpointsList.PROJECTS);
 };

@@ -48,7 +48,6 @@ const Projects: FC = (): ReactElement => {
                     mainTechnology={project.mainTechnology}
                     releaseDate={project.releaseDate}
                     demo={project.demo}
-                    preview={project.preview}
                     repository={project.repository}
                     screensList={project.screensList}
                     technologies={project.technologies}

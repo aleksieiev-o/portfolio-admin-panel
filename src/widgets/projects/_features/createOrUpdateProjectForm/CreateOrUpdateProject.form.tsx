@@ -16,6 +16,7 @@ import {usePathname} from 'next/navigation';
 import AppSwitch from '@/shared/ui/appSwitch/AppSwitch';
 import AppFormInputDate from '@/shared/ui/appInput/AppFormInput.date';
 import ProjectTechnologiesListForm from './_widgets/ProjectTechnologiesList.form';
+import AppFormInputFile from '@/shared/ui/appInput/AppFormInput.file';
 
 interface Props {
   mode: 'create' | 'update';
@@ -97,9 +98,6 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
             .min(3, 'Value must be at least 3 characters')
             .max(25, 'Value must not exceed 25 characters'),
         ),
-        // preview: z.instanceof(File).refine((payload) => payload.size <= 3000000, {
-        //   message: 'Image must not exceed 3MB',
-        // }),
         // screensList: z.instanceof(File || FileList).refine(
         //   (payload) => {
         //     if (payload instanceof FileList) {
@@ -263,7 +261,18 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
               />
             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:gap-6">IMAGE FORM ITEMS</div>
+            <div className="grid grid-cols-1 gap-4 md:gap-6">
+              <AppFormInputFile
+                multiple={true}
+                accept={'.jpg, .jpeg, .png'}
+                label={'Image'}
+                name={'image'}
+                disabled={isLoading}
+                required={true}
+                formModel={formModel}
+                isDataPending={isLoading}
+              />
+            </div>
           </div>
         </form>
       </Form>
