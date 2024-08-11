@@ -23,7 +23,7 @@ const AppSwitch: FC<Props> = (props): ReactElement => {
         name={name}
         disabled={disabled}
         render={({field}) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+          <FormItem className="flex w-full flex-row items-start justify-start gap-4 rounded-lg border p-4">
             <div className="space-y-0.5">
               <FormLabel className="text-base" title={placeholder} aria-required={required}>
                 {label}
@@ -33,7 +33,7 @@ const AppSwitch: FC<Props> = (props): ReactElement => {
             </div>
 
             <FormControl aria-required={required}>
-              <Switch checked={field.value} onCheckedChange={field.onChange} disabled={disabled} />
+              <Switch checked={field.value} onCheckedChange={field.onChange} disabled={disabled} defaultChecked={true} />
             </FormControl>
           </FormItem>
         )}

@@ -42,15 +42,14 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
           .trim()
           .min(3, 'Value must be at least 3 characters')
           .max(25, 'Value must not exceed 25 characters'),
-        visibility: z.boolean({
-          required_error: 'Field is required',
-        }),
-        position: z
-          .number({
+        visibility: z
+          .boolean({
             required_error: 'Field is required',
           })
-          .int()
-          .min(0),
+          .default(true),
+        position: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+          message: 'Value must be a number',
+        }),
         description: z
           .string({
             required_error: 'Field is required',
@@ -98,22 +97,22 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
             .min(3, 'Value must be at least 3 characters')
             .max(25, 'Value must not exceed 25 characters'),
         ),
-        preview: z.instanceof(File).refine((payload) => payload.size <= 3000000, {
-          message: 'Image must not exceed 3MB',
-        }),
-        screensList: z.instanceof(File || FileList).refine(
-          (payload) => {
-            if (payload instanceof FileList) {
-              const images = Array.from(payload).filter((item) => item.size <= 3000000);
-              return images.length === payload.length; // TODO rework this check!
-            }
+        // preview: z.instanceof(File).refine((payload) => payload.size <= 3000000, {
+        //   message: 'Image must not exceed 3MB',
+        // }),
+        // screensList: z.instanceof(File || FileList).refine(
+        //   (payload) => {
+        //     if (payload instanceof FileList) {
+        //       const images = Array.from(payload).filter((item) => item.size <= 3000000);
+        //       return images.length === payload.length; // TODO rework this check!
+        //     }
 
-            return payload.size <= 3000000;
-          },
-          {
-            message: 'Image must not exceed 3MB',
-          },
-        ),
+        //     return payload.size <= 3000000;
+        //   },
+        //   {
+        //     message: 'Image must not exceed 3MB',
+        //   },
+        // ),
       }),
     [],
   );
@@ -167,23 +166,15 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
     mutationCreate.mutate(values);
   };
 
-  // title: string;
-  // visibility: boolean;
-  // position: number;
-  // description: string;
-  // mainTechnology: string;
-  // releaseDate: string;
-  // repository: string;
-  // demo: string;
-  // technologies: Array<string>;
-  // preview: IFile;
-  // screensList: TFileList;
+  const updateTechnologyList = (list: string[]) => {
+    formModel.setValue<'technologies'>('technologies', list);
+  };
 
   return (
-    <div className="grid w-full grid-cols-1 gap-4 overflow-hidden pb-6 md:gap-6">
+    <div className="grid w-full grid-cols-1 gap-4 pb-6 md:gap-6">
       <Form {...formModel}>
-        <form onSubmit={formModel.handleSubmit(handleSubmitForm)} id={formID} className="flex w-full flex-col items-start justify-center gap-4 overflow-y-auto">
-          <div className="grid w-full grid-cols-2 gap-4 overflow-y-auto py-1 md:gap-6">
+        <form onSubmit={formModel.handleSubmit(handleSubmitForm)} id={formID} className="flex w-full flex-col items-start justify-center gap-4">
+          <div className="grid w-full grid-cols-2 gap-4 py-1 md:gap-6">
             <div className="grid grid-cols-1 gap-4 md:gap-6">
               <AppFormInputText
                 mode={'input'}
@@ -223,7 +214,7 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
                 isDataPending={false}
               />
 
-              <ProjectTechnologiesListForm />
+              <ProjectTechnologiesListForm technologyList={formModel.getValues('technologies')} setTechnologyList={updateTechnologyList} />
 
               <AppFormInputDate
                 formModel={formModel}
@@ -277,7 +268,7 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
         </form>
       </Form>
 
-      <div>
+      <div className="flex flex-row items-center justify-start">
         <SubmitButton formId={formID} title="Submit" btnBody="Submit" isLoading={isLoading} disabled={false} />
       </div>
     </div>

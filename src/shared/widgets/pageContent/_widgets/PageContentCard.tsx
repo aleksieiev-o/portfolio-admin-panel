@@ -24,7 +24,7 @@ const PageContentCard: FC<Props> = (props): ReactElement => {
               <TooltipTrigger>{visibility ? <Eye className="stroke-primary" /> : <EyeOff className="stroke-destructive" />}</TooltipTrigger>
 
               <TooltipContent>
-                <span>{visibility ? 'It is visible' : 'It is hidden'}</span>
+                <span>{visibility ? 'Card is visible' : 'It is hidden'}</span>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
