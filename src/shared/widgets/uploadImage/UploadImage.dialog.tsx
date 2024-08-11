@@ -16,6 +16,7 @@ import SubmitButton from '@/shared/ui/appButton/Submit.button';
 import {useLoading} from '@/shared/hooks/useLoading';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {RoutePath} from '@/shared/router/Routes.enum';
+import AppFormInputFile from '@/shared/ui/appInput/AppFormInput.file';
 
 interface Props {
   multiple: boolean;
@@ -113,30 +114,15 @@ const UploadImageDialog: FC<Props> = (props): ReactElement => {
                 <span className="font-bold">to send it</span>
               </div>
 
-              <FormField
-                control={formModel.control}
-                name="image"
-                render={({field: {value, onChange, ...fieldProps}}) => (
-                  <FormItem>
-                    <FormLabel aria-required={true} className={'flex'}>
-                      <span className={'mr-0.5'}>Image</span>
-                      <Asterisk className={'h-2.5 w-2.5 self-start stroke-destructive'} />
-                    </FormLabel>
-
-                    <FormControl aria-required={true}>
-                      <Input
-                        {...fieldProps}
-                        type="file"
-                        accept=".jpg, .jpeg, .png"
-                        aria-required={true}
-                        multiple={multiple}
-                        onChange={(event) => onChange(event.target.files && event.target.files[0])}
-                      />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <AppFormInputFile
+                multiple={false}
+                accept={'.jpg, .jpeg, .png'}
+                label={'Image'}
+                name={'image'}
+                disabled={isLoading}
+                required={true}
+                formModel={formModel}
+                isDataPending={isLoading}
               />
             </div>
           </form>
