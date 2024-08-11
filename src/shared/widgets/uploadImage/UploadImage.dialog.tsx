@@ -1,10 +1,9 @@
 'use client';
 
-import {Input} from '@/components/ui/input';
 import {useToast} from '@/components/ui/use-toast';
 import {FC, ReactElement, useId, useMemo, useState} from 'react';
-import {FormField, FormItem, FormLabel, FormControl, FormMessage, Form} from '@/components/ui/form';
-import {Asterisk, Upload} from 'lucide-react';
+import {Form} from '@/components/ui/form';
+import {Upload} from 'lucide-react';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
@@ -19,12 +18,11 @@ import {RoutePath} from '@/shared/router/Routes.enum';
 import AppFormInputFile from '@/shared/ui/appInput/AppFormInput.file';
 
 interface Props {
-  multiple: boolean;
   currentImage: IFile | null;
 }
 
 const UploadImageDialog: FC<Props> = (props): ReactElement => {
-  const {multiple, currentImage} = props;
+  const {currentImage} = props;
   const formID = useId();
   const {toast} = useToast();
   const {isLoading, setIsLoading} = useLoading();

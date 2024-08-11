@@ -46,7 +46,7 @@ const PersonalInfoImage: FC = (): ReactElement => {
       </div>
 
       <div className="flex w-full items-center justify-center">
-        <UploadImageDialog multiple={false} currentImage={mainImageIsSuccess ? mainImageQueryData : null} />
+        <UploadImageDialog currentImage={mainImageIsSuccess ? mainImageQueryData : null} />
       </div>
     </div>
   );
