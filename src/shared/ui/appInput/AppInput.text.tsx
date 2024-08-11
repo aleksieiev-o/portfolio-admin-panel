@@ -6,15 +6,9 @@ import {Asterisk} from 'lucide-react';
 import {Input} from '@/components/ui/input';
 import AppInputErrorMessage from './AppInputErrorMessage';
 import {cn} from '@/lib/utils';
+import {IAppFormInput} from './_types/AppFormInput.interface';
 
-interface Props {
-  mode: 'input' | 'textarea';
-  type: 'text' | 'email' | 'password' | 'number';
-  label: string;
-  placeholder: string;
-  required: boolean;
-  disabled: boolean;
-  isDataPending: boolean;
+interface Props extends IAppFormInput {
   value: string;
   handleOnChange: (value: string) => void;
   errorMessage: string;
