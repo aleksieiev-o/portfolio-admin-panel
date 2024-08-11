@@ -8,7 +8,7 @@ import AppInputErrorMessage from './AppInputErrorMessage';
 import {cn} from '@/lib/utils';
 import {IAppFormInput} from './_types/AppFormInput.interface';
 
-interface Props extends IAppFormInput {
+interface Props extends Omit<IAppFormInput, 'formModel' | 'name'> {
   value: string;
   handleOnChange: (value: string) => void;
   errorMessage: string;
