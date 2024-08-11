@@ -1,17 +1,9 @@
 import {FormField, FormItem, FormLabel, FormDescription, FormControl} from '@/components/ui/form';
 import {Switch} from '@/components/ui/switch';
 import {FC, ReactElement} from 'react';
+import {IAppFormInput} from '../appInput/_types/AppFormInput.interface';
 
-/* tslint:disable */
-interface Props {
-  formModel: any; // TODO fix type
-  name: string;
-  label: string;
-  placeholder: string;
-  required: boolean;
-  disabled: boolean;
-}
-/* tslint:enable */
+interface Props extends Omit<IAppFormInput, 'type' | 'mode' | 'isDataPending'> {}
 
 const AppSwitch: FC<Props> = (props): ReactElement => {
   const {formModel, name, label, placeholder, required, disabled} = props;
