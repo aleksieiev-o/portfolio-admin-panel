@@ -32,7 +32,7 @@ const UploadImageDialog: FC<Props> = (props): ReactElement => {
   const imageUploadSchema = useMemo(
     () =>
       z.object({
-        image: z.instanceof(File).refine((file) => file.size <= 3000000, {
+        image: z.instanceof(File).refine((file) => file.size <= 3 * 1024 * 1024, {
           message: 'Image must not exceed 3MB',
         }),
       }),

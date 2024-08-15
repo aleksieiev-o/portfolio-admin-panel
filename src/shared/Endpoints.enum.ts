@@ -6,3 +6,7 @@ export enum EndpointsList {
   PERSONAL_INFO = '_userUID_/personal-info',
   MAIN_IMAGE = '_userUID_/main-image',
 }
+
+export enum EndpointsImagesList {
+  PROJECTS = '_userUID_/projects/[id]',
+}

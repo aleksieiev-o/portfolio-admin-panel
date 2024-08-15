@@ -1,8 +1,8 @@
-import {EndpointsList} from '@/shared/Endpoints.enum';
+import {EndpointsImagesList, EndpointsList} from '@/shared/Endpoints.enum';
 import {firebaseAuth} from '@/lib/firebase/firebase';
 
 interface IPayload {
-  endpoint: EndpointsList;
+  endpoint: EndpointsList | EndpointsImagesList;
   userUID?: string;
   itemId: string;
 }

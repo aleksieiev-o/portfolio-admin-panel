@@ -30,7 +30,7 @@ const AppFormInputFile: FC<Props> = (props): ReactElement => {
               accept={accept}
               aria-required={required}
               multiple={multiple}
-              onChange={(event) => onChange(event.target.files && event.target.files[0])}
+              onChange={(event) => onChange(multiple ? event.target.files : event.target.files && event.target.files[0])}
               disabled={disabled}
             />
           </FormControl>

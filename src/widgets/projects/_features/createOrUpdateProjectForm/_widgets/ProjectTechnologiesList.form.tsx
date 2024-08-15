@@ -34,6 +34,7 @@ const ProjectTechnologiesListForm: FC<Props> = (props): ReactElement => {
             .min(3, 'Value must be at least 3 characters')
             .max(20, 'Value must not exceed 20 characters'),
         })
+        .default({technology: ''}) // TODO fix this "default" evaluation and fix this state update (it has been updating now like a form send)
         .superRefine((data, ctx) => {
           if (technologyList && technologyList.includes(data.technology)) {
             ctx.addIssue({
@@ -86,7 +87,7 @@ const ProjectTechnologiesListForm: FC<Props> = (props): ReactElement => {
           errorMessage={errorMessage}
         />
 
-        <Button onClick={() => addItemToTechnologiesList({technology: technologyValue})} variant="default" title="Add technology" className="gap-2">
+        <Button type="button" onClick={() => addItemToTechnologiesList({technology: technologyValue})} variant="default" title="Add technology" className="gap-2">
           <Plus className="h-5 w-5" />
           <span>Add</span>
         </Button>

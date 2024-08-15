@@ -17,6 +17,7 @@ import AppSwitch from '@/shared/ui/appSwitch/AppSwitch';
 import AppFormInputDate from '@/shared/ui/appInput/AppFormInput.date';
 import ProjectTechnologiesListForm from './_widgets/ProjectTechnologiesList.form';
 import AppFormInputFile from '@/shared/ui/appInput/AppFormInput.file';
+import {ICreateProjectDto} from '@/shared/types/projects.types';
 
 interface Props {
   mode: 'create' | 'update';
@@ -48,9 +49,12 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
             required_error: 'Field is required',
           })
           .default(true),
-        position: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
-          message: 'Value must be a number',
-        }),
+        position: z
+          .string()
+          .refine((val) => !Number.isNaN(parseInt(val, 10)), {
+            message: 'Value must be a number',
+          })
+          .transform((val) => parseInt(val, 10)),
         description: z
           .string({
             required_error: 'Field is required',
@@ -67,9 +71,11 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
           .trim()
           .min(3, 'Value must be at least 3 characters')
           .max(25, 'Value must not exceed 25 characters'),
-        releaseDate: z.date({
-          required_error: 'Field is required',
-        }),
+        releaseDate: z
+          .date({
+            required_error: 'Field is required',
+          })
+          .transform((val) => val.toISOString()),
         repository: z
           .string({
             required_error: 'Field is required',
@@ -98,14 +104,21 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
             .min(3, 'Value must be at least 3 characters')
             .max(25, 'Value must not exceed 25 characters'),
         ),
-        // screensList: z.instanceof(File || FileList).refine(
-        //   (payload) => {
-        //     if (payload instanceof FileList) {
-        //       const images = Array.from(payload).filter((item) => item.size <= 3000000);
-        //       return images.length === payload.length; // TODO rework this check!
-        //     }
+        screensList: z.custom<FileList>((payload) => {
+          if (!(payload instanceof FileList)) {
+            return false;
+          }
 
-        //     return payload.size <= 3000000;
+          if (payload.length === 0) {
+            return false;
+          }
+
+          return true;
+        }),
+        // .refine(
+        //   (payload) => {
+        //     const images = Array.from(payload).filter((item) => item.size <= 3 * 1024 * 1024);
+        //     return images.length === payload.length; // TODO rework this check!
         //   },
         //   {
         //     message: 'Image must not exceed 3MB',
@@ -146,7 +159,7 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
 
   const mutationCreate = useMutation({
     // TODO add payload type!
-    mutationFn: async (values: any) => await createProject(values),
+    mutationFn: async (values: ICreateProjectDto) => await createProject(values),
     onSuccess: async (data, variables, context) => {
       await onSuccessCallback();
     },
@@ -262,16 +275,23 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:gap-6">
-              <AppFormInputFile
-                multiple={true}
-                accept={'.jpg, .jpeg, .png'}
-                label={'Image'}
-                name={'image'}
-                disabled={isLoading}
-                required={true}
-                formModel={formModel}
-                isDataPending={isLoading}
-              />
+              <div className="flex h-80 flex-col items-center justify-center gap-6 rounded-md border border-dashed border-primary/30">
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <h4 className="text-xl font-bold">Drop images hier</h4>
+                  <span className="font-bold">to send them</span>
+                </div>
+
+                <AppFormInputFile
+                  multiple={true}
+                  accept={'.jpg, .jpeg, .png'}
+                  label={'Screenshots'}
+                  name={'screensList'}
+                  disabled={isLoading}
+                  required={true}
+                  formModel={formModel}
+                  isDataPending={isLoading}
+                />
+              </div>
             </div>
           </div>
         </form>

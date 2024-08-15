@@ -1,11 +1,10 @@
-import {firebaseDataBase, firebaseStorage} from '@/lib/firebase/firebase';
-import {EndpointsList} from '@/shared/Endpoints.enum';
-import {push, ref, update, child, set} from 'firebase/database';
-import {deleteObject, ref as storageRef} from '@firebase/storage';
+import {firebaseDataBase} from '@/lib/firebase/firebase';
+import {EndpointsImagesList, EndpointsList} from '@/shared/Endpoints.enum';
+import {push, ref, set} from 'firebase/database';
 import {IProject} from 'my-portfolio-types';
 import {fetchAllData, removeAllData, removeDataItemById} from '../_db.service';
 import {ICreateProjectDto} from '@/shared/types/projects.types';
-import {removeImage, uploadImage} from '../files.service';
+import {uploadFileList} from '../files.service';
 import {createDataEndpoint, createDataItemEndpoint} from '../_vm/user';
 
 export const fetchAllProjects = async (userUID?: string): Promise<IProject[]> => {
@@ -13,57 +12,29 @@ export const fetchAllProjects = async (userUID?: string): Promise<IProject[]> =>
 };
 
 export const createProject = async (payload: ICreateProjectDto): Promise<void> => {
-  const {title, visibility, description, mainTechnology, releaseDate, technologies, demo, position, repository, file} = payload;
+  const {title, visibility, description, mainTechnology, releaseDate, technologies, demo, position, repository, screensList} = payload;
   const projectRef = push(ref(firebaseDataBase, `${createDataEndpoint({endpoint: EndpointsList.PROJECTS})}`));
-  let uploadedFile = undefined;
+  const projectID = projectRef.key!;
 
-  if (file) {
-    uploadedFile = await uploadImage(file, `projects/${file?.name}`);
-  }
+  const fileList = await uploadFileList(screensList, createDataItemEndpoint({endpoint: EndpointsImagesList.PROJECTS, itemId: projectID}));
 
   const project: IProject = {
-    id: projectRef.key!,
-    title: title,
-    visibility: visibility,
-    description: description,
-    mainTechnology: mainTechnology,
-    releaseDate: new Date(releaseDate).toISOString(),
-    technologies: technologies.length ? technologies : [mainTechnology],
-    demo: demo,
-    repository: repository,
-    screensList: [
-      {
-        fileSrc: uploadedFile?.fileSrc || '',
-        fileName: uploadedFile?.fileName || '',
-      },
-    ], // TODO add array of files
-    position: position,
+    id: projectID,
+    title,
+    visibility,
+    description,
+    mainTechnology,
+    releaseDate,
+    technologies,
+    demo,
+    repository,
+    screensList: fileList,
+    position,
     createdDate: new Date().toISOString(),
     updatedDate: new Date().toISOString(),
   };
 
   return await set(projectRef, project);
-};
-
-export const updateProjectById = async (payload: ICreateProjectDto, itemId: string): Promise<void> => {
-  if (payload.file) {
-    // await removeImage(payload.preview.fileSrc);
-
-    const uploadedFile = await uploadImage(payload.file, `projects/${payload.file?.name}`);
-
-    return await update(child(ref(firebaseDataBase), `${createDataItemEndpoint({endpoint: EndpointsList.PROJECTS, itemId})}`), {
-      ...payload,
-      screensList: [], // TODO add array of files
-      releaseDate: new Date(payload.releaseDate).toISOString(),
-      updatedDate: new Date().toISOString(),
-    });
-  }
-
-  return await update(child(ref(firebaseDataBase), `${createDataItemEndpoint({endpoint: EndpointsList.PROJECTS, itemId})}`), {
-    ...payload,
-    releaseDate: new Date(payload.releaseDate).toISOString(),
-    updatedDate: new Date().toISOString(),
-  });
 };
 
 export const removeProjectById = async (payload: IProject, id: string): Promise<void> => {
