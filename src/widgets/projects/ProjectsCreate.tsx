@@ -15,7 +15,7 @@ const ProjectsCreate: FC = (): ReactElement => {
         <PageTitle title={RouteName.PROJECTS_CREATE} />
       </div>
 
-      <CreateOrUpdateProjectForm mode="create" />
+      <CreateOrUpdateProjectForm mode="create" data={undefined} isPending={false} isSuccess={false} />
     </div>
   );
 };

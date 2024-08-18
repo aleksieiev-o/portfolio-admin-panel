@@ -5,19 +5,19 @@ export enum RoutePath {
 
   PROJECTS = '/projects',
   CREATE_PROJECT = '/projects/create',
-  UPDATE_PROJECT = '/projects/update/[id]',
+  UPDATE_PROJECT = '/projects/update',
 
   SKILLS = '/skills',
   CREATE_SKILL = '/skills/create',
-  UPDATE_SKILL = '/skills/update/[id]',
+  UPDATE_SKILL = '/skills/update',
 
   SOCIALS = '/socials',
   CREATE_SOCIAL = '/socials/create',
-  UPDATE_SOCIAL = '/socials/update/[id]',
+  UPDATE_SOCIAL = '/socials/update',
 
   DOCUMENTS = '/documents',
   CREATE_DOCUMENT = '/documents/create',
-  UPDATE_DOCUMENT = '/documents/update/[id]',
+  UPDATE_DOCUMENT = '/documents/update',
 
   SIGN_IN = '/sign-in',
 

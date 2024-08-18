@@ -36,7 +36,7 @@ export const fetchDataItemById = async <T>(endpoint: EndpointsList, itemId: stri
 
 export const updateDataItemById = async <T>(endpoint: EndpointsList, itemId: string, payload: T): Promise<void> => {
   try {
-    return await update(child(ref(firebaseDataBase), `${createDataEndpoint({endpoint})}/${itemId}`), {
+    return await update(child(ref(firebaseDataBase), createDataItemEndpoint({endpoint, itemId})), {
       ...payload,
       updatedDate: new Date().toISOString(),
     });

@@ -1,6 +1,6 @@
 'use client';
 
-import {FC, ReactElement, useId, useMemo} from 'react';
+import {FC, ReactElement, useEffect, useId, useMemo} from 'react';
 import AppFormInputText from '@/shared/ui/appInput/AppFormInput.text';
 import {Form} from '@/components/ui/form';
 import SubmitButton from '@/shared/ui/appButton/Submit.button';
@@ -11,27 +11,32 @@ import {useForm} from 'react-hook-form';
 import {RoutePath} from '@/shared/router/Routes.enum';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
-import {createProject} from '@/entities/projects/projects.service';
-import {usePathname} from 'next/navigation';
+import {createProject, updateProject} from '@/entities/projects/projects.service';
+import {useRouter, useSearchParams} from 'next/navigation';
 import AppSwitch from '@/shared/ui/appSwitch/AppSwitch';
 import AppFormInputDate from '@/shared/ui/appInput/AppFormInput.date';
 import ProjectTechnologiesListForm from './_widgets/ProjectTechnologiesList.form';
 import AppFormInputFile from '@/shared/ui/appInput/AppFormInput.file';
 import {ICreateProjectDto} from '@/shared/types/projects.types';
+import {IProject} from 'my-portfolio-types';
 
 interface Props {
   mode: 'create' | 'update';
+  data: IProject | undefined;
+  isPending: boolean;
+  isSuccess: boolean;
 }
 
 const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
-  const {mode} = props;
+  const {mode, data, isPending, isSuccess} = props;
   const formID = useId();
   const {toast} = useToast();
   const {isLoading, setIsLoading} = useLoading();
   const queryClient = useQueryClient();
-  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const projectId = useMemo(() => pathname, [pathname]);
+  const projectID = searchParams.get('id') || '';
 
   const schema = useMemo(
     () =>
@@ -50,7 +55,10 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
           })
           .default(true),
         position: z
-          .string()
+          .string({
+            required_error: 'Field is required',
+            invalid_type_error: 'Value must be a number',
+          })
           .refine((val) => !Number.isNaN(parseInt(val, 10)), {
             message: 'Value must be a number',
           })
@@ -74,6 +82,7 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
         releaseDate: z
           .date({
             required_error: 'Field is required',
+            invalid_type_error: 'Value must be a date',
           })
           .transform((val) => val.toISOString()),
         repository: z
@@ -105,12 +114,15 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
             .max(25, 'Value must not exceed 25 characters'),
         ),
         screensList: z.custom<FileList>((payload) => {
-          if (!(payload instanceof FileList)) {
-            return false;
-          }
+          // TODO change this
+          if (mode === 'create') {
+            if (!(payload instanceof FileList)) {
+              return false;
+            }
 
-          if (payload.length === 0) {
-            return false;
+            if (payload.length === 0) {
+              return false;
+            }
           }
 
           return true;
@@ -125,12 +137,28 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
         //   },
         // ),
       }),
-    [],
+    [mode],
   );
 
   const formModel = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
+
+  useEffect(() => {
+    if (mode === 'update' && data) {
+      formModel.reset({
+        title: data.title,
+        visibility: data.visibility,
+        description: data.description,
+        position: data.position,
+        mainTechnology: data.mainTechnology,
+        technologies: data.technologies,
+        releaseDate: data.releaseDate,
+        repository: data.repository,
+        demo: data.demo,
+      });
+    }
+  }, [data, formModel, mode]);
 
   const onSuccessCallback = async (): Promise<void> => {
     await queryClient.invalidateQueries({
@@ -143,6 +171,10 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
     });
 
     formModel.reset();
+
+    if (mode === 'update') {
+      router.back();
+    }
   };
 
   const onErrorCallback = async (): Promise<void> => {
@@ -158,8 +190,7 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
   };
 
   const mutationCreate = useMutation({
-    // TODO add payload type!
-    mutationFn: async (values: ICreateProjectDto) => await createProject(values),
+    mutationFn: async (values: ICreateProjectDto) => (mode === 'create' ? await createProject(values) : await updateProject(values, projectID)),
     onSuccess: async (data, variables, context) => {
       await onSuccessCallback();
     },
