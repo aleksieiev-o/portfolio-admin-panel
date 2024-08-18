@@ -6,16 +6,24 @@ import {z, ZodError, ZodIssueCode} from 'zod';
 import {Button} from '@/components/ui/button';
 import {Plus, X} from 'lucide-react';
 import AppInputText from '@/shared/ui/appInput/AppInput.text';
+import {Control, useWatch} from 'react-hook-form';
+import {ICreateProjectDto} from '@/shared/types/projects.types';
 
 interface Props {
-  technologyList: string[];
-  setTechnologyList: (list: string[]) => void;
+  formModelControl: Control<ICreateProjectDto>;
+  updateTechnologyList: (list: string[]) => void;
 }
 
 const ProjectTechnologiesListForm: FC<Props> = (props): ReactElement => {
-  const {technologyList, setTechnologyList} = props;
+  const {formModelControl, updateTechnologyList} = props;
   const [technologyValue, setTechnologyValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const technologyList = useWatch({
+    control: formModelControl,
+    name: 'technologies',
+    defaultValue: [],
+  });
 
   const handleOnChange = (value: string) => {
     setTechnologyValue(value);
@@ -34,7 +42,6 @@ const ProjectTechnologiesListForm: FC<Props> = (props): ReactElement => {
             .min(3, 'Value must be at least 3 characters')
             .max(20, 'Value must not exceed 20 characters'),
         })
-        .default({technology: ''}) // TODO fix this "default" evaluation and fix this state update (it has been updating now like a form send)
         .superRefine((data, ctx) => {
           if (technologyList && technologyList.includes(data.technology)) {
             ctx.addIssue({
@@ -51,12 +58,12 @@ const ProjectTechnologiesListForm: FC<Props> = (props): ReactElement => {
     setErrorMessage('');
 
     try {
-      const result = technologySchema.parse(values);
+      const {technology} = technologySchema.parse(values);
 
       if (technologyList) {
-        setTechnologyList([...technologyList, result.technology]);
+        updateTechnologyList([...technologyList, technology]);
       } else {
-        setTechnologyList([result.technology]);
+        updateTechnologyList([technology]);
       }
 
       handleOnChange('');
@@ -68,7 +75,7 @@ const ProjectTechnologiesListForm: FC<Props> = (props): ReactElement => {
   };
 
   const removeItemFromTechnologiesList = (payload: string) => {
-    setTechnologyList([...technologyList.filter((item) => payload !== item)]);
+    updateTechnologyList([...technologyList.filter((item) => payload !== item)]);
   };
 
   return (

@@ -225,7 +225,7 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
                 isDataPending={false}
               />
 
-              <ProjectTechnologiesListForm technologyList={formModel.getValues('technologies')} setTechnologyList={updateTechnologyList} />
+              <ProjectTechnologiesListForm formModelControl={formModel.control} updateTechnologyList={updateTechnologyList} />
 
               <AppFormInputDate
                 formModel={formModel}
