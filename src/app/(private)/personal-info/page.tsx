@@ -5,7 +5,7 @@ import {HydrationBoundary, QueryClient, dehydrate} from '@tanstack/react-query';
 import {getCurrentUser} from '@/lib/firebase/firebase-admin';
 import PersonalInfo from '@/widgets/personal-info/PersonalInfo';
 import {fetchPersonalInfo} from '@/entities/personalInfo/personalInfo.service';
-import {fetchMainImage} from '@/entities/files.service';
+import {fetchMainImage} from '@/entities/files/files.service';
 
 const PersonalInfoPage: FC = async (): Promise<ReactElement> => {
   const queryClient = new QueryClient();

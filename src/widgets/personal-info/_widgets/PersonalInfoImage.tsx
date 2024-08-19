@@ -1,7 +1,7 @@
 'use client';
 
 import {Skeleton} from '@/components/ui/skeleton';
-import {fetchMainImage} from '@/entities/files.service';
+import {fetchMainImage} from '@/entities/files/files.service';
 import {AppAuthContext} from '@/shared/providers/AppAuth.provider';
 import {RoutePath} from '@/shared/router/Routes.enum';
 import EmptyListNotification from '@/shared/widgets/EmptyListNotification';

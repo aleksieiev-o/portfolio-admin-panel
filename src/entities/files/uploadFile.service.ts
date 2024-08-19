@@ -1,12 +1,12 @@
-import {RoutePath} from './../shared/router/Routes.enum';
 import {IFile, TFileList} from 'my-portfolio-types';
-import {EndpointsList} from '@/shared/Endpoints.enum';
-import {child, ref, update} from '@firebase/database';
 import {firebaseDataBase, firebaseStorage} from '@/lib/firebase/firebase';
-import {deleteObject, getDownloadURL, ref as storageRef, StorageReference, uploadBytes, UploadResult} from '@firebase/storage';
-import {get} from 'firebase/database';
-import {createDataEndpoint} from './_vm/user';
+import {getDownloadURL, ref as storageRef, StorageReference, uploadBytes, UploadResult} from '@firebase/storage';
 import {getCurrentUserUID} from '@/lib/firebase/utils';
+import {RoutePath} from '@/shared/router/Routes.enum';
+import {child, ref, update} from '@firebase/database';
+import {createDataEndpoint} from '@/entities/_vm/user';
+import {EndpointsList} from '@/shared/Endpoints.enum';
+import {removeImage} from '@/entities/files/removeFile.service';
 
 const uploadFileWithRetry = async (file: File, path: string): Promise<IFile | null> => {
   const ref: StorageReference = storageRef(firebaseStorage, path);
@@ -74,59 +74,6 @@ export const uploadImage = async (image: File, path: string): Promise<IFile> => 
     fileSrc,
     fileName,
   };
-};
-
-const removeFileWithRetry = async (file: IFile): Promise<boolean> => {
-  const {fileName, fileSrc} = file;
-  const desertRef = storageRef(firebaseStorage, fileSrc);
-  const maxRetries = 5;
-  let attempts = 0;
-
-  while (attempts < maxRetries) {
-    try {
-      await deleteObject(desertRef);
-      return true;
-    } catch (err) {
-      attempts++;
-      console.warn(`Attempt ${attempts} failed to remove ${fileName}:`, err);
-
-      if (attempts >= maxRetries) {
-        console.warn(`Max retries reached for ${fileName}. Skipping...`);
-        return false;
-      }
-    }
-  }
-
-  return false;
-};
-
-export const removeFileList = async (files: TFileList, path: string): Promise<TFileList> => {
-  const removedFileUrls: TFileList = [];
-
-  for (let item = 0; item < files.length; item++) {
-    const file = files[item];
-
-    await removeFileWithRetry(file);
-  }
-
-  return removedFileUrls;
-};
-
-export const removeImage = async (currentFileSrc: string): Promise<void> => {
-  const desertRef = storageRef(firebaseStorage, currentFileSrc);
-  await deleteObject(desertRef);
-};
-
-export const fetchMainImage = async (userUID?: string): Promise<IFile | null> => {
-  // TODO refactor this method!
-  try {
-    const snapshot = await get(child(ref(firebaseDataBase), createDataEndpoint({endpoint: EndpointsList.MAIN_IMAGE, userUID})));
-    const result = snapshot.val() || null;
-    return Promise.resolve<IFile | null>(result);
-  } catch (err) {
-    console.warn(err);
-    return Promise.reject<null>(null);
-  }
 };
 
 export const updateMainImage = async (currentImage: IFile | null, image: File): Promise<void> => {

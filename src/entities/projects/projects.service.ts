@@ -1,12 +1,11 @@
-import {ICreateProjectDto, IUpdateProjectDto} from './../../shared/types/projects.types';
+import {ICreateProjectDto, IUpdateProjectDto} from '@/shared/types/projects.types';
 import {firebaseDataBase} from '@/lib/firebase/firebase';
 import {EndpointsImagesList, EndpointsList} from '@/shared/Endpoints.enum';
 import {push, ref, set} from 'firebase/database';
 import {IProject} from 'my-portfolio-types';
 import {fetchAllData, fetchDataItemById, removeAllData, removeDataItemById, updateDataItemById} from '../_db.service';
-
-import {uploadFileList} from '../files.service';
 import {createDataEndpoint, createDataItemEndpoint} from '../_vm/user';
+import {uploadFileList} from '@/entities/files/uploadFile.service';
 
 export const fetchAllProjects = async (userUID?: string): Promise<IProject[]> => {
   return await fetchAllData<IProject>(EndpointsList.PROJECTS, userUID);
@@ -42,8 +41,8 @@ export const createProject = async (payload: ICreateProjectDto): Promise<void> =
   return await set(projectRef, project);
 };
 
-export const updateProject = async (payload: IUpdateProjectDto, id: string): Promise<void> => {
-  const {screensList} = payload;
+export const updateProject = async (payload: IUpdateProjectDto): Promise<void> => {
+  const {screensList, id} = payload;
   let fileList = [];
 
   // TODO add a removing of the marked file to remove using func removeFileList
@@ -52,7 +51,7 @@ export const updateProject = async (payload: IUpdateProjectDto, id: string): Pro
     fileList = await uploadFileList(screensList, createDataItemEndpoint({endpoint: EndpointsImagesList.PROJECTS, itemId: id}));
     await updateDataItemById(EndpointsList.PROJECT_BY_ID, id, {...payload, screensList: fileList});
   } else {
-    // TODO value screensList: [] clears the screensList in the DB
+    // TODO payload screensList: [] clears the screensList in the DB
     await updateDataItemById(EndpointsList.PROJECT_BY_ID, id, {...payload, screensList: []});
   }
 };

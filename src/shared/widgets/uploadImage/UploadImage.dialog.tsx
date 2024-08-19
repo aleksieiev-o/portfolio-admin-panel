@@ -8,7 +8,6 @@ import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
 import {IFile} from 'my-portfolio-types';
-import {updateMainImage} from '@/entities/files.service';
 import {Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from '@/components/ui/dialog';
 import {Button} from '@/components/ui/button';
 import SubmitButton from '@/shared/ui/appButton/Submit.button';
@@ -16,6 +15,7 @@ import {useLoading} from '@/shared/hooks/useLoading';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {RoutePath} from '@/shared/router/Routes.enum';
 import AppFormInputFile from '@/shared/ui/appInput/AppFormInput.file';
+import {updateMainImage} from '@/entities/files/uploadFile.service';
 
 interface Props {
   currentImage: IFile | null;

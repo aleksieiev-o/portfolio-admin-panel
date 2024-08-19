@@ -150,12 +150,13 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
         title: data.title,
         visibility: data.visibility,
         description: data.description,
-        position: data.position,
+        position: data.position, // TODO must be a Number
         mainTechnology: data.mainTechnology,
         technologies: data.technologies,
-        releaseDate: data.releaseDate,
+        releaseDate: data.releaseDate, // TODO must be a Date
         repository: data.repository,
         demo: data.demo,
+        // TODO screensList must be viewed like a slideshow and must be removable
       });
     }
   }, [data, formModel, mode]);
@@ -190,7 +191,7 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
   };
 
   const mutationCreate = useMutation({
-    mutationFn: async (values: ICreateProjectDto) => (mode === 'create' ? await createProject(values) : await updateProject(values, projectID)),
+    mutationFn: async (values: ICreateProjectDto) => (mode === 'create' ? await createProject(values) : await updateProject({...values, id: projectID})),
     onSuccess: async (data, variables, context) => {
       await onSuccessCallback();
     },
