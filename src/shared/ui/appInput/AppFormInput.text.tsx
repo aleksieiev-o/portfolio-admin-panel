@@ -5,9 +5,19 @@ import {Input} from '@/components/ui/input';
 import {Textarea} from '@/components/ui/textarea';
 import {IAppFormInput} from '@/shared/ui/appInput/_types/AppFormInput.interface';
 import {Skeleton} from '@/components/ui/skeleton';
+import {ControllerRenderProps, FieldValues} from 'react-hook-form';
 
 const AppFormInputText: FC<IAppFormInput> = (props): ReactElement => {
   const {mode, formModel, name, label, placeholder, required, disabled, type, isDataPending} = props;
+
+  const handleChange = (value: string, field: ControllerRenderProps<FieldValues, string>) => {
+    switch (type) {
+      case 'number':
+        return field.onChange(Number(value));
+      default:
+        return field.onChange(value);
+    }
+  };
 
   return (
     <FormField
@@ -24,7 +34,11 @@ const AppFormInputText: FC<IAppFormInput> = (props): ReactElement => {
           <FormControl aria-required={required}>
             {mode === 'input' ? (
               <>
-                {isDataPending ? <Skeleton className={'h-12 w-full'} /> : <Input placeholder={placeholder} aria-required={required} type={type} disabled={disabled} {...field} />}
+                {isDataPending ? (
+                  <Skeleton className={'h-12 w-full'} />
+                ) : (
+                  <Input placeholder={placeholder} aria-required={required} type={type} disabled={disabled} {...field} onChange={(e) => handleChange(e.target.value, field)} />
+                )}
               </>
             ) : (
               <>{isDataPending ? <Skeleton className={'min-h-[80px] w-full'} /> : <Textarea placeholder={placeholder} aria-required={required} disabled={disabled} {...field} />}</>

@@ -19,6 +19,9 @@ import ProjectTechnologiesListForm from './_widgets/ProjectTechnologiesList.form
 import AppFormInputFile from '@/shared/ui/appInput/AppFormInput.file';
 import {ICreateProjectDto} from '@/shared/types/projects.types';
 import {IProject} from 'my-portfolio-types';
+import {createProjectFormValidation} from './_validations/CreateForm.validation';
+import {updateProjectFormValidation} from './_validations/UpdateForm.validation';
+import {createFileListFromMetaFileList} from '@/shared/utils/createFIleList';
 
 interface Props {
   mode: 'create' | 'update';
@@ -38,107 +41,7 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
 
   const projectID = searchParams.get('id') || '';
 
-  const schema = useMemo(
-    () =>
-      z.object({
-        title: z
-          .string({
-            required_error: 'Field is required',
-            invalid_type_error: 'Value must be a string',
-          })
-          .trim()
-          .min(3, 'Value must be at least 3 characters')
-          .max(25, 'Value must not exceed 25 characters'),
-        visibility: z
-          .boolean({
-            required_error: 'Field is required',
-          })
-          .default(true),
-        position: z
-          .string({
-            required_error: 'Field is required',
-            invalid_type_error: 'Value must be a number',
-          })
-          .refine((val) => !Number.isNaN(parseInt(val, 10)), {
-            message: 'Value must be a number',
-          })
-          .transform((val) => parseInt(val, 10)),
-        description: z
-          .string({
-            required_error: 'Field is required',
-            invalid_type_error: 'Value must be a string',
-          })
-          .trim()
-          .min(10, 'Value must be at least 10 characters')
-          .max(280, 'Value must not exceed 280 characters'),
-        mainTechnology: z
-          .string({
-            required_error: 'Field is required',
-            invalid_type_error: 'Value must be a string',
-          })
-          .trim()
-          .min(3, 'Value must be at least 3 characters')
-          .max(25, 'Value must not exceed 25 characters'),
-        releaseDate: z
-          .date({
-            required_error: 'Field is required',
-            invalid_type_error: 'Value must be a date',
-          })
-          .transform((val) => val.toISOString()),
-        repository: z
-          .string({
-            required_error: 'Field is required',
-            invalid_type_error: 'Value must be a string',
-          })
-          .trim()
-          .url({
-            message: 'Value must be an URL',
-          }),
-        demo: z
-          .string({
-            required_error: 'Field is required',
-            invalid_type_error: 'Value must be a string',
-          })
-          .trim()
-          .url({
-            message: 'Value must be an URL',
-          }),
-        technologies: z.array(
-          z
-            .string({
-              required_error: 'Field is required',
-              invalid_type_error: 'Value must be a string',
-            })
-            .trim()
-            .min(3, 'Value must be at least 3 characters')
-            .max(25, 'Value must not exceed 25 characters'),
-        ),
-        screensList: z.custom<FileList>((payload) => {
-          // TODO change this
-          if (mode === 'create') {
-            if (!(payload instanceof FileList)) {
-              return false;
-            }
-
-            if (payload.length === 0) {
-              return false;
-            }
-          }
-
-          return true;
-        }),
-        // .refine(
-        //   (payload) => {
-        //     const images = Array.from(payload).filter((item) => item.size <= 3 * 1024 * 1024);
-        //     return images.length === payload.length; // TODO rework this check!
-        //   },
-        //   {
-        //     message: 'Image must not exceed 3MB',
-        //   },
-        // ),
-      }),
-    [mode],
-  );
+  const schema = useMemo(() => z.object(mode === 'create' ? createProjectFormValidation : updateProjectFormValidation), [mode]);
 
   const formModel = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -150,13 +53,13 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
         title: data.title,
         visibility: data.visibility,
         description: data.description,
-        position: data.position, // TODO must be a Number
+        position: data.position,
         mainTechnology: data.mainTechnology,
         technologies: data.technologies,
-        releaseDate: data.releaseDate, // TODO must be a Date
+        releaseDate: data.releaseDate,
         repository: data.repository,
         demo: data.demo,
-        // TODO screensList must be viewed like a slideshow and must be removable
+        screensList: createFileListFromMetaFileList(data.screensList), // TODO must be viewed like a slideshow and must be removable
       });
     }
   }, [data, formModel, mode]);
@@ -172,10 +75,7 @@ const CreateOrUpdateProjectForm: FC<Props> = (props): ReactElement => {
     });
 
     formModel.reset();
-
-    if (mode === 'update') {
-      router.back();
-    }
+    router.back();
   };
 
   const onErrorCallback = async (): Promise<void> => {
