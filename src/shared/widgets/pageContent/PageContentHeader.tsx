@@ -18,10 +18,12 @@ interface Props {
   toastDescription: string;
   handleRemoveAll: () => Promise<void>;
   queryKey: RoutePath;
+  isEmptyList: boolean;
 }
 
 const PageContentHeader: FC<Props> = (props): ReactElement => {
-  const {pageTitle, createTitle, createLink, removeTitle, dialogTitle, dialogDescription, dialogQuestion, btnTitle, toastDescription, handleRemoveAll, queryKey} = props;
+  const {pageTitle, createTitle, createLink, removeTitle, dialogTitle, dialogDescription, dialogQuestion, btnTitle, toastDescription, handleRemoveAll, queryKey, isEmptyList} =
+    props;
   const [dialogRemoveAllIsOpen, setDialogRemoveAllIsOpen] = useState<boolean>(false);
 
   return (
@@ -29,7 +31,13 @@ const PageContentHeader: FC<Props> = (props): ReactElement => {
       <div className="flex w-full flex-row flex-nowrap items-center justify-between gap-4 md:gap-6">
         <PageTitle title={pageTitle} />
 
-        <PageActions createButtonTitle={createTitle} createButtonLink={createLink} removeButtonTitle={removeTitle} setDialogIsOpen={setDialogRemoveAllIsOpen} />
+        <PageActions
+          createButtonTitle={createTitle}
+          createButtonLink={createLink}
+          removeButtonTitle={removeTitle}
+          setDialogIsOpen={setDialogRemoveAllIsOpen}
+          isEmptyList={isEmptyList}
+        />
       </div>
 
       <RemoveAllConfirmDialog

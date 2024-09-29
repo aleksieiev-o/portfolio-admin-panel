@@ -46,6 +46,7 @@ const Projects: FC = (): ReactElement => {
         toastDescription="All projects have successfully removed."
         handleRemoveAll={removeAllProjects}
         queryKey={RoutePath.PROJECTS}
+        isEmptyList={isEmptyList}
       />
 
       <div className="grid w-full grid-cols-1 gap-4 overflow-hidden md:gap-6">

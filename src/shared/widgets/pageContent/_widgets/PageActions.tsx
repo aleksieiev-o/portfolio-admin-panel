@@ -9,10 +9,11 @@ interface Props {
   createButtonLink: RoutePath;
   removeButtonTitle: string;
   setDialogIsOpen: (value: boolean) => void;
+  isEmptyList: boolean;
 }
 
 const PageActions: FC<Props> = (props): ReactElement => {
-  const {createButtonTitle, removeButtonTitle, createButtonLink, setDialogIsOpen} = props;
+  const {createButtonTitle, removeButtonTitle, createButtonLink, setDialogIsOpen, isEmptyList} = props;
 
   const handlePrepareToRemoveAll = () => {
     setDialogIsOpen(true);
@@ -28,11 +29,13 @@ const PageActions: FC<Props> = (props): ReactElement => {
         </Button>
       </Link>
 
-      <Button onClick={handlePrepareToRemoveAll} variant={'destructive'} title={removeButtonTitle} className="gap-2">
-        <Trash2 className="h-5 w-5" />
+      {!isEmptyList && (
+        <Button onClick={handlePrepareToRemoveAll} variant={'destructive'} title={removeButtonTitle} className="gap-2">
+          <Trash2 className="h-5 w-5" />
 
-        <span className="hidden md:inline">Remove all</span>
-      </Button>
+          <span className="hidden md:inline">Remove all</span>
+        </Button>
+      )}
     </div>
   );
 };
