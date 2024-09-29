@@ -1,6 +1,6 @@
-import ContentLoader from '@/shared/ui/ContentLoader';
 import {FC, ReactElement, PropsWithChildren} from 'react';
 import EmptyListNotification from '../EmptyListNotification';
+import {Skeleton} from '@/components/ui/skeleton';
 
 interface Props extends PropsWithChildren {
   pending: boolean;
@@ -14,7 +14,11 @@ const PageContentList: FC<Props> = (props): ReactElement => {
   return (
     <>
       {pending ? (
-        <ContentLoader />
+        <div className="grid w-full grid-cols-1 gap-4 overflow-y-auto md:grid-cols-2 md:gap-6 xl:grid-cols-3">
+          {Array.from(Array(9)).map((_, idx) => (
+            <Skeleton key={`${idx}`} className="h-44 w-full" />
+          ))}
+        </div>
       ) : (
         <>
           {isEmptyList ? (
