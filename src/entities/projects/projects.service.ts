@@ -6,6 +6,7 @@ import {IProject} from 'my-portfolio-types';
 import {fetchAllData, fetchDataItemById, removeAllData, removeDataItemById, updateDataItemById} from '../_db.service';
 import {createDataEndpoint, createDataItemEndpoint} from '../_vm/user';
 import {uploadFileList} from '@/entities/files/uploadFile.service';
+import {removeFileList} from '../files/removeFile.service';
 
 export const fetchAllProjects = async (userUID?: string): Promise<IProject[]> => {
   return await fetchAllData<IProject>(EndpointsList.PROJECTS, userUID);
@@ -57,18 +58,19 @@ export const updateProject = async (payload: IUpdateProjectDto): Promise<void> =
 };
 
 export const removeProjectById = async (payload: IProject, id: string): Promise<void> => {
-  // if (payload.preview.fileSrc) {
-  //   await removeImage(payload.preview.fileSrc);
-  // }
-
-  // TODO add remove the list of files from screensList
+  if (payload.screensList?.length) {
+    await removeFileList(payload.screensList);
+  }
 
   return await removeDataItemById(EndpointsList.PROJECTS, id);
 };
 
 export const removeAllProjects = async (payload: Array<IProject>): Promise<void> => {
-  // const desertRefList = payload.map((item) => deleteObject(storageRef(firebaseStorage, item.preview.fileSrc)));
-  // TODO add remove the list of files from screensList
-  // await Promise.all(desertRefList);
+  for (const item of payload) {
+    if (item.screensList?.length) {
+      await removeFileList(item.screensList);
+    }
+  }
+
   await removeAllData(EndpointsList.PROJECTS);
 };

@@ -26,7 +26,7 @@ const removeFileWithRetry = async (file: IFile): Promise<boolean> => {
   return false;
 };
 
-export const removeFileList = async (files: TFileList, path: string): Promise<TFileList> => {
+export const removeFileList = async (files: TFileList): Promise<TFileList> => {
   const removedFileUrls: TFileList = [];
 
   for (let item = 0; item < files.length; item++) {

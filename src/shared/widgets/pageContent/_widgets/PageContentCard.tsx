@@ -8,10 +8,15 @@ import CardFooterActions from './_cardActions/CardFooterActions';
 import TextCardDateFormat from './TextCardDateFormat';
 import CardHeaderActions from './_cardActions/CardHeaderActions';
 
-interface Props extends PropsWithChildren, IBaseEntity {}
+interface Props extends PropsWithChildren, IBaseEntity {
+  pageDirection: RoutePath;
+  updateButtonTitle: string;
+  removeButtonTitle: string;
+  handleRemove: () => void;
+}
 
 const PageContentCard: FC<Props> = (props): ReactElement => {
-  const {children, id, title, position, visibility, createdDate, updatedDate} = props;
+  const {children, id, title, position, visibility, createdDate, updatedDate, pageDirection, updateButtonTitle, removeButtonTitle, handleRemove} = props;
 
   return (
     <Card className="flex w-full flex-col bg-primary/5 shadow-md">
@@ -24,7 +29,7 @@ const PageContentCard: FC<Props> = (props): ReactElement => {
               <TooltipTrigger>{visibility ? <Eye className="stroke-primary" /> : <EyeOff className="stroke-destructive" />}</TooltipTrigger>
 
               <TooltipContent>
-                <span>{visibility ? 'Card is visible' : 'It is hidden'}</span>
+                <span>{visibility ? 'Card is visible' : 'Card is hidden'}</span>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -44,13 +49,7 @@ const PageContentCard: FC<Props> = (props): ReactElement => {
         </div>
       </CardContent>
 
-      <CardFooterActions
-        pageDirection={RoutePath.UPDATE_PROJECT}
-        dynamicId={id}
-        updateButtonTitle="Edit project"
-        removeButtonTitle="Remove project"
-        handleRemove={() => undefined}
-      />
+      <CardFooterActions pageDirection={pageDirection} dynamicId={id} updateButtonTitle={updateButtonTitle} removeButtonTitle={removeButtonTitle} handleRemove={handleRemove} />
     </Card>
   );
 };

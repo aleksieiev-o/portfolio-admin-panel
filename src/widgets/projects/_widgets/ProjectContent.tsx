@@ -5,10 +5,13 @@ import {IProject} from 'my-portfolio-types';
 import {FC, ReactElement} from 'react';
 import ProjectsContentDescription from './ProjectsContentDescription';
 
-type Props = Pick<IProject, 'description' | 'mainTechnology' | 'releaseDate' | 'demo' | 'repository' | 'screensList' | 'technologies'>;
+interface Props {
+  project: IProject;
+}
 
 const ProjectContent: FC<Props> = (props): ReactElement => {
-  const {description, mainTechnology, releaseDate, demo, repository, screensList, technologies} = props;
+  const {project} = props;
+  const {description, mainTechnology, releaseDate, demo, repository, screensList, technologies} = project;
 
   return (
     <div className="flex flex-col gap-4">

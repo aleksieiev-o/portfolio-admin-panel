@@ -7,12 +7,14 @@ import PageContentCard from '@/shared/widgets/pageContent/_widgets/PageContentCa
 import PageContentHeader from '@/shared/widgets/pageContent/PageContentHeader';
 import PageContentList from '@/shared/widgets/pageContent/PageContentList';
 import {useQuery} from '@tanstack/react-query';
-import {FC, ReactElement, useContext} from 'react';
+import {FC, ReactElement, useContext, useState} from 'react';
 import ProjectContent from './_widgets/ProjectContent';
 import EmptyListNotification from '@/shared/widgets/EmptyListNotification';
+import RemoveConfirmProjectDialog from './_widgets/RemoveConfirmProject.dialog';
 
 const Projects: FC = (): ReactElement => {
   const {user} = useContext(AppAuthContext);
+  const [dialogRemoveIsOpen, setDialogRemoveIsOpen] = useState<boolean>(false);
 
   const {
     data: projectsQueryData,
@@ -25,13 +27,17 @@ const Projects: FC = (): ReactElement => {
     enabled: !!user,
   });
 
+  const handlePrepareDelete = () => {
+    setDialogRemoveIsOpen(true);
+  };
+
   return (
     <div className="flex h-full w-full flex-col gap-6 py-6">
       <PageContentHeader pageTitle={RouteName.PROJECTS} createTitle="Create new project" removeTitle="Remove all projects" createLink={RoutePath.CREATE_PROJECT} />
 
       <div className="grid w-full grid-cols-1 gap-4 overflow-hidden md:gap-6">
         <PageContentList pending={projectsIsPending}>
-          {projectsIsSuccess ? (
+          {projectsQueryData && projectsQueryData.length > 0 ? (
             <>
               {projectsQueryData.map((project) => (
                 <PageContentCard
@@ -42,16 +48,16 @@ const Projects: FC = (): ReactElement => {
                   visibility={project.visibility}
                   createdDate={project.createdDate}
                   updatedDate={project.updatedDate}
+                  pageDirection={RoutePath.PROJECTS}
+                  updateButtonTitle="Update project"
+                  removeButtonTitle="Remove project"
+                  handleRemove={handlePrepareDelete}
                 >
-                  <ProjectContent
-                    description={project.description}
-                    mainTechnology={project.mainTechnology}
-                    releaseDate={project.releaseDate}
-                    demo={project.demo}
-                    repository={project.repository}
-                    screensList={project.screensList}
-                    technologies={project.technologies}
-                  />
+                  <>
+                    <ProjectContent project={project} />
+
+                    <RemoveConfirmProjectDialog setDialogIsOpen={setDialogRemoveIsOpen} dialogIsOpen={dialogRemoveIsOpen} project={project} />
+                  </>
                 </PageContentCard>
               ))}
             </>
