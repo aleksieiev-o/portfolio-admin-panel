@@ -8,10 +8,15 @@ interface Props {
   createButtonTitle: string;
   createButtonLink: RoutePath;
   removeButtonTitle: string;
+  setDialogIsOpen: (value: boolean) => void;
 }
 
 const PageActions: FC<Props> = (props): ReactElement => {
-  const {createButtonTitle, removeButtonTitle, createButtonLink} = props;
+  const {createButtonTitle, removeButtonTitle, createButtonLink, setDialogIsOpen} = props;
+
+  const handlePrepareToRemoveAll = () => {
+    setDialogIsOpen(true);
+  };
 
   return (
     <div className="flex h-full flex-row flex-nowrap items-center justify-start gap-4 md:gap-6">
@@ -23,7 +28,7 @@ const PageActions: FC<Props> = (props): ReactElement => {
         </Button>
       </Link>
 
-      <Button variant={'destructive'} title={removeButtonTitle} className="gap-2">
+      <Button onClick={handlePrepareToRemoveAll} variant={'destructive'} title={removeButtonTitle} className="gap-2">
         <Trash2 className="h-5 w-5" />
 
         <span className="hidden md:inline">Remove all</span>

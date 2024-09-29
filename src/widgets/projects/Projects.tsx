@@ -1,15 +1,14 @@
 'use client';
 
-import {fetchAllProjects} from '@/entities/projects/projects.service';
+import {fetchAllProjects, removeAllProjects} from '@/entities/projects/projects.service';
 import {AppAuthContext} from '@/shared/providers/AppAuth.provider';
 import {RouteName, RoutePath} from '@/shared/router/Routes.enum';
 import PageContentCard from '@/shared/widgets/pageContent/_widgets/PageContentCard';
 import PageContentHeader from '@/shared/widgets/pageContent/PageContentHeader';
 import PageContentList from '@/shared/widgets/pageContent/PageContentList';
 import {useQuery} from '@tanstack/react-query';
-import {FC, ReactElement, useContext, useState} from 'react';
+import {FC, ReactElement, useContext, useMemo, useState} from 'react';
 import ProjectContent from './_widgets/ProjectContent';
-import EmptyListNotification from '@/shared/widgets/EmptyListNotification';
 import RemoveConfirmProjectDialog from './_widgets/RemoveConfirmProject.dialog';
 
 const Projects: FC = (): ReactElement => {
@@ -27,17 +26,31 @@ const Projects: FC = (): ReactElement => {
     enabled: !!user,
   });
 
-  const handlePrepareDelete = () => {
+  const handlePrepareToRemove = () => {
     setDialogRemoveIsOpen(true);
   };
 
+  const isEmptyList = useMemo(() => Boolean(projectsQueryData && projectsQueryData.length === 0), [projectsQueryData]);
+
   return (
     <div className="flex h-full w-full flex-col gap-6 py-6">
-      <PageContentHeader pageTitle={RouteName.PROJECTS} createTitle="Create new project" removeTitle="Remove all projects" createLink={RoutePath.CREATE_PROJECT} />
+      <PageContentHeader
+        pageTitle={RouteName.PROJECTS}
+        createTitle="Create new project"
+        removeTitle="Remove all projects"
+        createLink={RoutePath.CREATE_PROJECT}
+        dialogTitle={'Remove all projects confirmation'}
+        dialogDescription={'You are about to remove all projects.'}
+        dialogQuestion={'Are you sure you want to remove all projects?'}
+        btnTitle={'Remove all projects'}
+        toastDescription="All projects have successfully removed."
+        handleRemoveAll={removeAllProjects}
+        queryKey={RoutePath.PROJECTS}
+      />
 
       <div className="grid w-full grid-cols-1 gap-4 overflow-hidden md:gap-6">
-        <PageContentList pending={projectsIsPending}>
-          {projectsQueryData && projectsQueryData.length > 0 ? (
+        <PageContentList pending={projectsIsPending} isEmptyList={isEmptyList} emptyListNotification="Projects list is empty">
+          {projectsQueryData && projectsQueryData.length > 0 && (
             <>
               {projectsQueryData.map((project) => (
                 <PageContentCard
@@ -51,7 +64,7 @@ const Projects: FC = (): ReactElement => {
                   pageDirection={RoutePath.PROJECTS}
                   updateButtonTitle="Update project"
                   removeButtonTitle="Remove project"
-                  handleRemove={handlePrepareDelete}
+                  handleRemove={handlePrepareToRemove}
                 >
                   <>
                     <ProjectContent project={project} />
@@ -61,8 +74,6 @@ const Projects: FC = (): ReactElement => {
                 </PageContentCard>
               ))}
             </>
-          ) : (
-            <EmptyListNotification notification="Projects list is empty" />
           )}
         </PageContentList>
       </div>

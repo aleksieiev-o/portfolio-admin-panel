@@ -65,8 +65,10 @@ export const removeProjectById = async (payload: IProject, id: string): Promise<
   return await removeDataItemById(EndpointsList.PROJECTS, id);
 };
 
-export const removeAllProjects = async (payload: Array<IProject>): Promise<void> => {
-  for (const item of payload) {
+export const removeAllProjects = async (): Promise<void> => {
+  const projects = await fetchAllProjects();
+
+  for (const item of projects) {
     if (item.screensList?.length) {
       await removeFileList(item.screensList);
     }
