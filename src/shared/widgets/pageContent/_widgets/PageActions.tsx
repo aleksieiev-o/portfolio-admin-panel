@@ -3,6 +3,7 @@ import {Plus, Trash2} from 'lucide-react';
 import {FC, ReactElement} from 'react';
 import {RoutePath} from '@/shared/router/Routes.enum';
 import Link from 'next/link';
+import {Skeleton} from '@/components/ui/skeleton';
 
 interface Props {
   createButtonTitle: string;
@@ -10,10 +11,11 @@ interface Props {
   removeButtonTitle: string;
   setDialogIsOpen: (value: boolean) => void;
   isEmptyList: boolean;
+  pending: boolean;
 }
 
 const PageActions: FC<Props> = (props): ReactElement => {
-  const {createButtonTitle, removeButtonTitle, createButtonLink, setDialogIsOpen, isEmptyList} = props;
+  const {createButtonTitle, removeButtonTitle, createButtonLink, setDialogIsOpen, isEmptyList, pending} = props;
 
   const handlePrepareToRemoveAll = () => {
     setDialogIsOpen(true);
@@ -21,20 +23,30 @@ const PageActions: FC<Props> = (props): ReactElement => {
 
   return (
     <div className="flex h-full flex-row flex-nowrap items-center justify-start gap-4 md:gap-6">
-      <Link href={createButtonLink}>
-        <Button variant={'default'} title={createButtonTitle} className="gap-2">
-          <Plus className="h-5 w-5" />
+      {pending ? (
+        <>
+          <Skeleton className="h-12 w-40" />
 
-          <span className="hidden md:inline">Create</span>
-        </Button>
-      </Link>
+          <Skeleton className="h-12 w-40" />
+        </>
+      ) : (
+        <>
+          <Link href={createButtonLink}>
+            <Button variant={'default'} title={createButtonTitle} className="gap-2">
+              <Plus className="h-5 w-5" />
 
-      {!isEmptyList && (
-        <Button onClick={handlePrepareToRemoveAll} variant={'destructive'} title={removeButtonTitle} className="gap-2">
-          <Trash2 className="h-5 w-5" />
+              <span className="hidden md:inline">Create</span>
+            </Button>
+          </Link>
 
-          <span className="hidden md:inline">Remove all</span>
-        </Button>
+          {!isEmptyList && (
+            <Button onClick={handlePrepareToRemoveAll} variant={'destructive'} title={removeButtonTitle} className="gap-2">
+              <Trash2 className="h-5 w-5" />
+
+              <span className="hidden md:inline">Remove all</span>
+            </Button>
+          )}
+        </>
       )}
     </div>
   );

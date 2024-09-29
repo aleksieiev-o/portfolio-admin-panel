@@ -47,6 +47,7 @@ const Projects: FC = (): ReactElement => {
         handleRemoveAll={removeAllProjects}
         queryKey={RoutePath.PROJECTS}
         isEmptyList={isEmptyList}
+        pending={projectsIsPending}
       />
 
       <div className="grid w-full grid-cols-1 gap-4 overflow-hidden md:gap-6">

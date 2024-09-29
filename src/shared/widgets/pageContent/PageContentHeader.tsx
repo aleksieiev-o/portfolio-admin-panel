@@ -19,11 +19,25 @@ interface Props {
   handleRemoveAll: () => Promise<void>;
   queryKey: RoutePath;
   isEmptyList: boolean;
+  pending: boolean;
 }
 
 const PageContentHeader: FC<Props> = (props): ReactElement => {
-  const {pageTitle, createTitle, createLink, removeTitle, dialogTitle, dialogDescription, dialogQuestion, btnTitle, toastDescription, handleRemoveAll, queryKey, isEmptyList} =
-    props;
+  const {
+    pageTitle,
+    createTitle,
+    createLink,
+    removeTitle,
+    dialogTitle,
+    dialogDescription,
+    dialogQuestion,
+    btnTitle,
+    toastDescription,
+    handleRemoveAll,
+    queryKey,
+    isEmptyList,
+    pending,
+  } = props;
   const [dialogRemoveAllIsOpen, setDialogRemoveAllIsOpen] = useState<boolean>(false);
 
   return (
@@ -37,6 +51,7 @@ const PageContentHeader: FC<Props> = (props): ReactElement => {
           removeButtonTitle={removeTitle}
           setDialogIsOpen={setDialogRemoveAllIsOpen}
           isEmptyList={isEmptyList}
+          pending={pending}
         />
       </div>
 
