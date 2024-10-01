@@ -6,14 +6,17 @@ import {RouteName, RoutePath} from '@/shared/router/Routes.enum';
 import PageContentCard from '@/shared/widgets/pageContent/_widgets/PageContentCard';
 import PageContentHeader from '@/shared/widgets/pageContent/PageContentHeader';
 import PageContentList from '@/shared/widgets/pageContent/PageContentList';
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {FC, ReactElement, useContext, useMemo, useState} from 'react';
 import ProjectContent from './_widgets/ProjectContent';
 import RemoveConfirmProjectDialog from './_widgets/RemoveConfirmProject.dialog';
+import {IProject} from 'my-portfolio-types';
 
 const Projects: FC = (): ReactElement => {
   const {user} = useContext(AppAuthContext);
+  const queryClient = useQueryClient();
   const [dialogRemoveIsOpen, setDialogRemoveIsOpen] = useState<boolean>(false);
+  const [projectToRemove, setProjectToRemove] = useState<IProject>({} as IProject);
 
   const {
     data: projectsQueryData,
@@ -26,7 +29,11 @@ const Projects: FC = (): ReactElement => {
     enabled: !!user,
   });
 
-  const handlePrepareToRemove = () => {
+  const handlePrepareToRemove = async (id: string) => {
+    const projectsQueryData = await queryClient.ensureQueryData({queryKey: [RoutePath.PROJECTS], queryFn: async () => await fetchAllProjects()});
+    const project = projectsQueryData.find((project) => project.id === id)!;
+
+    setProjectToRemove(project);
     setDialogRemoveIsOpen(true);
   };
 
@@ -66,19 +73,17 @@ const Projects: FC = (): ReactElement => {
                   pageDirection={RoutePath.PROJECTS}
                   updateButtonTitle="Update project"
                   removeButtonTitle="Remove project"
-                  handleRemove={handlePrepareToRemove}
+                  handleRemove={async () => await handlePrepareToRemove(project.id)}
                 >
-                  <>
-                    <ProjectContent project={project} />
-
-                    <RemoveConfirmProjectDialog setDialogIsOpen={setDialogRemoveIsOpen} dialogIsOpen={dialogRemoveIsOpen} project={project} />
-                  </>
+                  <ProjectContent project={project} />
                 </PageContentCard>
               ))}
             </>
           )}
         </PageContentList>
       </div>
+
+      <RemoveConfirmProjectDialog setDialogIsOpen={setDialogRemoveIsOpen} dialogIsOpen={dialogRemoveIsOpen} project={projectToRemove} />
     </div>
   );
 };
