@@ -4,7 +4,7 @@ import {fetchAllSocials, removeAllSocials} from '@/entities/socials/socials.serv
 import {AppAuthContext} from '@/shared/providers/AppAuth.provider';
 import {RouteName, RoutePath} from '@/shared/router/Routes.enum';
 import PageContentCard from '@/shared/widgets/pageContent/_widgets/PageContentCard';
-import PageContentHeader from '@/shared/widgets/pageContent/PageContentHeader';
+import PageContentHeaderWithActions from '@/shared/widgets/pageContent/PageContentHeaderWithActions';
 import PageContentList from '@/shared/widgets/pageContent/PageContentList';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {FC, ReactElement, useContext, useMemo, useState} from 'react';
@@ -41,7 +41,7 @@ const Socials: FC = (): ReactElement => {
 
   return (
     <div className="flex h-full w-full flex-col gap-6 py-6">
-      <PageContentHeader
+      <PageContentHeaderWithActions
         pageTitle={RouteName.SOCIALS}
         createTitle="Create new social"
         removeTitle="Remove all socials"

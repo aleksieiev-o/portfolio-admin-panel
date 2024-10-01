@@ -1,72 +1,18 @@
-'use client';
-
-import {RouteName, RoutePath} from '@/shared/router/Routes.enum';
-import {FC, ReactElement, useState} from 'react';
+import {RouteName} from '@/shared/router/Routes.enum';
+import {FC, ReactElement} from 'react';
 import PageTitle from '../PageTitle';
-import PageActions from './_widgets/PageActions';
-import RemoveAllConfirmDialog from './_widgets/RemoveAllConfirm.dialog';
 
 interface Props {
   pageTitle: RouteName;
-  createTitle: string;
-  createLink: RoutePath;
-  removeTitle: string;
-  dialogTitle: string;
-  dialogDescription: string;
-  dialogQuestion: string;
-  btnTitle: string;
-  toastDescription: string;
-  handleRemoveAll: () => Promise<void>;
-  queryKey: RoutePath;
-  isEmptyList: boolean;
-  pending: boolean;
 }
 
 const PageContentHeader: FC<Props> = (props): ReactElement => {
-  const {
-    pageTitle,
-    createTitle,
-    createLink,
-    removeTitle,
-    dialogTitle,
-    dialogDescription,
-    dialogQuestion,
-    btnTitle,
-    toastDescription,
-    handleRemoveAll,
-    queryKey,
-    isEmptyList,
-    pending,
-  } = props;
-  const [dialogRemoveAllIsOpen, setDialogRemoveAllIsOpen] = useState<boolean>(false);
+  const {pageTitle} = props;
 
   return (
-    <>
-      <div className="flex w-full flex-row flex-nowrap items-center justify-between gap-4 md:gap-6">
-        <PageTitle title={pageTitle} />
-
-        <PageActions
-          createButtonTitle={createTitle}
-          createButtonLink={createLink}
-          removeButtonTitle={removeTitle}
-          setDialogIsOpen={setDialogRemoveAllIsOpen}
-          isEmptyList={isEmptyList}
-          pending={pending}
-        />
-      </div>
-
-      <RemoveAllConfirmDialog
-        dialogIsOpen={dialogRemoveAllIsOpen}
-        setDialogIsOpen={setDialogRemoveAllIsOpen}
-        dialogTitle={dialogTitle}
-        dialogDescription={dialogDescription}
-        dialogQuestion={dialogQuestion}
-        btnTitle={btnTitle}
-        toastDescription={toastDescription}
-        handleRemoveAll={handleRemoveAll}
-        queryKey={queryKey}
-      />
-    </>
+    <div className="flex w-full flex-row flex-nowrap items-center justify-between gap-4 md:gap-6">
+      <PageTitle title={pageTitle} />
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ import {fetchAllSkills, removeAllSkills} from '@/entities/skills/skills.service'
 import {AppAuthContext} from '@/shared/providers/AppAuth.provider';
 import {RoutePath, RouteName} from '@/shared/router/Routes.enum';
 import PageContentCard from '@/shared/widgets/pageContent/_widgets/PageContentCard';
-import PageContentHeader from '@/shared/widgets/pageContent/PageContentHeader';
+import PageContentHeaderWithActions from '@/shared/widgets/pageContent/PageContentHeaderWithActions';
 import PageContentList from '@/shared/widgets/pageContent/PageContentList';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {FC, ReactElement, useContext, useMemo, useState} from 'react';
@@ -41,7 +41,7 @@ const Skills: FC = (): ReactElement => {
 
   return (
     <div className="flex h-full w-full flex-col gap-6 py-6">
-      <PageContentHeader
+      <PageContentHeaderWithActions
         pageTitle={RouteName.SKILLS}
         createTitle="Create new skill"
         removeTitle="Remove all skills"
