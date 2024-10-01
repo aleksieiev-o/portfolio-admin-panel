@@ -55,8 +55,6 @@ export const updateDataItemById = async <T>(endpoint: EndpointsList, itemId: str
 
 export const removeDataItemById = async <T>(endpoint: EndpointsList, itemId: string): Promise<void> => {
   try {
-    // eslint-disable-next-line no-console
-    console.log(11, `${createDataEndpoint({endpoint})}/${itemId}`);
     return await remove(child(ref(firebaseDataBase), `${createDataEndpoint({endpoint})}/${itemId}`));
   } catch (err) {
     console.warn(err);

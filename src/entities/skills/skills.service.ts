@@ -9,8 +9,8 @@ export const fetchAllSkills = async (userUID?: string): Promise<Array<ISkill>> =
   return await fetchAllData(EndpointsList.SKILLS, userUID);
 };
 
-export const fetchSkillByID = async (projectID: string, userID?: string): Promise<ISkill> => {
-  return await fetchDataItemById<ISkill>(EndpointsList.SKILL_BY_ID, projectID, userID);
+export const fetchSkillByID = async (skillID: string, userID?: string): Promise<ISkill> => {
+  return await fetchDataItemById<ISkill>(EndpointsList.SKILL_BY_ID, skillID, userID);
 };
 
 export const createSkill = async (payload: ICreateSkillDto): Promise<void> => {
