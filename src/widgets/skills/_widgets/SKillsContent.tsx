@@ -2,10 +2,13 @@ import {Badge} from '@/components/ui/badge';
 import {ISkill} from 'my-portfolio-types';
 import {FC, ReactElement} from 'react';
 
-type Props = Pick<ISkill, 'experience' | 'color' | 'isMain'>;
+interface Props {
+  skill: ISkill;
+}
 
 const SkillsContent: FC<Props> = (props): ReactElement => {
-  const {experience, color, isMain} = props;
+  const {skill} = props;
+  const {experience, color, isMain} = skill;
 
   return (
     <div className="flex flex-col gap-4">

@@ -1,34 +1,34 @@
 'use client';
 
 import {useToast} from '@/components/ui/use-toast';
-import {removeProjectById} from '@/entities/projects/projects.service';
+import {removeSkillById} from '@/entities/skills/skills.service';
 import {useLoading} from '@/shared/hooks/useLoading';
 import {RoutePath} from '@/shared/router/Routes.enum';
 import RemoveConfirmDialog from '@/shared/ui/appDialog/RemoveConfirm.dialog';
 import {useQueryClient, useMutation} from '@tanstack/react-query';
-import {IProject} from 'my-portfolio-types';
+import {ISkill} from 'my-portfolio-types';
 import {FC, ReactElement} from 'react';
 
 interface Props {
-  project: IProject;
+  skill: ISkill;
   dialogIsOpen: boolean;
   setDialogIsOpen: (value: boolean) => void;
 }
 
-const RemoveConfirmProjectDialog: FC<Props> = (props): ReactElement => {
-  const {project, dialogIsOpen, setDialogIsOpen} = props;
+const RemoveSkillConfirmDialog: FC<Props> = (props): ReactElement => {
+  const {skill, dialogIsOpen, setDialogIsOpen} = props;
   const {toast} = useToast();
   const {isLoading, setIsLoading} = useLoading();
   const queryClient = useQueryClient();
 
   const onSuccessCallback = async (): Promise<void> => {
     await queryClient.invalidateQueries({
-      queryKey: [RoutePath.PROJECTS],
+      queryKey: [RoutePath.SKILLS],
     });
 
     toast({
       title: 'Success',
-      description: 'The project has successfully removed.',
+      description: 'The skill has successfully removed.',
     });
   };
 
@@ -46,7 +46,7 @@ const RemoveConfirmProjectDialog: FC<Props> = (props): ReactElement => {
   };
 
   const mutation = useMutation({
-    mutationFn: async (id: string) => await removeProjectById(project, id),
+    mutationFn: async (id: string) => await removeSkillById(id),
     onSuccess: async (data, variables, context) => {
       await onSuccessCallback();
     },
@@ -61,7 +61,7 @@ const RemoveConfirmProjectDialog: FC<Props> = (props): ReactElement => {
 
   const handleConfirm = () => {
     setIsLoading(true);
-    mutation.mutate(project.id);
+    mutation.mutate(skill.id);
   };
 
   return (
@@ -70,13 +70,13 @@ const RemoveConfirmProjectDialog: FC<Props> = (props): ReactElement => {
       dialogIsOpen={dialogIsOpen}
       setDialogIsOpen={setDialogIsOpen}
       handleConfirm={handleConfirm}
-      dialogTitle={'Remove project confirmation'}
-      dialogDescription={'You are about to remove this project.'}
-      dialogQuestion={'Are you sure you want to remove this project?'}
-      btnTitle={'Remove project'}
+      dialogTitle={'Remove skill confirmation'}
+      dialogDescription={'You are about to remove this skill.'}
+      dialogQuestion={'Are you sure you want to remove this skill?'}
+      btnTitle={'Remove skill'}
       btnBody={'Remove'}
     />
   );
 };
 
-export default RemoveConfirmProjectDialog;
+export default RemoveSkillConfirmDialog;

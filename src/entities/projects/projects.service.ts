@@ -74,5 +74,5 @@ export const removeAllProjects = async (): Promise<void> => {
     }
   }
 
-  await removeAllData(EndpointsList.PROJECTS);
+  return await removeAllData(EndpointsList.PROJECTS);
 };
