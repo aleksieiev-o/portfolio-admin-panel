@@ -70,7 +70,7 @@ const Projects: FC = (): ReactElement => {
                   visibility={project.visibility}
                   createdDate={project.createdDate}
                   updatedDate={project.updatedDate}
-                  pageDirection={RoutePath.PROJECTS}
+                  pageDirection={RoutePath.UPDATE_PROJECT}
                   updateButtonTitle="Update project"
                   removeButtonTitle="Remove project"
                   handleRemove={async () => await handlePrepareToRemove(project.id)}

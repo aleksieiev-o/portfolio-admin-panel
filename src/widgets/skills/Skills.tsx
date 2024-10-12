@@ -70,7 +70,7 @@ const Skills: FC = (): ReactElement => {
                   visibility={skill.visibility}
                   createdDate={skill.createdDate}
                   updatedDate={skill.updatedDate}
-                  pageDirection={RoutePath.SKILLS}
+                  pageDirection={RoutePath.UPDATE_SKILL}
                   updateButtonTitle="Update skill"
                   removeButtonTitle="Remove skill"
                   handleRemove={async () => await handlePrepareToRemove(skill.id)}
