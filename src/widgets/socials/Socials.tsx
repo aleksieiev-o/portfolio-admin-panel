@@ -70,7 +70,7 @@ const Socials: FC = (): ReactElement => {
                   visibility={social.visibility}
                   createdDate={social.createdDate}
                   updatedDate={social.updatedDate}
-                  pageDirection={RoutePath.SOCIALS}
+                  pageDirection={RoutePath.UPDATE_SOCIAL}
                   updateButtonTitle="Update social"
                   removeButtonTitle="Remove social"
                   handleRemove={async () => await handlePrepareToRemove(social.id)}

@@ -71,7 +71,7 @@ const Documents: FC = (): ReactElement => {
                   visibility={document.visibility}
                   createdDate={document.createdDate}
                   updatedDate={document.updatedDate}
-                  pageDirection={RoutePath.DOCUMENTS}
+                  pageDirection={RoutePath.UPDATE_DOCUMENT}
                   updateButtonTitle="Update document"
                   removeButtonTitle="Remove document"
                   handleRemove={async () => await handlePrepareToRemove(document.id)}

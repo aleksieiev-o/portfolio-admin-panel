@@ -29,7 +29,7 @@ const CardHeaderActions: FC<Props> = (props): ReactElement => {
   return (
     <CardHeader>
       <div className="flex w-full flex-row flex-nowrap items-center justify-between gap-6 overflow-hidden">
-        <CardTitle className="w-full overflow-hidden text-ellipsis whitespace-nowrap" title={title}>
+        <CardTitle className="w-full overflow-hidden text-ellipsis whitespace-nowrap pb-[1px]" title={title}>
           {title}
         </CardTitle>
 
