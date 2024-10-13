@@ -4,13 +4,13 @@ import {FC, ReactElement, useContext} from 'react';
 import GoToPreviousPageButton from '@/shared/ui/appButton/GoToPreviousPage.button';
 import PageTitle from '@/shared/widgets/PageTitle';
 import {RouteName} from '@/shared/router/Routes.enum';
-import CreateOrUpdateSocialForm from './_features/createOrUpdateSocialForm/CreateOrUpdateSocial.form';
+import CreateOrUpdateDocumentForm from './_features/createOrUpdateDocumentForm/CreateOrUpdateDocument.form';
 import {AppAuthContext} from '@/shared/providers/AppAuth.provider';
 import {useSearchParams} from 'next/navigation';
 import {useQuery} from '@tanstack/react-query';
-import {fetchSocialByID} from '@/entities/socials/socials.service';
+import {fetchDocumentByID} from '@/entities/documents/documents.service';
 
-const SocialsUpdate: FC = (): ReactElement => {
+const DocumentsUpdate: FC = (): ReactElement => {
   const {user} = useContext(AppAuthContext);
   const searchParams = useSearchParams();
 
@@ -22,7 +22,7 @@ const SocialsUpdate: FC = (): ReactElement => {
     isSuccess: projectsIsSuccess,
   } = useQuery({
     queryKey: [projectID],
-    queryFn: async () => await fetchSocialByID(projectID),
+    queryFn: async () => await fetchDocumentByID(projectID),
     staleTime: 5 * 1000,
     enabled: !!user,
   });
@@ -32,12 +32,12 @@ const SocialsUpdate: FC = (): ReactElement => {
       <div className="flex w-full flex-row items-start justify-start gap-6 pt-6">
         <GoToPreviousPageButton />
 
-        <PageTitle title={RouteName.SOCIALS_UPDATE} />
+        <PageTitle title={RouteName.DOCUMENTS_UPDATE} />
       </div>
 
-      <CreateOrUpdateSocialForm mode="update" data={projectQueryData} isPending={projectsIsPending} isSuccess={projectsIsSuccess} />
+      <CreateOrUpdateDocumentForm mode="update" data={projectQueryData} isPending={projectsIsPending} isSuccess={projectsIsSuccess} />
     </div>
   );
 };
 
-export default SocialsUpdate;
+export default DocumentsUpdate;

@@ -2,8 +2,9 @@ import {firebaseDataBase} from '@/lib/firebase/firebase';
 import {EndpointsList} from '@/shared/Endpoints.enum';
 import {push, ref, set} from 'firebase/database';
 import {IDocument} from 'my-portfolio-types';
-import {fetchAllData, fetchDataItemById, removeAllData, removeDataItemById} from '../_db.service';
-import {ICreateDocumentDto} from '@/shared/types/documents.types';
+import {fetchAllData, fetchDataItemById, removeAllData, removeDataItemById, updateDataItemById} from '../_db.service';
+import {ICreateDocumentDto, IUpdateDocumentDto} from '@/shared/types/documents.types';
+import {createDataEndpoint} from '../_vm/user';
 
 export const fetchAllDocuments = async (userUID?: string): Promise<IDocument[]> => {
   return await fetchAllData(EndpointsList.DOCUMENTS, userUID);
@@ -15,7 +16,8 @@ export const fetchDocumentByID = async (documentID: string, userID?: string): Pr
 
 export const createDocument = async (payload: ICreateDocumentDto): Promise<void> => {
   const {title, visibility, lang, position} = payload;
-  const documentRef = push(ref(firebaseDataBase, EndpointsList.DOCUMENTS));
+  const documentRef = push(ref(firebaseDataBase, `${createDataEndpoint({endpoint: EndpointsList.DOCUMENTS})}`));
+  const documentID = documentRef.key!;
 
   const document: IDocument = {
     id: documentRef.key!,
@@ -28,6 +30,10 @@ export const createDocument = async (payload: ICreateDocumentDto): Promise<void>
   };
 
   return await set(documentRef, document);
+};
+
+export const updateDocument = async (payload: IUpdateDocumentDto): Promise<void> => {
+  return await updateDataItemById(EndpointsList.DOCUMENT_BY_ID, payload.id, payload);
 };
 
 export const removeDocumentById = async (id: string): Promise<void> => {

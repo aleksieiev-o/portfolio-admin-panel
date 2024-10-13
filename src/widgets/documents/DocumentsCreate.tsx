@@ -4,20 +4,20 @@ import {FC, ReactElement} from 'react';
 import GoToPreviousPageButton from '@/shared/ui/appButton/GoToPreviousPage.button';
 import PageTitle from '@/shared/widgets/PageTitle';
 import {RouteName} from '@/shared/router/Routes.enum';
-import CreateOrUpdateSocialForm from './_features/createOrUpdateSocialForm/CreateOrUpdateSocial.form';
+import CreateOrUpdateDocumentForm from './_features/createOrUpdateDocumentForm/CreateOrUpdateDocument.form';
 
-const SocialsCreate: FC = (): ReactElement => {
+const DocumentsCreate: FC = (): ReactElement => {
   return (
     <div className="h-hull flex w-full flex-col gap-6">
       <div className="flex w-full flex-row items-start justify-start gap-6 pt-6">
         <GoToPreviousPageButton />
 
-        <PageTitle title={RouteName.SOCIALS_CREATE} />
+        <PageTitle title={RouteName.DOCUMENTS_CREATE} />
       </div>
 
-      <CreateOrUpdateSocialForm mode="create" data={undefined} isPending={false} isSuccess={false} />
+      <CreateOrUpdateDocumentForm mode="create" data={undefined} isPending={false} isSuccess={false} />
     </div>
   );
 };
 
-export default SocialsCreate;
+export default DocumentsCreate;

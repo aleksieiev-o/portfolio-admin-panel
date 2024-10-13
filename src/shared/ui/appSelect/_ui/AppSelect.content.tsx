@@ -1,12 +1,10 @@
 import {FC} from 'react';
 import {SelectContent, SelectItem} from '@/components/ui/select';
 
-/* tslint:disable */
 interface Props {
-  dataList: Array<any>; // TODO fix type
+  dataList: Array<{value: string; title: string}>;
   emptyDataListMessage: string;
 }
-/* tslint:enable */
 
 const AppSelectContent: FC<Props> = (props) => {
   const {dataList, emptyDataListMessage} = props;
@@ -14,9 +12,9 @@ const AppSelectContent: FC<Props> = (props) => {
   return (
     <SelectContent>
       {dataList && dataList.length > 0 ? (
-        dataList.map((category) => (
-          <SelectItem key={category.categoryId} value={category.categoryId}>
-            {category.categoryName}
+        dataList.map((item) => (
+          <SelectItem key={item.value} value={item.value}>
+            {item.title}
           </SelectItem>
         ))
       ) : (
