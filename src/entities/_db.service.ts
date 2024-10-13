@@ -3,6 +3,12 @@ import {firebaseDataBase} from '@/lib/firebase/firebase';
 import {createDataEndpoint, createDataItemEndpoint} from '@/entities/_vm/user';
 import {EndpointsList} from '@/shared/Endpoints.enum';
 
+interface Updates {
+  [updateEndpoint: string]: {
+    [itemToUpdate: string]: {};
+  };
+}
+
 export const fetchAllData = async <T>(endpoint: EndpointsList, userUID?: string): Promise<T[]> => {
   try {
     const snapshot = await get(child(ref(firebaseDataBase), createDataEndpoint({endpoint, userUID})));
@@ -38,7 +44,7 @@ export const updateDataItemById = async <T>(endpoint: EndpointsList, itemId: str
   try {
     const currentItem = await fetchDataItemById<T>(endpoint, itemId);
 
-    const updates = {};
+    const updates: Updates = {};
 
     updates[createDataItemEndpoint({endpoint, itemId})] = {
       ...currentItem,
